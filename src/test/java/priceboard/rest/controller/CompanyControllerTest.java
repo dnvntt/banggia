@@ -36,14 +36,14 @@ public class CompanyControllerTest {
 		company.setCompanyName("CTCP CK SSI");
 		companyList.add(company);
 		memory.put("COMPANY_LIST", "COMPANY_LIST", companyList);
-		String resultInJsonp = companyController.getCompany("jsonp", new ModelMap());
+		Object resultInJsonp = companyController.getCompany(new ModelMap());
 		String expectedJsonp = "jsonp([{\"companyId\":0,\"companyName\":\"CTCP CK VNDIRECT\",\"code\":\"VND\",\"floorCode\":\"02\"},{\"companyId\":0,\"companyName\":\"CTCP CK SSI\",\"code\":\"SSI\",\"floorCode\":\"10\"}])";
 		Assert.assertEquals(expectedJsonp, resultInJsonp);
 	}
 	
 	@Test
 	public void testCompanyControllerReturnNoSnapshotData() {
-		String resultInJsonp = companyController.getCompany("jsonp", new ModelMap());
+		Object resultInJsonp = companyController.getCompany(new ModelMap());
 		String expectedJsonp = "jsonp()";
 		Assert.assertEquals(expectedJsonp, resultInJsonp);
 	}

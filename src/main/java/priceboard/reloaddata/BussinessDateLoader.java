@@ -28,6 +28,7 @@ public class BussinessDateLoader {
 		List<BusinessDate> result = elasticSearchClient.getDataByIndex("businessdate", "businessdate", BusinessDate.class, null);
 		if (result.size() > 0) {
 			memory.put("businessdate", "businessdate", result.get(0).getBusinessDate());
+			System.out.println("Loading business date: " + result.get(0).getBusinessDate());
 		}
 	}
 

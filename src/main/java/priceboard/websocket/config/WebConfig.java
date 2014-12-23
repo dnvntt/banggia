@@ -11,9 +11,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -41,22 +43,28 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	@Autowired
 	private EventHandlerFilter eventHandlerFilter;
 	
+	@Autowired
+	private StockWebSocketHandler stockWebSocketHandler;
+	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 
 		registry.addHandler(echoWebSocketHandler(), "/sockjs/echo").withSockJS();
-		registry.addHandler(stockWebSocketHandler(), "/realtime").withSockJS();
+		registry.addHandler(stockWebSocketHandler, "/realtime").withSockJS();
 	}
 
+	@ControllerAdvice
+	static class JsonpAdvice extends AbstractJsonpResponseBodyAdvice {
+		public JsonpAdvice() {
+			super("jsonp");
+		}
+	}
+	
 	@Bean
 	public WebSocketHandler echoWebSocketHandler() {
 		return new EchoWebSocketHandler(echoService());
 	}
 	
-	@Bean
-	public StockWebSocketHandler stockWebSocketHandler() {
-		return new StockWebSocketHandler(memory(), jsonParser(), eventHandlerFilter, handlers());
-	}
 	
 	@Bean
 	public List<EventHandler> handlers() {

@@ -26,7 +26,6 @@ public class MarketController {
 	@Autowired
 	private JsonParser jsonParser;
 
-	private Map<String, Map<String, Object>> marketMapByFloorCode = new HashMap<String, Map<String, Object>>();
 	
 	@Autowired
 	public MarketController(InMemory memory, JsonParser jsonParser) {
@@ -35,23 +34,24 @@ public class MarketController {
 	}
 	
 	@RequestMapping(value = "/snapshot/q=codes:{codes}", method = RequestMethod.GET)
-	public @ResponseBody String getMarket(@RequestParam("jsonp") String jsonp, @PathVariable String codes, ModelMap model) {
-		if (isEmpty(codes)) return "";
+	public @ResponseBody Map<String, Map<String, Object>> getMarket(@PathVariable String codes, ModelMap model) {
+		Map<String, Map<String, Object>> marketMapByFloorCode = new HashMap<String, Map<String, Object>>();
+		if (isEmpty(codes)) return marketMapByFloorCode;
 		String[] arrCodes = codes.split(",");
 		for (String code : arrCodes) {
 			if (code.trim().length() == 0) continue;
 			Object market = memory.get("MARKET", code);
 			if (market == null) continue;
-			putData((Market) market);
+			putData((Market) market, marketMapByFloorCode);
 		}
-		return jsonp + "(" + jsonParser.objectToString(marketMapByFloorCode) + ")";
+		return marketMapByFloorCode;
 	}
 
 	private boolean isEmpty(String codes) {
 		return codes == null || codes.trim().length() == 0;
 	}
 	
-	public void putData(Market market) {
+	public void putData(Market market, Map<String, Map<String, Object>> marketMapByFloorCode) {
 		marketMapByFloorCode.put(market.getFloorCode(), new HashMap<String, Object>() {{
 			put("crrTime", market.getTradingTime());
 			put("data", market);

@@ -1,6 +1,8 @@
 package priceboard.rest.controller;
 
 
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
@@ -21,9 +23,7 @@ public class MarketControllerTest {
 		market.setFloorCode("10");
 		market.setAdvance(100);
 		memory.put("MARKET", "10", market);
-		String marketAsJson = parser.objectToString(market);
-		String expectedData = "jsonp({\"10\":{\"data\":" +  marketAsJson + ",\"crrTime\":\"13:52:37\"}})";
-		String marketData = controller.getMarket("jsonp", "10", new ModelMap());
-		Assert.assertEquals(expectedData, marketData);
+		Map<String, Map<String, Object>>  marketData = controller.getMarket("10", new ModelMap());
+		Assert.assertNotNull(marketData.get("10"));
 	}
 }

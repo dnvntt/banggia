@@ -1,18 +1,17 @@
 package priceboard.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
 
-@Controller
+@RestController
 @RequestMapping("/company")
 public class CompanyController {
 
@@ -29,13 +28,8 @@ public class CompanyController {
 	}
 		
 	@RequestMapping(value = "/snapshot/", method = RequestMethod.GET)
-	public @ResponseBody String getCompany(@RequestParam("jsonp") String jsonp, ModelMap model) {
-		Object companyList = memory.get("COMPANY_LIST", "COMPANY_LIST");
-		if (companyList == null) {
-			return jsonp + "()";
-		}
-		
-		return jsonp + "(" + jsonParser.objectToString(companyList) + ")";
+	public @ResponseBody Object getCompany(ModelMap model) {
+		return memory.get("COMPANY_LIST", "COMPANY_LIST");
 	}
 
 }

@@ -57,6 +57,7 @@ public class StockLoader {
 			map.put("tradingDate", (String) businessDate);
 		}
 		List<SecInfo> secInfoList = elasticSearchClient.getDataByIndex("secinfo", "snapshot", SecInfo.class, map);
+		System.out.println("Loading secInfoList : " + secInfoList.size());
 		secInfoList.forEach((object) -> {
 			handlersOfStock.forEach((handler) -> {handler.handle(object);});
 		});

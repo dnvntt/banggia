@@ -64,6 +64,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		List<EventHandler> handlers = clientEventTypeMapping.get(type);
 		if (handlers == null) {
 			log.error("No handler for type: " +  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
+			return;
 		}
 		handleMessage(handlers, session.getId(), node);
 	}

@@ -58,5 +58,15 @@ public class StockRoomManager {
 		}
 		return currentRoomsOfStock.get(stock);
 	}
+	
+	public List<String> getStocksByRoom(String floorCode) {
+		List<String> stockList = roomStorage.get(floorCode);
+		if (stockList == null) {
+			return new ArrayList<String>();
+		}
+		return roomStorage.get(floorCode);	
+	}
+	
+	 
 
 }

@@ -16,9 +16,9 @@ public class StockControllerTest {
 		memory.put("STOCK_COMPRESSION", "SSI", "data for SSI");
 		JsonParser parser = new JsonParser();
 		StockController controller = new StockController(memory, parser);
-		String json = controller.getStock("jsonp", "VND,SSI", new ModelMap());
-		String expected = "jsonp([\"data for VND\",\"data for SSI\"])";
-		Assert.assertEquals(expected, json);
+		String[] json = controller.getStock("VND,SSI", new ModelMap());
+		Assert.assertTrue(json[0].contains("VND"));
+		Assert.assertTrue(json[1].contains("SSI"));
 	}
 	
 	@Test
@@ -28,8 +28,7 @@ public class StockControllerTest {
 		memory.put("STOCK_COMPRESSION", "SSI", "data for SSI");
 		JsonParser parser = new JsonParser();
 		StockController controller = new StockController(memory, parser);
-		String json = controller.getStock("jsonp", "", new ModelMap());
-		String expected = "";
-		Assert.assertEquals(expected, json);
+		String[] json = controller.getStock("", new ModelMap());
+		Assert.assertEquals(0, json.length);
 	}
 }

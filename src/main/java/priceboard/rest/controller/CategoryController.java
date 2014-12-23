@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import priceboard.json.JsonParser;
 import priceboard.reloaddata.Category;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
-@Controller
+@RestController
 @RequestMapping("/category")
 public class CategoryController {
 
@@ -31,15 +31,9 @@ public class CategoryController {
 		this.jsonParser = jsonParser;
 	}
 
-	
-
 	@RequestMapping(value = "/snapshot/", method = RequestMethod.GET)
-	public @ResponseBody String getCategoryForOldVersion(@RequestParam("jsonp") String jsonp, ModelMap model) {
+	public @ResponseBody List<CustomCategory> getCategoryForOldVersion(ModelMap model) {
 		Object categoryList = memory.get("CATEGORY_LIST", "CATEGORY_LIST");
-		if (categoryList == null) {
-			return jsonp + "()";
-		}
-		
 		List<CustomCategory> customCategoryList = new ArrayList<CustomCategory>();
 		for(Category category : (List<Category>) categoryList) {
 			CustomCategory customCategory = new CustomCategory();
@@ -48,17 +42,13 @@ public class CategoryController {
 			customCategoryList.add(customCategory);
 			
 		}
-		return jsonp + "(" + jsonParser.objectToString(customCategoryList) + ")";
+		return customCategoryList;
 	}
 	
 	@RequestMapping(value = "/snapshot/new/", method = RequestMethod.GET)
-	public @ResponseBody String getCategory(@RequestParam("jsonp") String jsonp, ModelMap model) {
+	public @ResponseBody Object getCategory(@RequestParam("jsonp") String jsonp, ModelMap model) {
 		Object categoryList = memory.get("CATEGORY_LIST", "CATEGORY_LIST");
-		if (categoryList == null) {
-			return jsonp + "()";
-		}
-		
-		return jsonp + "(" + jsonParser.objectToString(categoryList) + ")";
+		return categoryList;
 	}
 
 }

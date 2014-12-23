@@ -72,26 +72,4 @@ public class StockUpdateCompanyNameHandlerTest {
 		Assert.assertEquals(0, ((List)companyList).size());
 	}
 	
-	@Test
-	public void testStockUpdateCompanyNameWhenHandleCompanyObject() {
-		Company company = new Company();
-		company.setCode("VND");
-		company.setFloorCode("02");
-		company.setCompanyName("CT CPCK VNDIRECT");
-		stockHandler.handle(company);
-		
-		company = new Company();
-		company.setCode("SSI");
-		company.setFloorCode("10");
-		company.setCompanyName("CT CPCK SSI");
-		stockHandler.handle(company);
-		
-		List<Company> companyList = (List<Company>) memory.get("COMPANY_LIST", "COMPANY_LIST");
-		Assert.assertEquals(2, companyList.size());
-		Assert.assertEquals("VND", companyList.get(0).getCode());
-		Assert.assertEquals("CT CPCK VNDIRECT", companyList.get(0).getCompanyName());
-		Assert.assertEquals("SSI", companyList.get(1).getCode());
-		Assert.assertEquals("CT CPCK SSI", companyList.get(1).getCompanyName());
-	}
-	
 }

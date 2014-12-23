@@ -26,7 +26,7 @@ public class CompanyNameLoader {
 
 	@PostConstruct
 	public void load() throws Exception {
-		List<Company> secInfoList = elasticSearchClient.getDataByIndex("company", "snapshot", Company.class, null);
+		List<Company> secInfoList = elasticSearchClient.getDataByIndex("company", "company", Company.class, null);
 		memory.put("COMPANY_LIST", "COMPANY_LIST", secInfoList);
 	}
 

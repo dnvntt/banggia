@@ -38,7 +38,7 @@ public class CategoryControllerTest {
 		CategoryController categoryController = new CategoryController(memory, new JsonParser());
 		
 		Object returnJsonp = categoryController.getCategory("jsonp", new ModelMap());
-		String expectedJsonp = "jsonp([{\"categoryName\":\"Category 1\",\"codeList\":[\"VND\",\"SSI\"]},{\"categoryName\":\"Category 2\",\"codeList\":[\"HAG\",\"VCB\"]}])";
-		Assert.assertEquals(expectedJsonp, returnJsonp);
+		Assert.assertEquals(category1, ((List) returnJsonp).get(0));
+		Assert.assertEquals(category2, ((List) returnJsonp).get(1));
 	}
 }
