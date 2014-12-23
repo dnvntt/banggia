@@ -1,7 +1,10 @@
 package priceboard.stock.compress;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import priceboard.util.InstanceChecker;
+import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 import vn.com.web.commons.utility.DateUtils;
 
@@ -10,8 +13,16 @@ public class Mashaller {
 
 	private static final String SEPARATOR = "|";
 	
-	public String compress(Object object) {
-		SecInfo secInfo = (SecInfo) object;
+	public String compress(Object source) {
+		if (InstanceChecker.isStock(source)) {
+			return compressStock((SecInfo) source);
+		} else if (InstanceChecker.isMarket(source)) {
+			return compressMarket((Market) source);
+		}
+		return StringUtils.EMPTY;
+	}
+	
+	private String compressStock(SecInfo secInfo) {
 		StringBuilder builder = new StringBuilder();
 		append(builder, secInfo.getFloorCode());
 		append(builder, DateUtils.dateToStringITA(secInfo.getTradingDate()));
@@ -54,6 +65,30 @@ public class Mashaller {
 		append(builder, secInfo.getSellForeignQtty());
 		append(builder, secInfo.getProjectOpen());
 		append(builder, "");
+		return builder.toString();
+	}
+
+	public String compressMarket(Market market) {
+		StringBuilder builder = new StringBuilder();		
+		append(builder, market.getMarketID());
+		append(builder, market.getTotalTrade());
+		append(builder, market.getTotalShareTraded());
+		append(builder, market.getTotalValueTraded());
+		append(builder, market.getAdvance());
+		append(builder, market.getDecline());
+		append(builder, market.getNoChange());
+		append(builder, "");
+		append(builder, market.getChangedIndex());
+		append(builder, market.getTradingTime());
+		append(builder, market.getTradingDate());
+		append(builder, market.getFloorCode());
+		append(builder, market.getMarketIndex());
+		append(builder, market.getPriorMarketIndex());
+		append(builder, market.getHighestIndex());
+		append(builder, market.getLowestIndex());
+		append(builder, market.getShareTraded());
+		append(builder, market.getStatus());
+		append(builder, market.getSequence());
 		return builder.toString();
 	}
 	

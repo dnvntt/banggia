@@ -39,17 +39,17 @@ public class EventHandlerFilter {
 						maxPriorityValue = currentPriority;
 					}
 					
-					updateHandler(currentPriority, handler, mapPriorityHandler);
+					updateHandlerWithPriorityInMap(currentPriority, handler, mapPriorityHandler);
 					
 				}
 			}
 		}
 		
-		sortHandler(returnHandlers, mapPriorityHandler);
+		sortHandlerByPriority(returnHandlers, mapPriorityHandler);
 		return returnHandlers;
 	}
 	
-	private void updateHandler(int currentPriority, EventHandler handler, Map<Integer, List<EventHandler>> mapPriorityHandler) {
+	private void updateHandlerWithPriorityInMap(int currentPriority, EventHandler handler, Map<Integer, List<EventHandler>> mapPriorityHandler) {
 		List<EventHandler> handlersWithCurrentPriority = mapPriorityHandler.get(currentPriority);
 		if (handlersWithCurrentPriority == null) {
 			handlersWithCurrentPriority = new ArrayList<EventHandler>();
@@ -58,7 +58,7 @@ public class EventHandlerFilter {
 		handlersWithCurrentPriority.add(handler);
 	}
 
-	private void sortHandler(List<EventHandler> returnHandlers, Map<Integer, List<EventHandler>> mapPriorityHandler) {
+	private void sortHandlerByPriority(List<EventHandler> returnHandlers, Map<Integer, List<EventHandler>> mapPriorityHandler) {
 		for(Map.Entry<Integer, List<EventHandler>> entry : mapPriorityHandler.entrySet()) {
 			List<EventHandler> handlersWithCurrentPriority = entry.getValue();
 			if (handlersWithCurrentPriority != null) {

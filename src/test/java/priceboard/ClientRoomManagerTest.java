@@ -2,6 +2,7 @@ package priceboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,6 +37,17 @@ public class ClientRoomManagerTest {
 		roomManager.addClientToRoom("VND", Mockito.mock(ClientConnection.class));
 		List<ClientConnection> actualClients = roomManager.getClientInRoom("VND");
 		Assert.assertEquals(2, actualClients.size());
+	}
+	
+	
+	@Test
+	public void testGetAllClient() {
+		int numberOfClient = new Random().nextInt(100);
+		for(int i = 0; i < numberOfClient; i++) {
+			roomManager.addClientToRoom("VND" + i, Mockito.mock(ClientConnection.class));
+		}
+		List<ClientConnection> actualClients = roomManager.getAllClient();
+		Assert.assertEquals(numberOfClient, actualClients.size());
 	}
 	
 	@Test

@@ -14,7 +14,7 @@ public class EventHandlerFilterTest {
 	
 	@Test
 	public void testReadAnnotationInStockHandler() throws NoSuchMethodException, SecurityException {
-		StockHandler handler = new StockHandler(null, null);
+		StockUpdateRoomHandler handler = new StockUpdateRoomHandler(null, null);
 		List<EventHandler> handlers = new ArrayList<EventHandler>() {{
 			add(handler);
 		}};
@@ -28,10 +28,10 @@ public class EventHandlerFilterTest {
 	@Test
 	public void testReadAnnotationInHandlers() throws NoSuchMethodException, SecurityException {
 		List<EventHandler> handlers = new ArrayList<EventHandler>() {{
-			add(new StockHandler(null, null));
+			add(new StockUpdateRoomHandler(null, null));
 			add(new MemoryHandler(null));
 			add(new CompressionHandler(null, null));
-			add(new StockRegisterHandler(null, null, null, null));
+			add(new StockRegisterHandler(null, null, null));
 		}};
 		
 		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "ALL"));
@@ -40,7 +40,7 @@ public class EventHandlerFilterTest {
 		
 		Assert.assertTrue(returnHandlers.get(0).getClass() == MemoryHandler.class || returnHandlers.get(0).getClass() == CompressionHandler.class);
 		Assert.assertTrue(returnHandlers.get(1).getClass() == MemoryHandler.class || returnHandlers.get(1).getClass() == CompressionHandler.class);
-		Assert.assertTrue(returnHandlers.get(2).getClass() == StockHandler.class);
+		Assert.assertTrue(returnHandlers.get(2).getClass() == StockUpdateRoomHandler.class);
 	}
 	
 }

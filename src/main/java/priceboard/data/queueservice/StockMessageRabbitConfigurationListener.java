@@ -1,9 +1,8 @@
 package priceboard.data.queueservice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
@@ -18,13 +17,12 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import priceboard.event.EventHandler;
-import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.event.server.handler.EventHandlerFilter;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 import com.eaio.uuid.UUID;
 
@@ -47,24 +45,60 @@ public class StockMessageRabbitConfigurationListener {
 	private EventHandlerFilter filter;
 
 	@Autowired
-	private ApplicationContext applicationContext;
-
-	@Autowired
 	private AmqpAdmin amqpAdmin;
 
 	@Autowired
 	private EventHandlerFilter eventHandlerFilter;
 
-	private List<EventHandler> handlers = new ArrayList<EventHandler>();
+	@Autowired
+	private List<EventHandler> handlers;
+	
+	private List<EventHandler> handlersOfStock;
 
 	@PostConstruct
 	public void init() {
-		Map<String, Object> map = applicationContext.getBeansWithAnnotation(EventHandlerApplyFor.class);
-		map.forEach((key, object) -> {
-			handlers.add((EventHandler) object);
-		});
+		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "ALL"));
+		/*new Thread(() -> {
+			while(true) {
+				SecInfo secInfo = createMockData(); 
+				handleMessage(secInfo);
+			}
+		}).start();*/
+		
+	}
 
-		handlers = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "ALL"));
+	private SecInfo createMockData() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		SecInfo secInfo = new SecInfo();
+		List<String> arr = Arrays.asList("HAG", "SSI", "VND");
+		int random = new Random().nextInt(100);
+		secInfo.setCode(arr.get(random % (arr.size())));
+		secInfo.setBasicPrice(10.5);
+		secInfo.setFloorPrice(10);;
+		secInfo.setCeilingPrice(12);
+		secInfo.setFloorCode("10");
+		secInfo.setAccumulatedVal(12000 + random);
+		secInfo.setAccumulatedVal(120 + random);
+		secInfo.setMatchPrice(10 + random);
+		secInfo.setMatchQtty(4000 + random);
+		secInfo.setBidPrice01(12 + random);
+		secInfo.setBidQtty01(200 + random);
+		secInfo.setBidPrice02(11 + random);
+		secInfo.setBidQtty02(10 + random);
+		secInfo.setBidQtty03(200 + random);
+		secInfo.setBidPrice03(11 + random);
+		secInfo.setOfferPrice01(10 + random);
+		secInfo.setOfferQtty01(3000 + random);
+		secInfo.setOfferPrice02(11 + random);
+		secInfo.setOfferQtty02(3000 + random);
+		secInfo.setOfferPrice03(11.5 + random);
+		secInfo.setOfferQtty03(3000 + random);
+		secInfo.setCompanyName("Hoang Anh Gia Lai " + random);
+		secInfo.setCurrentRoom(3000 + random);
+		return secInfo;
 	}
 
 	@Bean
@@ -105,7 +139,7 @@ public class StockMessageRabbitConfigurationListener {
 
 	public void handleMessage(Object object) {
 		System.out.println(object);
-		handlers.forEach((handler) -> {
+		handlersOfStock.forEach((handler) -> {
 			handler.handle(object);
 		});
 

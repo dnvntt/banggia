@@ -1,5 +1,11 @@
 package priceboard.websocket.config;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +19,9 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-import priceboard.event.client.handler.ClientEventTypeMapping;
+import priceboard.event.EventHandler;
+import priceboard.event.server.handler.EventHandlerApplyFor;
+import priceboard.event.server.handler.EventHandlerFilter;
 import priceboard.json.JsonParser;
 import priceboard.websocket.handler.DefaultEchoService;
 import priceboard.websocket.handler.EchoWebSocketHandler;
@@ -27,11 +35,17 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 @ComponentScan("priceboard")
 public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 
+	@Autowired
+	private ApplicationContext applicationContext;
+	
+	@Autowired
+	private EventHandlerFilter eventHandlerFilter;
+	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 
 		registry.addHandler(echoWebSocketHandler(), "/sockjs/echo").withSockJS();
-		registry.addHandler(stockWebSocketHandler(), "/stock/echo").withSockJS();
+		registry.addHandler(stockWebSocketHandler(), "/realtime").withSockJS();
 	}
 
 	@Bean
@@ -41,14 +55,19 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	
 	@Bean
 	public StockWebSocketHandler stockWebSocketHandler() {
-		return new StockWebSocketHandler(clientEventTypeMapping(), memory(), jsonParser());
+		return new StockWebSocketHandler(memory(), jsonParser(), eventHandlerFilter, handlers());
 	}
-
-
+	
 	@Bean
-	public ClientEventTypeMapping clientEventTypeMapping() {
-		return new ClientEventTypeMapping();
+	public List<EventHandler> handlers() {
+		List<EventHandler> handlers = new ArrayList<EventHandler>();
+		Map<String, Object> map = applicationContext.getBeansWithAnnotation(EventHandlerApplyFor.class);
+		map.forEach((key, object) -> {
+			handlers.add((EventHandler) object);
+		});
+		return handlers;
 	}
+	
 	
 	@Bean
 	public InMemory memory() {

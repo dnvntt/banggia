@@ -20,7 +20,7 @@ public class ClientDisconnectHandlerTest {
 	@Before
 	public void setUp() {
 		roomManager = new ClientRoomManager();
-		handler = new ClientDisconnectHandler(roomManager, null);
+		handler = new ClientDisconnectHandler(roomManager);
 	}
 
 	@Test

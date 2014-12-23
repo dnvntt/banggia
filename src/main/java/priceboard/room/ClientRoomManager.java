@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import priceboard.client.ClientConnection;
 
-
 @Component
 public class ClientRoomManager {
 
@@ -101,6 +100,12 @@ public class ClientRoomManager {
 			return new ArrayList<String>();
 		}
 		return currentRoomsOfClient.get(client);
+	}
+
+	public List<ClientConnection> getAllClient() {
+		List<ClientConnection> allClient = new ArrayList<ClientConnection>();
+		allClient.addAll(currentRoomsOfClient.keySet());
+		return allClient;
 	}
 
 }

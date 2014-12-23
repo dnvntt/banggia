@@ -43,6 +43,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>0.90.7</version>
+		</dependency>
+
+		<dependency>
 			<groupId>vn.com.vndirect.priceservice</groupId>
 			<artifactId>datamodel</artifactId>
 			<version>1.0.3</version>
@@ -165,28 +171,22 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.3.2</version>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.3.2</version>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 
 
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>priceservice</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -225,7 +225,7 @@
 				<version>9.2.0.M0</version>
 				<configuration>
 					<webApp>
-						<contextPath>/${project.artifactId}</contextPath>
+						<contextPath>/priceservice</contextPath>
 					</webApp>
 				</configuration>
 			</plugin>

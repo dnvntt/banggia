@@ -76,6 +76,14 @@ public class JsonTest {
 		String expectedReturn = "{\"type\":\"returnData\",\"data\":{\"name\":\"STOCK\",\"data\":{\"VND\":\"this is data for VND\",\"HAG\":\"this is data for HAG\"}}}";
 		Assert.assertEquals(expectedReturn, actualReturn);
 	}
+
 	
+	@Test
+	public void testConvertArrayToString() {
+		String[] stockCompression = new String[] {"a|b|c", "d|e|f"};
+		String expectedJson = "[\"a|b|c\",\"d|e|f\"]";
+		String jsonAsString = jsonParser.objectToString(stockCompression);
+		Assert.assertEquals(expectedJson, jsonAsString);
+	}
 	
 }

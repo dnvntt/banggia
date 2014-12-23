@@ -1,32 +1,24 @@
 package priceboard.event.client.handler;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import priceboard.client.ClientConnection;
 import priceboard.event.EventHandler;
+import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.room.ClientRoomManager;
 
 @Component
+@EventHandlerApplyFor(values = {"DISCONNECT"})
 public class ClientDisconnectHandler implements EventHandler {
 
 	private ClientRoomManager clientRoomManager;
 	
-	private ClientEventTypeMapping clientEventTypeMapping;
-	
 	@Autowired
-	public ClientDisconnectHandler(ClientRoomManager roomManager, ClientEventTypeMapping clientEventTypeMapping) {
+	public ClientDisconnectHandler(ClientRoomManager roomManager) {
 		this.clientRoomManager = roomManager;
-		this.clientEventTypeMapping = clientEventTypeMapping;
 	}
 	
-	@PostConstruct
-	public void registerHander() {
-		clientEventTypeMapping.registerHandler(this, "DISCONNECT");
-	}
-
 	@Override
 	public void handle(Object source) {
 		clientRoomManager.removeClientFromAllRoom((ClientConnection) source);
