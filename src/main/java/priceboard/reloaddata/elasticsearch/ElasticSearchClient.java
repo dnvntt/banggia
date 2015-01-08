@@ -118,7 +118,7 @@ public class ElasticSearchClient {
 	}
 
 	
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 		ElasticSearchClient client = new ElasticSearchClient(new JsonParser());
 		client.initClient();
 		client.getDataByIndex("secinfo", "snapshot", SecInfo.class, new HashMap<String, String>() {{put("tradingDate", "20141223");}});
@@ -130,7 +130,7 @@ public class ElasticSearchClient {
 			System.out.println(company.getCode() + " " + company.getCompanyName());
 		});
 		
-		/*List<Category> categoryList = client.getDataByIndex("category", "category", Category.class, null);
+		List<Category> categoryList = client.getDataByIndex("category", "category", Category.class, null);
 		
 		System.out.println("BusinessDate: " + dateList.get(0).getBusinessDate());
 		System.out.println(categoryList.get(0).getCategoryName());
@@ -139,6 +139,6 @@ public class ElasticSearchClient {
 		List<Market> marketList = client.getDataByIndex("market", "market", Market.class, new HashMap<String, String>() {{put("tradingDate", "20141223"); put("floorCode", "02");}});
 		System.out.println(marketList.get(0).getFloorCode());
 		System.out.println(marketList.get(0).getTradingDate());
-		System.out.println(marketList.get(0).getTradingTime());*/
-	}
+		System.out.println(marketList.get(0).getTradingTime());
+	}*/
 }

@@ -34,7 +34,6 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 @EnableWebMvc
 @EnableWebSocket
 @PropertySource("classpath:/config/app.properties")
-@ComponentScan("priceboard")
 public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 
 	@Autowired
@@ -77,29 +76,25 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	}
 	
 	
-	@Bean
-	public InMemory memory() {
-		return new InMemory();
-	}
 	
-	@Bean
-	public JsonParser jsonParser() {
-		return new JsonParser();
-	}
+	
+	
 
 	@Bean
 	public DefaultEchoService echoService() {
 		return new DefaultEchoService("Did you say \"%s\"?");
 	}
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
+	
 	
 	@Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
        return new PropertySourcesPlaceholderConfigurer();
     }
+	
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
 
 }

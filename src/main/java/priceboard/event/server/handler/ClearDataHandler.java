@@ -40,10 +40,14 @@ public class ClearDataHandler implements EventHandler {
 		//System.out.println("businessDate in cleardataHandler:"+businessDate);
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-		if (businessDate.equals(dateFormat.format(date).toString()))
+		//TODO remove
+		/*if (businessDate.equals(dateFormat.format(date).toString()))
 			isClearData = false;
 		else
-			isClearData = true;
+			isClearData = true;*/
+		
+		isClearData = true;
+		
 	}
 
 	public boolean isClearData() {
