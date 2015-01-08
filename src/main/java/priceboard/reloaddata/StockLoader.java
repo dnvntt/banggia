@@ -41,26 +41,31 @@ public class StockLoader {
 
 	@PostConstruct
 	public void init() throws Exception {
+		System.out.println("Loading order: create StockLoader instance");
 		initHandler();
 		load();
+		
 	}
 
 	private void initHandler() {
-		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "ALL"));
-		System.out.println(handlersOfStock);
+		System.out.println("Loading order: getStockHandler");
+		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "COMMON"));
+		//System.out.println(handlersOfStock);
 	}
 	
 	public void load() throws Exception {
+		System.out.println("Loading order: load Stock from elastic");
 		Object businessDate = memory.get("businessdate", "businessdate");
 		Map<String, String> map = new HashMap<String, String>();
 		if (businessDate != null) {
 			map.put("tradingDate", (String) businessDate);
 		}
 		List<SecInfo> secInfoList = elasticSearchClient.getDataByIndex("secinfo", "snapshot", SecInfo.class, map);
-		System.out.println("Loading secInfoList : " + secInfoList.size());
+		//System.out.println("Loading secInfoList : " + secInfoList.size());
 		secInfoList.forEach((object) -> {
 			handlersOfStock.forEach((handler) -> {handler.handle(object);});
 		});
+		
 	}
 
 	public void setHandlers(List<EventHandler> handlers) {

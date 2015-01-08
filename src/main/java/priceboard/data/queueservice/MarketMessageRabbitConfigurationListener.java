@@ -27,106 +27,35 @@ import vn.com.vndirect.priceservice.datamodel.Market;
 
 import com.eaio.uuid.UUID;
 
-public class MarketMessageRabbitConfigurationListener {
+public class MarketMessageRabbitConfigurationListener extends
+		MessageRabbitConfigurationListener {
 
-	@Value("${market_external_queue}")
-	private String marketQueue;
-
-	@Value("${market_fanout_exchange}")
-	private String marketFanoutExchange;
-
+	// @Value("${market_external_queue}")
+	// private String marketQueue;
+	//
+	// @Value("${market_fanout_exchange}")
+	// private String marketFanoutExchange;
 	@Autowired
-	private MessageConverter messageConverter;
+	public MarketMessageRabbitConfigurationListener(
+			@Value("${market_external_queue}") String queueName,@Value("${market_fanout_exchange}") String exchageName) 
+	{
+		super();
+		this.nameQueue = queueName;
+		this.nameFanoutExchange = exchageName;
+	}
 
-	@Autowired
-	private ConnectionFactory amqpConnectionFactory;
-
-	@Autowired
-	private EventHandlerFilter filter;
-
-	@Autowired
-	private ApplicationContext applicationContext;
-
-	@Autowired
-	private AmqpAdmin amqpAdmin;
-
-	@Autowired
-	private EventHandlerFilter eventHandlerFilter;
-
-	@Autowired
-	private List<EventHandler> handlers;
-
-	private List<EventHandler> handlersOfMarket;
-
-	@PostConstruct
+	@Override
 	public void init() {
-		handlersOfMarket = eventHandlerFilter.filter(handlers, Arrays.asList("MARKET", "ALL"));
-		
-		new Thread(() -> {
-			while(true) {
-				Market market = createMockData(); 
-				//handleMessage(market);
-			}
-		}).start();
-		
-	}
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers,
+				Arrays.asList("MARKET", "CLEAR_DATA", "COMMON"));
 
-	private Market createMockData() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		}
-		int random = new Random().nextInt(100);
-		Market market = new Market();
-		market.setFloorCode("02");
-		market.setMarketIndex(123.4 + random);
-		market.setAdvance(13 + random);
-		market.setControlCode("5");
-		market.setNoChange(3 + random);
-		market.setStatus("5");
-		return market;
-	}
-
-	@Bean
-	public Queue marketQueue() {
-		Queue maretQueue = declareMarketQueue();
-		bindingToExchange(maretQueue);
-		return maretQueue;
-	}
-
-	private Queue declareMarketQueue() {
-		Queue queue = new Queue(marketQueue + new UUID(), false);
-		amqpAdmin.declareQueue(queue);
-		return queue;
-	}
-	
-	private void bindingToExchange(Queue marketQueue) {
-		BindingBuilder.bind(marketQueue).to(stockFanoutExchange());
-	}
-	
-	private FanoutExchange stockFanoutExchange() {
-		return new FanoutExchange(marketFanoutExchange, false, false);
-	}
-
-
-	@Bean
-	public SimpleMessageListenerContainer marketListenerContainer() {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
-		container.setQueues(marketQueue());
-		container.setMessageListener(marketListenerAdapter());
-		container.setAcknowledgeMode(AcknowledgeMode.AUTO);
-		return container;
-	}
-
-	@Bean
-	public MessageListenerAdapter marketListenerAdapter() {
-		return new MessageListenerAdapter(this, messageConverter);
-	}
-
-	public void handleMessage(Object object) {
-		handlers.forEach((handler) -> {
-			handler.handle(object);
-		});
+		// new Thread(() -> {
+		// while(true) {
+		// Market market = createMockData();
+		// handleMessage(market);
+		// }
+		// }).start();
 
 	}
+
 }

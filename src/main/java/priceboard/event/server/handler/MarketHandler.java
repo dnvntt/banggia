@@ -8,7 +8,7 @@ import priceboard.pusher.BroadcastPusher;
 import vn.com.vndirect.priceservice.datamodel.Market;
 
 @Component
-@EventHandlerApplyFor(priority = 1, values = {"MARKET"})
+@EventHandlerApplyFor(values = {"MARKET"})
 public class MarketHandler implements EventHandler {
 
 	private BroadcastPusher broadCastPusher;

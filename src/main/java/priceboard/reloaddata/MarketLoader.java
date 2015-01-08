@@ -32,10 +32,9 @@ public class MarketLoader {
 	@PostConstruct
 	public void load() throws Exception {
 		Map<String, String> searchCondition = new HashMap<String, String>();
+		putBusinessDateToCondition(searchCondition);
 		loadSnapshotMarketToMemory(searchCondition);
 		
-		putBusinessDateToCondition(searchCondition);
-	
 		Long timeStart = System.currentTimeMillis();
 		loadMarketToMemory(searchCondition, FloorCode.HOSE.getCode());
 		loadMarketToMemory(searchCondition, FloorCode.HNX.getCode());

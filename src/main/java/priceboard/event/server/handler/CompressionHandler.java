@@ -11,7 +11,7 @@ import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
-@EventHandlerApplyFor(priority = 1, values = {"ALL"})
+@EventHandlerApplyFor(priority = 2, values = {"ALL"})
 public class CompressionHandler implements EventHandler {
 
 	private InMemory memory;

@@ -57,13 +57,13 @@ public class StockMessageRabbitConfigurationListener {
 
 	@PostConstruct
 	public void init() {
-		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "ALL"));
-		/*new Thread(() -> {
-			while(true) {
-				SecInfo secInfo = createMockData(); 
-				handleMessage(secInfo);
-			}
-		}).start();*/
+		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "CLEAR_DATA" ,"COMMON"));
+//		new Thread(() -> {
+//			while(true) {
+//				SecInfo secInfo = createMockData(); 
+//				handleMessage(secInfo);
+//			}
+//		}).start();
 		
 	}
 
@@ -122,7 +122,6 @@ public class StockMessageRabbitConfigurationListener {
 		return new FanoutExchange(fanoutExchangeStock, false, false);
 	}
 
-
 	@Bean
 	public SimpleMessageListenerContainer stockListenerContainer() {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
@@ -132,13 +131,12 @@ public class StockMessageRabbitConfigurationListener {
 		return container;
 	}
 
-	@Bean
-	public MessageListenerAdapter stockListenerAdapter() {
+	protected MessageListenerAdapter stockListenerAdapter() {
 		return new MessageListenerAdapter(this, messageConverter);
 	}
 
 	public void handleMessage(Object object) {
-		System.out.println(object);
+		//System.out.println(object);
 		handlersOfStock.forEach((handler) -> {
 			handler.handle(object);
 		});

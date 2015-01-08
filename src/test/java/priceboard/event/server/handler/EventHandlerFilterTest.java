@@ -19,7 +19,7 @@ public class EventHandlerFilterTest {
 			add(handler);
 		}};
 		
-		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "ALL"));
+		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMMON"));
 		Assert.assertEquals(1, returnHandlers.size());
 		Assert.assertEquals(handler, returnHandlers.get(0));
 	}
@@ -34,7 +34,7 @@ public class EventHandlerFilterTest {
 			add(new StockRegisterHandler(null, null, null));
 		}};
 		
-		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "ALL"));
+		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMMON"));
 		
 		Assert.assertEquals(3, returnHandlers.size());
 		

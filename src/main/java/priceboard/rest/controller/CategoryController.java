@@ -1,6 +1,7 @@
 package priceboard.rest.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class CategoryController {
 		for(Category category : (List<Category>) categoryList) {
 			CustomCategory customCategory = new CustomCategory();
 			customCategory.setCateName(category.getCategoryName());
+			Collections.sort(category.getCodeList());
 			customCategory.setStockCodes(category.getCodeList());
 			customCategoryList.add(customCategory);
 			

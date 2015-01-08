@@ -11,7 +11,7 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 
 @Component
-@EventHandlerApplyFor(priority = 1, values = {"ALL"})
+@EventHandlerApplyFor(priority = 2, values = {"ALL"})
 public class MemoryHandler implements EventHandler {
 
 	
@@ -24,6 +24,7 @@ public class MemoryHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
+
 		if (InstanceChecker.isStock(source)) {
 			memory.put("STOCK", ((SecInfo) source).getCode(), source);
 		} else if (InstanceChecker.isMarket(source)) {

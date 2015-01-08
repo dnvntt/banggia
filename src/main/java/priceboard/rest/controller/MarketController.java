@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import priceboard.json.JsonParser;
@@ -31,6 +30,7 @@ public class MarketController {
 	public MarketController(InMemory memory, JsonParser jsonParser) {
 		this.memory = memory;
 		this.jsonParser = jsonParser;
+		
 	}
 	
 	@RequestMapping(value = "/snapshot/q=codes:{codes}", method = RequestMethod.GET)

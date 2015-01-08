@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface EventHandlerApplyFor {
 	int priority() default 10;
-	String[] values();
+	String[] values() default { "COMMON" };
 }
