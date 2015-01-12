@@ -1,9 +1,6 @@
 package priceboard.data.queueservice;
 
-import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -16,16 +13,14 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import priceboard.event.EventHandler;
 import priceboard.event.server.handler.EventHandlerFilter;
 
 import com.eaio.uuid.UUID;
 
-@Configuration
-public abstract class MessageRabbitConfigurationListener {
+ 
+public class MessageRabbitConfigurationListener {
 	
 	protected  String nameQueue;
 	protected String nameFanoutExchange;
@@ -52,44 +47,45 @@ public abstract class MessageRabbitConfigurationListener {
 	protected List<EventHandler> handlers;
 
 	protected List<EventHandler> handlersOfMessage;
-
-	@PostConstruct
-	abstract  public void init();
-
-
-	@Bean
-	public Queue nameQueue() {
-		Queue marketQueue = declareNameQueue();
-		bindingToExchange(marketQueue);
-		return marketQueue;
+	
+	public MessageRabbitConfigurationListener(String queueName, String exchageName)
+	{
+		this.nameQueue = queueName;
+		this.nameFanoutExchange = exchageName;
+	}
+	
+	public void init() {
+		Queue queue = declareNameQueue();
+		FanoutExchange exchange = createFanoutExchange();
+		bindingQueueToExchange(queue, exchange);
+		createListenerContainer(queue);
 	}
 
 	private Queue declareNameQueue() {
-		Queue queue = new Queue(nameQueue + new UUID(), false);
+		String queueName = nameQueue + new UUID();
+		System.out.println(queueName);
+		Queue queue = new Queue(queueName, false);
 		amqpAdmin.declareQueue(queue);
 		return queue;
 	}
 	
-	private void bindingToExchange(Queue marketQueue) {
-		BindingBuilder.bind(marketQueue).to(marketFanoutExchange());
+	private void bindingQueueToExchange(Queue queue, FanoutExchange exchange) {
+		BindingBuilder.bind(queue).to(exchange);
 	}
 	
-	private FanoutExchange marketFanoutExchange() {
+	private FanoutExchange createFanoutExchange() {
 		return new FanoutExchange(nameFanoutExchange, false, false);
 	}
 
-
-	@Bean
-	public SimpleMessageListenerContainer marketListenerContainer() {
+	public SimpleMessageListenerContainer createListenerContainer(Queue queue) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
-		container.setQueues(nameQueue());
-		container.setMessageListener(marketListenerAdapter());
+		container.setQueues(queue);
+		container.setMessageListener(createListenerAdapter());
 		container.setAcknowledgeMode(AcknowledgeMode.AUTO);
 		return container;
 	}
 
-	@Bean
-	public MessageListenerAdapter marketListenerAdapter() {
+	public MessageListenerAdapter createListenerAdapter() {
 		return new MessageListenerAdapter(this, messageConverter);
 	}
 

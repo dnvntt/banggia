@@ -59,18 +59,8 @@ public class StockController {
 	public @ResponseBody Map<String, String[]> getStockByFloorCode(@PathVariable String floorCode, ModelMap model) {
 		if (isEmpty(floorCode)) return new HashMap<String, String[]>();
 		
-//		Calendar myCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));		
-//		myCal.setTimeZone(TimeZone.getTimeZone("Asia/Hanoi"));
-//		if(myCal.get(Calendar.DAY_OF_WEEK)<7 && myCal.get(Calendar.DAY_OF_WEEK)>1 && myCal.getTime().getHours()==8 )
-//			return new HashMap<String, String[]>();
-			
-//		System.out.println("Check time in Hanoi:"+  myCal.getTime());
-//		System.out.println("Check hour in Hanoi:"+  myCal.getTime().getHours());
-//		System.out.println(myCal.get(Calendar.DAY_OF_WEEK));
-		
 		List<String> codes = stockRoomManager.getStocksByRoom(floorCode);
 		Collections.sort(codes);	
-		
 		String[] secInfos = new String[codes.size()];
 		int i = 0;
 		for (String code : codes) {

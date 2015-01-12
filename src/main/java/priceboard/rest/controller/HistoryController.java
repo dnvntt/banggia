@@ -51,7 +51,6 @@ public class HistoryController {
 
 				@Override
 				public int compare(Market o1, Market o2) {
-					// TODO Auto-generated method stub
 					return o1.getTradingTime().compareTo(o2.getTradingTime());
 				}
 			}

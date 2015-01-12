@@ -11,7 +11,7 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 
 @Component
-@EventHandlerApplyFor(priority = 2, values = {"ALL"})
+@EventHandlerApplyFor(priority = 2, values = {"COMMON"})
 public class MemoryHandler implements EventHandler {
 
 	

@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.test.annotation.Repeat;
+//import org.springframework.test.annotation.Repeat;
 
 import priceboard.client.ClientConnection;
 import priceboard.room.ClientRoomManager;
@@ -161,7 +161,7 @@ public class ClientRoomManagerTest {
 	
 	
 	@Test
-	@Repeat(10)
+	//@Repeat(10)
 	public void testAddAndRemoveAndLoopOverClientConnnectionsWithoutConcurrentModifiedException() throws InterruptedException {
 		final List<String> exceptions = new ArrayList<String>();
 		Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {

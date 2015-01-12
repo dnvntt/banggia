@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 
 @Component
+@DependsOn("bussinessDateLoader")
 @EventHandlerApplyFor(values = { "CLEAR_DATA" })
 public class ClearDataHandler implements EventHandler {
 	// private ElasticSearchClient elasticSearchClient;
@@ -37,17 +39,13 @@ public class ClearDataHandler implements EventHandler {
 		System.out.println("Loading order: clear loading");
 		String businessDate = (String) memory.get("businessdate",
 				"businessdate");
-		//System.out.println("businessDate in cleardataHandler:"+businessDate);
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-		//TODO remove
-		/*if (businessDate.equals(dateFormat.format(date).toString()))
+		
+		if (businessDate.equals(dateFormat.format(date).toString()))
 			isClearData = false;
 		else
-			isClearData = true;*/
-		
-		isClearData = true;
-		
+			isClearData = true;
 	}
 
 	public boolean isClearData() {
@@ -115,7 +113,6 @@ public class ClearDataHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-		//System.out.println("clear:handler");
 		clearIfNeed();
 	}
 }
