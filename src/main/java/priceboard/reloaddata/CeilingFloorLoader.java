@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.MarketStatisMessage;
 
 @Component

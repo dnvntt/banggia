@@ -19,10 +19,9 @@ import priceboard.event.server.handler.EventHandlerFilter;
 
 import com.eaio.uuid.UUID;
 
- 
 public class MessageRabbitConfigurationListener {
-	
-	protected  String nameQueue;
+
+	protected String nameQueue;
 	protected String nameFanoutExchange;
 
 	@Autowired
@@ -47,13 +46,13 @@ public class MessageRabbitConfigurationListener {
 	protected List<EventHandler> handlers;
 
 	protected List<EventHandler> handlersOfMessage;
-	
-	public MessageRabbitConfigurationListener(String queueName, String exchageName)
-	{
+
+	public MessageRabbitConfigurationListener(String queueName,
+			String exchageName) {
 		this.nameQueue = queueName;
 		this.nameFanoutExchange = exchageName;
 	}
-	
+
 	public void init() {
 		Queue queue = declareNameQueue();
 		FanoutExchange exchange = createFanoutExchange();
@@ -68,17 +67,18 @@ public class MessageRabbitConfigurationListener {
 		amqpAdmin.declareQueue(queue);
 		return queue;
 	}
-	
+
 	private void bindingQueueToExchange(Queue queue, FanoutExchange exchange) {
 		BindingBuilder.bind(queue).to(exchange);
 	}
-	
+
 	private FanoutExchange createFanoutExchange() {
 		return new FanoutExchange(nameFanoutExchange, false, false);
 	}
 
 	public SimpleMessageListenerContainer createListenerContainer(Queue queue) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
+				amqpConnectionFactory);
 		container.setQueues(queue);
 		container.setMessageListener(createListenerAdapter());
 		container.setAcknowledgeMode(AcknowledgeMode.AUTO);

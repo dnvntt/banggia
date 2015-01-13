@@ -17,15 +17,15 @@ import priceboard.reloaddata.Category;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/priceservice/category")
 public class CategoryController {
 
 	@Autowired
 	private InMemory memory;
-	
+
 	@Autowired
 	private JsonParser jsonParser;
-	
+
 	@Autowired
 	public CategoryController(InMemory memory, JsonParser jsonParser) {
 		this.memory = memory;
@@ -33,41 +33,46 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "/snapshot/", method = RequestMethod.GET)
-	public @ResponseBody List<CustomCategory> getCategoryForOldVersion(ModelMap model) {
+	public @ResponseBody List<CustomCategory> getCategoryForOldVersion(
+			ModelMap model) {
 		Object categoryList = memory.get("CATEGORY_LIST", "CATEGORY_LIST");
 		List<CustomCategory> customCategoryList = new ArrayList<CustomCategory>();
-		for(Category category : (List<Category>) categoryList) {
+		for (Category category : (List<Category>) categoryList) {
 			CustomCategory customCategory = new CustomCategory();
 			customCategory.setCateName(category.getCategoryName());
 			Collections.sort(category.getCodeList());
 			customCategory.setStockCodes(category.getCodeList());
 			customCategoryList.add(customCategory);
-			
+
 		}
 		return customCategoryList;
 	}
-	
+
 	@RequestMapping(value = "/snapshot/new/", method = RequestMethod.GET)
-	public @ResponseBody Object getCategory(@RequestParam("jsonp") String jsonp, ModelMap model) {
+	public @ResponseBody Object getCategory(
+			@RequestParam("jsonp") String jsonp, ModelMap model) {
 		Object categoryList = memory.get("CATEGORY_LIST", "CATEGORY_LIST");
 		return categoryList;
 	}
 
 }
 
-
 class CustomCategory {
 	private String cateName;
 	private List<String> stockCodes;
+
 	public String getCateName() {
 		return cateName;
 	}
+
 	public void setCateName(String cateName) {
 		this.cateName = cateName;
 	}
+
 	public List<String> getStockCodes() {
 		return stockCodes;
 	}
+
 	public void setStockCodes(List<String> stockCodes) {
 		this.stockCodes = stockCodes;
 	}

@@ -1,16 +1,12 @@
 package priceboard.data.queueservice;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 public class StockMessageRabbitConfigurationListener extends MessageRabbitConfigurationListener {
@@ -25,20 +21,20 @@ public class StockMessageRabbitConfigurationListener extends MessageRabbitConfig
 		super.init();
 		setMessageHandler();
 
-		new Thread(() -> {
+	/*	new Thread(() -> {
 			while (true) {
 				SecInfo secInfo = createMockData();
 				handleMessage(secInfo);
 			}
 		}).start();
-
+*/
 	}
 
 	private void setMessageHandler() {
 		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "CLEAR_DATA" ,"COMMON"));
 	}
 
-	private SecInfo createMockData() {
+	/*private SecInfo createMockData() {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -72,6 +68,6 @@ public class StockMessageRabbitConfigurationListener extends MessageRabbitConfig
 		secInfo.setCompanyName("Hoang Anh Gia Lai " + random);
 		secInfo.setCurrentRoom(3000 + random);
 		return secInfo;
-	}
+	}*/
 
 }

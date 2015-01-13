@@ -16,7 +16,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
 
 @Controller
-@RequestMapping("/market")
+@RequestMapping("/priceservice/market")
 public class MarketController {
 
 	@Autowired
@@ -39,9 +39,8 @@ public class MarketController {
 		if (isEmpty(codes)) return marketMapByFloorCode;
 		String[] arrCodes = codes.split(",");
 		for (String code : arrCodes) {
-			if (code.trim().length() == 0) continue;
 			Object market = memory.get("MARKET", code);
-			if (market == null) continue;
+			if (market == null ||code.trim().length() == 0) {continue;}
 			putData((Market) market, marketMapByFloorCode);
 		}
 		return marketMapByFloorCode;

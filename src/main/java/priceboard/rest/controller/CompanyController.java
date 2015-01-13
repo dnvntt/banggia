@@ -10,23 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
-
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/priceservice/company")
 public class CompanyController {
 
 	@Autowired
 	private InMemory memory;
-	
+
 	@Autowired
 	private JsonParser jsonParser;
-	
+
 	@Autowired
 	public CompanyController(InMemory memory, JsonParser jsonParser) {
 		this.memory = memory;
 		this.jsonParser = jsonParser;
 	}
-		
+
 	@RequestMapping(value = "/snapshot/", method = RequestMethod.GET)
 	public @ResponseBody Object getCompany(ModelMap model) {
 		return memory.get("COMPANY_LIST", "COMPANY_LIST");

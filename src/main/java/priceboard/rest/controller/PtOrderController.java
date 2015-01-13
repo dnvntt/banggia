@@ -16,58 +16,61 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
 
 @Controller
-@RequestMapping("/ptorder")
+@RequestMapping("/priceservice/ptorder")
 public class PtOrderController {
 
 	@Autowired
 	private InMemory memory;
-	
+
 	@Autowired
 	private JsonParser jsonParser;
-	
+
 	@Autowired
 	public PtOrderController(InMemory memory, JsonParser jsonParser) {
 		this.memory = memory;
 		this.jsonParser = jsonParser;
 	}
-	
+
 	@RequestMapping(value = "/history/", method = RequestMethod.GET)
 	public @ResponseBody Map<String, List<Map<String, Object>>> getPtOrder() {
-		Map<String, List<Map<String, Object>>> PtOrderList = new HashMap<String, List<Map<String, Object>>>();
-		List<PutThroughTransaction> PutThroughList = (List<PutThroughTransaction>) memory.get("PutThroughTransaction", "");
-        if(PutThroughList==null) return PtOrderList; 
-		for (PutThroughTransaction ptorder : PutThroughList) {
+		Map<String, List<Map<String, Object>>> ptOrderList = new HashMap<String, List<Map<String, Object>>>();
+		List<PutThroughTransaction> putThroughList = (List<PutThroughTransaction>) memory
+				.get("PutThroughTransaction", "");
+		if (putThroughList == null)
+			return ptOrderList;
+		for (PutThroughTransaction ptorder : putThroughList) {
 			String floorCode = ptorder.getFloorCode();
-			List<Map<String, Object>> list = getPtOrderList(PtOrderList,floorCode);		
+			List<Map<String, Object>> list = getPtOrderList(ptOrderList,
+					floorCode);
 			list.add(createPtOrderInfo(ptorder));
 
 		}
 
-		return PtOrderList;
+		return ptOrderList;
 	}
-	
-	private List<Map<String,Object>> getPtOrderList(Map<String, List<Map<String,Object>>> PtOrderList, String floorCode){
-		if (PtOrderList.get(floorCode) == null) {
-			PtOrderList.put(floorCode, new ArrayList<Map<String,Object>>());
+
+	private List<Map<String, Object>> getPtOrderList(
+			Map<String, List<Map<String, Object>>> ptOrderList, String floorCode) {
+		if (ptOrderList.get(floorCode) == null) {
+			ptOrderList.put(floorCode, new ArrayList<Map<String, Object>>());
 		}
-		
-		return PtOrderList.get(floorCode);
+
+		return ptOrderList.get(floorCode);
 	}
-	 
-	private Map<String,Object> createPtOrderInfo(PutThroughTransaction ptorder) {
-		Map<String,Object> PtOrderInfos = new HashMap<String,Object>();
-		PtOrderInfos.put("floorCode", ptorder.getFloorCode());
-		PtOrderInfos.put("symbol", ptorder.getSymbol());
-		PtOrderInfos.put("price", ptorder.getPrice());
-		PtOrderInfos.put("volume", ptorder.getVolume());
-		PtOrderInfos.put("time", ptorder.getTime());
-		PtOrderInfos.put("stockNo",  ptorder.getStockNo());
-		PtOrderInfos.put("tradingDate", ptorder.getTradingDate());
-		PtOrderInfos.put("basicPrice",""); 
-		PtOrderInfos.put("ceilingPrice", "");
-		PtOrderInfos.put("floorPrice", "");
-		return PtOrderInfos;
+
+	private Map<String, Object> createPtOrderInfo(PutThroughTransaction ptorder) {
+		Map<String, Object> ptOrderInfos = new HashMap<String, Object>();
+		ptOrderInfos.put("floorCode", ptorder.getFloorCode());
+		ptOrderInfos.put("symbol", ptorder.getSymbol());
+		ptOrderInfos.put("price", ptorder.getPrice());
+		ptOrderInfos.put("volume", ptorder.getVolume());
+		ptOrderInfos.put("time", ptorder.getTime());
+		ptOrderInfos.put("stockNo", ptorder.getStockNo());
+		ptOrderInfos.put("tradingDate", ptorder.getTradingDate());
+		ptOrderInfos.put("basicPrice", "");
+		ptOrderInfos.put("ceilingPrice", "");
+		ptOrderInfos.put("floorPrice", "");
+		return ptOrderInfos;
 	}
-	 
-	
+
 }
