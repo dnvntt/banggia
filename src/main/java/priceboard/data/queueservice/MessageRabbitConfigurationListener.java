@@ -49,18 +49,18 @@ public class MessageRabbitConfigurationListener {
 	protected List<EventHandler> handlers;
 
 	protected List<EventHandler> handlersOfMessage;
+	
+	private Queue queue;
 
-	public MessageRabbitConfigurationListener(String queueName,
-			String exchageName) {
+	public MessageRabbitConfigurationListener(String queueName, String exchageName) {
 		this.nameQueue = queueName;
 		this.nameFanoutExchange = exchageName;
 	}
 
 	public void init() {	
-		Queue queue = declareNameQueue();
+		queue = declareNameQueue();
 		FanoutExchange exchange = createFanoutExchange();
 		bindingQueueToExchange(queue, exchange);
-		createListenerContainer(queue);
 	}
 
 	private Queue declareNameQueue() {
@@ -81,10 +81,8 @@ public class MessageRabbitConfigurationListener {
 		return exchange;
 	}
 
-	public SimpleMessageListenerContainer createListenerContainer(Queue queue) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
-				amqpConnectionFactory);
-		
+	public SimpleMessageListenerContainer createListenerContainer() {
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
 		container.setQueues(queue);
 		container.setMessageListener(createListenerAdapter());
 		container.setAcknowledgeMode(AcknowledgeMode.AUTO);
@@ -97,7 +95,7 @@ public class MessageRabbitConfigurationListener {
 
 	public void handleMessage(Object object) {
 		logger.log(null, "get stock from queue");
-				
+		logger.info(object);	
 		handlersOfMessage.forEach((handler) -> {
 			handler.handle(object);
 		});
