@@ -21,7 +21,7 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 @RestController
 @RequestMapping("/priceservice/secinfo")
 public class StockController {
-
+	
 	@Autowired
 	private InMemory memory;
 

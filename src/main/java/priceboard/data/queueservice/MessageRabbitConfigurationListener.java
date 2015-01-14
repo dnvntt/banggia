@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
@@ -53,7 +54,7 @@ public class MessageRabbitConfigurationListener {
 		this.nameFanoutExchange = exchageName;
 	}
 
-	public void init() {
+	public void init() {	
 		Queue queue = declareNameQueue();
 		FanoutExchange exchange = createFanoutExchange();
 		bindingQueueToExchange(queue, exchange);
@@ -62,23 +63,26 @@ public class MessageRabbitConfigurationListener {
 
 	private Queue declareNameQueue() {
 		String queueName = nameQueue + new UUID();
-		System.out.println(queueName);
 		Queue queue = new Queue(queueName, false);
 		amqpAdmin.declareQueue(queue);
 		return queue;
 	}
 
 	private void bindingQueueToExchange(Queue queue, FanoutExchange exchange) {
-		BindingBuilder.bind(queue).to(exchange);
+		Binding binding = BindingBuilder.bind(queue).to(exchange);
+		amqpAdmin.declareBinding(binding);
 	}
 
 	private FanoutExchange createFanoutExchange() {
-		return new FanoutExchange(nameFanoutExchange, false, false);
+		FanoutExchange exchange = new FanoutExchange(nameFanoutExchange, false, false);
+		amqpAdmin.declareExchange(exchange);
+		return exchange;
 	}
 
 	public SimpleMessageListenerContainer createListenerContainer(Queue queue) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
 				amqpConnectionFactory);
+		
 		container.setQueues(queue);
 		container.setMessageListener(createListenerAdapter());
 		container.setAcknowledgeMode(AcknowledgeMode.AUTO);

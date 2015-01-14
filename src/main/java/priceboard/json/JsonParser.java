@@ -7,8 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,8 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class JsonParser {
-	
-	private static final Logger log = LoggerFactory.getLogger(JsonParser.class);
+	private static final Logger logger = Logger.getLogger(JsonParser.class);
 	
 	private static final String TYPE_PATH = "/type";
 	
@@ -32,7 +30,7 @@ public class JsonParser {
 	private static final String RETURN_DATA = "returnData";
 
 	private ObjectMapper objectMapper;
-
+	
 	public JsonParser() {
 		objectMapper = new ObjectMapper();
 	}
@@ -42,7 +40,7 @@ public class JsonParser {
 		try {
 			node = objectMapper.readTree(json);
 		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			return null;
 		}
 		return node;
@@ -79,7 +77,7 @@ public class JsonParser {
 		try {
 			return objectMapper.writeValueAsString(dataObject);
 		} catch (JsonProcessingException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 		return "";
 	}
@@ -97,7 +95,7 @@ public class JsonParser {
 		try {
 			return objectMapper.writeValueAsString(response);
 		} catch (JsonProcessingException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 		return "";
 	}
@@ -106,7 +104,7 @@ public class JsonParser {
 		try {
 			return objectMapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 		return "";
 	}
@@ -115,7 +113,7 @@ public class JsonParser {
 		try {
 			return objectMapper.readValue(data, clazz);
 		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		}
 		return null;
 	}
