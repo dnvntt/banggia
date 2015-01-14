@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockMessageRabbitConfigurationListener extends
 		MessageRabbitConfigurationListener {
-
+	
+	
 	@Autowired
 	public StockMessageRabbitConfigurationListener(
 			@Value("${secinfo_external_queue}") String queueName,

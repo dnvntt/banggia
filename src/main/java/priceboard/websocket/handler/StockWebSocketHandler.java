@@ -7,8 +7,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -28,8 +27,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class StockWebSocketHandler extends TextWebSocketHandler {
 
-	private static final Logger log = LoggerFactory.getLogger(StockWebSocketHandler.class);
-	
+	private static final Logger logger = Logger.getLogger(StockWebSocketHandler.class);	
 	private JsonParser parser;
 	
 	private final InMemory memory;
@@ -63,7 +61,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		String type = parser.parseType(node);
 		List<EventHandler> handlers = clientEventTypeMapping.get(type);
 		if (handlers == null) {
-			//log.error("No handler for type: " +  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
+			logger.info("No handler for type: "+  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
 			return;
 		}
 		handleMessage(handlers, session.getId(), node);

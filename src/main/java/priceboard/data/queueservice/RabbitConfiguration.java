@@ -48,9 +48,6 @@ public class RabbitConfiguration {
 		return new JsonMessageConverter();
 	}
 	
-	/**
-	 * @return the admin bean that can declare queues etc.
-	 */
 	@Bean
 	public AmqpAdmin amqpAdmin() {
 		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
