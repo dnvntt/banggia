@@ -94,7 +94,7 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	public void handleMessage(Object object) {
-		logger.info("message in queue: " +  object);	
+		logger.info("handlers message: " +  object + " - " + handlersOfMessage);	
 		handlersOfMessage.forEach((handler) -> {
 			handler.handle(object);
 		});
