@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import priceboard.client.ClientConnection;
+import priceboard.json.JsonParser;
 import priceboard.pusher.BroadcastPusher;
 import priceboard.room.ClientRoomManager;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
@@ -25,7 +26,7 @@ public class MarketHandlerTest {
 	@Test
 	public void testMarketHandlerPushData() {
 		List<String> sentData = new ArrayList<String>();
-		BroadcastPusher broadCastPusher = new BroadcastPusher(roomManager, new InMemory());
+		BroadcastPusher broadCastPusher = new BroadcastPusher(roomManager, new JsonParser(), new InMemory());
 		for(int i = 0; i < 10; i++) {
 			roomManager.addClientToRoom("VND" + i, new ClientConnection() {
 				
