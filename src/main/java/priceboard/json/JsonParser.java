@@ -82,6 +82,17 @@ public class JsonParser {
 		return "";
 	}
 
+	public String buildReturnJsonMarketAsString(String data) {
+		Data dataObject = new Data();
+		dataObject.setType("MARKETINFO");
+		dataObject.setData(data == null ? "" : data);
+		try {
+			return objectMapper.writeValueAsString(dataObject);
+		} catch (JsonProcessingException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return "";
+	}
 
 	public String buildReturnJsonStockAsString(Map<String, String> dataMap) {
 		JsonResponse response = new JsonResponse();

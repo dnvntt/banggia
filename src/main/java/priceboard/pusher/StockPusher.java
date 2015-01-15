@@ -2,6 +2,7 @@ package priceboard.pusher;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +15,21 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 public class StockPusher implements Pusher {
+	
+	private static final Logger logger = Logger.getLogger(StockPusher.class);
 
 	private ClientRoomManager clientRoomManager;
-	
+
 	private StockRoomManager stockRoomManager;
-	
+
 	private JsonParser parser;
-	
+
 	private InMemory memory;
-	
+
 	@Autowired
 	public StockPusher(ClientRoomManager clientRoomManager,
-			StockRoomManager stockRoomManager, JsonParser parser, InMemory memory) {
+			StockRoomManager stockRoomManager, JsonParser parser,
+			InMemory memory) {
 		this.clientRoomManager = clientRoomManager;
 		this.stockRoomManager = stockRoomManager;
 		this.parser = parser;
@@ -45,7 +49,7 @@ public class StockPusher implements Pusher {
 		String data = (String) memory.get("STOCK_COMPRESSION", symbol);
 		return parser.buildReturnJsonStockAsString(data);
 	}
-	
+
 	private void pushToAllClientInThisStockRoom(String code, String data) {
 		pushAllClientInRoom(code, data);
 	}
@@ -57,7 +61,11 @@ public class StockPusher implements Pusher {
 
 	private void pushAllClientInRoom(String room, String data) {
 		List<ClientConnection> clients = clientRoomManager.getClientInRoom(room);
-		clients.parallelStream().forEach((client) -> client.send(data));
+		logger.info("Push to all client: " + clients);
+		clients.parallelStream().forEach((client) -> {
+			logger.info("Push to client: " + client + " with data: " + data);	
+			client.send(data);	
+		});
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import priceboard.client.ClientConnection;
+import priceboard.json.JsonParser;
 import priceboard.room.ClientRoomManager;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
@@ -14,12 +15,14 @@ import vn.com.vndirect.priceservice.datamodel.Market;
 public class BroadcastPusher implements Pusher {
 
 	private ClientRoomManager roomManager;
-	
+	private JsonParser parser;
 	private InMemory memory;
-	
+
 	@Autowired
-	public BroadcastPusher(ClientRoomManager roomManager, InMemory memory) {
+	public BroadcastPusher(ClientRoomManager roomManager, JsonParser parser,
+			InMemory memory) {
 		this.roomManager = roomManager;
+		this.parser = parser;
 		this.memory = memory;
 	}
 
@@ -33,12 +36,12 @@ public class BroadcastPusher implements Pusher {
 	private String getCompressionData(Market source) {
 		String floorCode = source.getFloorCode();
 		String data = (String) memory.get("MARKET_COMPRESSION", floorCode);
-		return data;
+		// return data;
+		return parser.buildReturnJsonMarketAsString(data);
 	}
 
 	@Override
 	public void push(ClientConnection client, Object source) {
 	}
 
-	
 }

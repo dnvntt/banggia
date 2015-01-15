@@ -22,7 +22,7 @@ import priceboard.event.server.handler.EventHandlerFilter;
 import com.eaio.uuid.UUID;
 
 public class MessageRabbitConfigurationListener {
-	static private Logger logger = Logger.getLogger(MessageRabbitConfigurationListener.class);
+	private static final Logger logger = Logger.getLogger(MessageRabbitConfigurationListener.class);
 
 	protected String nameQueue;
 	protected String nameFanoutExchange;
@@ -94,8 +94,7 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	public void handleMessage(Object object) {
-		logger.info("khanh test priceboard");
-		logger.info(object);	
+		logger.info("message in queue: " +  object);	
 		handlersOfMessage.forEach((handler) -> {
 			handler.handle(object);
 		});
