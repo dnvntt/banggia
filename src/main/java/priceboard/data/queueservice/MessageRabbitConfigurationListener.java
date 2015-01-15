@@ -94,7 +94,7 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	public void handleMessage(Object object) {
-		logger.log(null, "get stock from queue");
+		logger.info("khanh test priceboard");
 		logger.info(object);	
 		handlersOfMessage.forEach((handler) -> {
 			handler.handle(object);

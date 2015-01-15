@@ -75,18 +75,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 		return handlers;
 	}
 	
-	
-	
-	
-	
-
 	@Bean
 	public DefaultEchoService echoService() {
 		return new DefaultEchoService("Did you say \"%s\"?");
 	}
 
-	
-	
 	@Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
        return new PropertySourcesPlaceholderConfigurer();

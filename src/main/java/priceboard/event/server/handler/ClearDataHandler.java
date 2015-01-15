@@ -21,7 +21,6 @@ import vn.com.vndirect.priceservice.datamodel.FloorCode;
 @DependsOn("bussinessDateLoader")
 @EventHandlerApplyFor(values = { "CLEAR_DATA" })
 public class ClearDataHandler implements EventHandler {
-	// private ElasticSearchClient elasticSearchClient;
 	private boolean isClearData;
 	private InMemory memory;
 	private StockRoomManager stockRoomManager;
