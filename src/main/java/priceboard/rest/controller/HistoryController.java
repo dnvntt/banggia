@@ -44,8 +44,7 @@ public class HistoryController {
 
 		String[] arrCodes = codes.split(",");
 		for (String code : arrCodes) {
-			List<Market> marketList = (ArrayList<Market>) memory.get(
-					"ALL_MARKET", code);
+			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", code);
 			if (marketList == null || code.trim().length() == 0) {
 				continue;
 			}

@@ -35,13 +35,11 @@ public class MarketLoader {
 		putBusinessDateToCondition(searchCondition);
 		loadSnapshotMarketToMemory(searchCondition);
 		
-		Long timeStart = System.currentTimeMillis();
 		loadMarketToMemory(searchCondition, FloorCode.HOSE.getCode());
 		loadMarketToMemory(searchCondition, FloorCode.HNX.getCode());
 		loadMarketToMemory(searchCondition, FloorCode.VN30.getCode());
 		loadMarketToMemory(searchCondition, FloorCode.HNX30.getCode());
 		loadMarketToMemory(searchCondition, FloorCode.UPCOM.getCode());
-		System.out.println("Total loading time for market: " + ((System.currentTimeMillis() - timeStart) / 1000));
 	}
 
 	private void putBusinessDateToCondition(Map<String, String> searchCondition) {

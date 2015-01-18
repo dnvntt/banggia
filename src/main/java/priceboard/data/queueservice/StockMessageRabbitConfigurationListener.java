@@ -29,8 +29,7 @@ public class StockMessageRabbitConfigurationListener extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "CLEAR_DATA", "COMMON"));
-		System.out.println(handlersOfMessage);
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "CLEAR_DATA", "COMPRESS"));
 	}
 	
 	@Bean

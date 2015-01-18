@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
+import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
 
 @Controller
@@ -34,16 +35,27 @@ public class AdOrderController {
 	@RequestMapping(value = "/history/", method = RequestMethod.GET)
 	public @ResponseBody Map<String, List<Map<String, Object>>> getPtOrder() {
 		Map<String, List<Map<String, Object>>> adOrderList = new HashMap<String, List<Map<String, Object>>>();
-		List<PutThrough> putThroughList = (List<PutThrough>) memory.get(
-				"PutThrough", "");
-		if (putThroughList == null)
-			return adOrderList;
+		List<PutThrough> putThroughList_hose = (List<PutThrough>) memory.get(
+				"PutThrough", FloorCode.HOSE.getCode());
+		List<PutThrough> putThroughList_hnx = (List<PutThrough>) memory.get(
+				"PutThrough", FloorCode.HNX.getCode());
 
-		for (PutThrough adorder : putThroughList) {
-			String floorCode = adorder.getFloorCode();
-			List<Map<String, Object>> list = getAdOrderList(adOrderList,
-					floorCode);
-			list.add(createAdOrderInfo(adorder));
+		if (putThroughList_hose == null && putThroughList_hnx == null)
+			return adOrderList;
+		if (putThroughList_hose != null) {
+			List<Map<String, Object>> list_hose = getAdOrderList(adOrderList,
+					FloorCode.HOSE.getCode());
+
+			for (PutThrough adorder : putThroughList_hose) {
+				list_hose.add(createAdOrderInfo(adorder));
+			}
+		}
+		if (putThroughList_hnx != null) {
+			List<Map<String, Object>> list_hnx = getAdOrderList(adOrderList,
+					FloorCode.HNX.getCode());
+			for (PutThrough adorder : putThroughList_hnx) {
+				list_hnx.add(createAdOrderInfo(adorder));
+			}
 		}
 
 		return adOrderList;

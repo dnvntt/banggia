@@ -62,7 +62,7 @@ public class JsonTest {
 	
 	@Test
 	public void testJsonParseBuildStockReturnData() throws JsonProcessingException, IOException {
-		String actualReturn = jsonParser.buildReturnJsonStockAsString("this is data for VND");
+		String actualReturn = jsonParser.buildReturnJsonStockAsString("STOCK","this is data for VND");
 		String expectedReturn = "{\"type\":\"STOCK\",\"data\":\"this is data for VND\"}";
 		Assert.assertEquals(expectedReturn, actualReturn);
 	}

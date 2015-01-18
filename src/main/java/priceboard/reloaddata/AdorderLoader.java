@@ -1,8 +1,5 @@
 package priceboard.reloaddata;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
+import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
 
 @Component
@@ -33,8 +31,8 @@ public class AdorderLoader {
 	public void load() throws Exception {
 		Map<String, String> searchCondition = new HashMap<String, String>();
 		putBusinessDateToCondition(searchCondition);
-		loadSnapshotAdorderToMemory(searchCondition);
-				 
+		loadSnapshotAdorderToMemory(searchCondition,FloorCode.HOSE.getCode());
+		loadSnapshotAdorderToMemory(searchCondition,FloorCode.HNX.getCode());
 	}
 
 	private void putBusinessDateToCondition(Map<String, String> searchCondition) {
@@ -45,11 +43,10 @@ public class AdorderLoader {
 		}
 	}
 	
-	private void loadSnapshotAdorderToMemory(Map<String, String> searchCondition) throws Exception {
-	
+	private void loadSnapshotAdorderToMemory(Map<String, String> searchCondition, String floorCode) throws Exception {
+		searchCondition.put("floorCode", floorCode);
 		List<PutThrough> AdorderList = (List<PutThrough>) elasticSearchClient.getDataByIndex("putthrough", "putthrough", PutThrough.class, searchCondition);
-
-		memory.put("PutThrough","", AdorderList);
+		memory.put("PutThrough",floorCode, AdorderList);
 	}
 	 
 	

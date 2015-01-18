@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
+import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
 
 @Component
@@ -32,7 +33,9 @@ public class PtorderLoader {
 	public void load() throws Exception {
 		Map<String, String> searchCondition = new HashMap<String, String>();
 		putBusinessDateToCondition(searchCondition);
-		loadSnapshotPtorderToMemory(searchCondition);
+		loadSnapshotPtorderToMemory(searchCondition,FloorCode.HOSE.getCode());
+		loadSnapshotPtorderToMemory(searchCondition,FloorCode.HNX.getCode());
+	
 	}
 
 	private void putBusinessDateToCondition(Map<String, String> searchCondition) {
@@ -43,14 +46,15 @@ public class PtorderLoader {
 		}
 	}
 
-	private void loadSnapshotPtorderToMemory(Map<String, String> searchCondition)
+	private void loadSnapshotPtorderToMemory(Map<String, String> searchCondition, String floorCode)
 			throws Exception {
+		searchCondition.put("floorCode", floorCode);
 		List<PutThroughTransaction> PtorderList = (List<PutThroughTransaction>) elasticSearchClient
 				.getDataByIndex("putthroughtransaction",
 						"putthroughtransaction", PutThroughTransaction.class,
 						searchCondition);
 
-		memory.put("PutThroughTransaction", "", PtorderList);
+		memory.put("PutThroughTransaction", floorCode, PtorderList);
 	}
 
 }

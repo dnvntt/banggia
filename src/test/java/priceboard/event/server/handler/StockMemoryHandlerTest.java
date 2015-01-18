@@ -10,16 +10,16 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
-public class MemoryHandlerTest {
+public class StockMemoryHandlerTest {
 	
-	private MemoryHandler memoryHandler;
+	private StockMemoryHandler memoryHandler;
 	
 	private InMemory memory;
 	
 	@Before
 	public void setUp() {
 		memory = new InMemory();
-		memoryHandler = new MemoryHandler(memory);
+		memoryHandler = new StockMemoryHandler(memory);
 	}
 	
 	@Test
@@ -39,17 +39,5 @@ public class MemoryHandlerTest {
 		SecInfo secInfoInMemory = (SecInfo)memory.get("STOCK", "HAG");
 		Assert.assertEquals(secInfo, secInfoInMemory);
 	}
-	
-	@Test
-	public void testMemoryHandlerWithMarket() {
-		Market market = new Market();
-		market.setFloorCode("02");
-		market.setAdvance(0);
-		market.setControlCode("13");
-		market.setStatus("10");
-		market.setMarketIndex(123.5);
-		memoryHandler.handle(market);
-		Market marketInMemory = (Market)memory.get("MARKET", "02");
-		Assert.assertEquals(market, marketInMemory);
-	}
+ 
 }

@@ -38,8 +38,7 @@ public class TransactionController {
 		if (isEmpty(code))
 			return transactionHistoryByCode;
 
-		transactionHistoryByCode = (List<Transaction>) memory.get(
-				"TRANSACTION", code);
+		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", code);
 		if (transactionHistoryByCode == null)
 			return new ArrayList<Transaction>();
 

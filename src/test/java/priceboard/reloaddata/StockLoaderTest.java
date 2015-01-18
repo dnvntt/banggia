@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import priceboard.event.server.handler.CompressionHandler;
-import priceboard.event.server.handler.MemoryHandler;
+import priceboard.event.server.handler.StockMemoryHandler;
 import priceboard.reloaddata.StockLoader;
 import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import priceboard.stock.compress.Mashaller;
@@ -29,7 +29,7 @@ public class StockLoaderTest {
 		memory = new InMemory();
 		stockLoader = new StockLoader(elasticSearchClient, memory);
 		stockLoader.setHandlers(new ArrayList(){{
-			add(new MemoryHandler(memory));
+			add(new StockMemoryHandler(memory));
 			add(new CompressionHandler(memory, new Mashaller()));
 		}});
 	}

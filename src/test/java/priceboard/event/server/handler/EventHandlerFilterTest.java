@@ -19,7 +19,7 @@ public class EventHandlerFilterTest {
 			add(handler);
 		}};
 		
-		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMMON"));
+		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMPRESS"));
 		Assert.assertEquals(1, returnHandlers.size());
 		Assert.assertEquals(handler, returnHandlers.get(0));
 	}
@@ -29,17 +29,17 @@ public class EventHandlerFilterTest {
 	public void testReadAnnotationInHandlers() throws NoSuchMethodException, SecurityException {
 		List<EventHandler> handlers = new ArrayList<EventHandler>() {{
 			add(new StockUpdateRoomHandler(null, null));
-			add(new MemoryHandler(null));
+			add(new StockMemoryHandler(null));
 			add(new CompressionHandler(null, null));
 			add(new StockRegisterHandler(null, null, null));
 		}};
 		
-		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMMON"));
+		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMPRESS"));
 		
 		Assert.assertEquals(3, returnHandlers.size());
 		
-		Assert.assertTrue(returnHandlers.get(0).getClass() == MemoryHandler.class || returnHandlers.get(0).getClass() == CompressionHandler.class);
-		Assert.assertTrue(returnHandlers.get(1).getClass() == MemoryHandler.class || returnHandlers.get(1).getClass() == CompressionHandler.class);
+		Assert.assertTrue(returnHandlers.get(0).getClass() == StockMemoryHandler.class || returnHandlers.get(0).getClass() == CompressionHandler.class);
+		Assert.assertTrue(returnHandlers.get(1).getClass() == StockMemoryHandler.class || returnHandlers.get(1).getClass() == CompressionHandler.class);
 		Assert.assertTrue(returnHandlers.get(2).getClass() == StockUpdateRoomHandler.class);
 	}
 	

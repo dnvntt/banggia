@@ -5,23 +5,21 @@ import org.springframework.stereotype.Component;
 
 import priceboard.event.EventHandler;
 import priceboard.pusher.BroadcastPusher;
-import vn.com.vndirect.priceservice.datamodel.Market;
 
 @Component
-@EventHandlerApplyFor(values = {"MARKET_PUSH"})
-public class MarketPushHandler implements EventHandler {
+@EventHandlerApplyFor(values = {"MARKET_PUSH","PTORDER_PUSH","PutThrough_PUSH"})
+public class BroadcastPushHandler implements EventHandler {
 
 	private BroadcastPusher broadCastPusher;
 	
 	@Autowired
-	public MarketPushHandler(BroadcastPusher broadCastPusher) {
+	public BroadcastPushHandler(BroadcastPusher broadCastPusher) {
 		this.broadCastPusher = broadCastPusher;
 	}
 
 	@Override
 	public void handle(Object source) {
-		Market market = (Market) source;
-		broadCastPusher.push(market);
+		broadCastPusher.push(source);
 	}
 
 }

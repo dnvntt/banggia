@@ -10,13 +10,13 @@ import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
 import priceboard.room.ClientRoomManager;
 import priceboard.room.StockRoomManager;
-import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
+import vn.com.vndirect.priceservice.datamodel.Transaction;
 
 @Component
-public class StockPusher implements Pusher {
-	
-	private static final Logger logger = Logger.getLogger(StockPusher.class);
+public class TransactionPusher implements Pusher {
+
+	private static final Logger logger = Logger
+			.getLogger(TransactionPusher.class);
 
 	private ClientRoomManager clientRoomManager;
 
@@ -24,30 +24,24 @@ public class StockPusher implements Pusher {
 
 	private JsonParser parser;
 
-	private InMemory memory;
-
 	@Autowired
-	public StockPusher(ClientRoomManager clientRoomManager,
-			StockRoomManager stockRoomManager, JsonParser parser,
-			InMemory memory) {
+	public TransactionPusher(ClientRoomManager clientRoomManager,
+			StockRoomManager stockRoomManager, JsonParser parser) {
 		this.clientRoomManager = clientRoomManager;
 		this.stockRoomManager = stockRoomManager;
 		this.parser = parser;
-		this.memory = memory;
 	}
 
 	@Override
 	public void push(Object source) {
-		String data = getCompressionData((SecInfo) source);
-		String code = ((SecInfo) source).getCode();
+		String data = getCompressionData((Transaction) source);
+		String code = ((Transaction) source).getSymbol();
 		pushToAllClientInThisStockRoom(code, data);
 		pushToAllClientInAllRoomsOfStock(code, data);
 	}
 
-	private String getCompressionData(SecInfo source) {
-		String symbol = source.getCode();
-		String data = (String) memory.get("STOCK_COMPRESSION", symbol);
-		return parser.buildReturnJsonStockAsString("STOCK",data);
+	private String getCompressionData(Transaction source) {
+		return parser.buildReturnJsonStockAsString("TRANSACTION", source);
 	}
 
 	private void pushToAllClientInThisStockRoom(String code, String data) {
@@ -60,17 +54,19 @@ public class StockPusher implements Pusher {
 	}
 
 	private void pushAllClientInRoom(String room, String data) {
-		List<ClientConnection> clients = clientRoomManager.getClientInRoom(room);
+		List<ClientConnection> clients = clientRoomManager
+				.getClientInRoom(room);
 		logger.info("Push to all client: " + clients);
 		clients.parallelStream().forEach((client) -> {
-			logger.info("Push to client: " + client + " with data: " + data);	
-			client.send(data);	
+			logger.info("Push to client: " + client + " with data: " + data);
+			client.send(data);
 		});
 	}
 
 	@Override
 	public void push(ClientConnection client, Object source) {
-		String data = getCompressionData((SecInfo) source);
+		String data = getCompressionData((Transaction) source);
+		System.out.println("Inside TransactionPusher push function with data: "+ data);
 		client.send(data);
 	}
 

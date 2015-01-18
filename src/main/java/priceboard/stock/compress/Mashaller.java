@@ -36,8 +36,8 @@ public class Mashaller {
 		append(builder, secInfo.getOpenPrice());
 		append(builder, secInfo.getClosePrice());
 		append(builder, secInfo.getCurrentPrice());
-		append(builder, secInfo.getHighestPrice());
 		append(builder, secInfo.getCurrentQtty());
+		append(builder, secInfo.getHighestPrice());
 		append(builder, secInfo.getLowestPrice());
 		append(builder, secInfo.getCeilingPrice());
 		append(builder, secInfo.getFloorPrice());

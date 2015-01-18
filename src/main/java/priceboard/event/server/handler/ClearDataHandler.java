@@ -35,7 +35,6 @@ public class ClearDataHandler implements EventHandler {
 
 	@PostConstruct
 	public void load() {
-		System.out.println("Loading order: clear loading");
 		String businessDate = (String) memory.get("businessdate",
 				"businessdate");
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -51,14 +50,14 @@ public class ClearDataHandler implements EventHandler {
 		return isClearData;
 	}
 
-	@Scheduled(cron = "1 1 1 * * MON-FRI")
-	public void reset() throws Exception {
-		isClearData = true; // reset at 1am of new day
+	@Scheduled(cron = "0 1 0 * * MON-FRI")
+	public void reset() {
+		isClearData = true; // reset at 12am of new day
 	}
 
-	public void clearIfNeed() {
-		if (isClearData) {
-			System.out.println("clear data previous date");
+	public void clearIfNeed() {	
+		if (isClearData){
+			System.out.println("Calling clear memory data...");
 			List<String> stocks = stockRoomManager
 					.getStocksByRoom(FloorCode.HNX.getCode());
 			System.out.println("No stock of HNX:" + stocks.size());
@@ -82,8 +81,11 @@ public class ClearDataHandler implements EventHandler {
 				memory.remove("TRANSACTION", stock);
 			});
 
-			memory.remove("PutThroughTransaction", "");
-			memory.remove("PutThrough", "");
+			memory.remove("PutThroughTransaction",  FloorCode.HOSE.getCode());
+			memory.remove("PutThroughTransaction",  FloorCode.HNX.getCode());
+			
+			memory.remove("PutThrough",   FloorCode.HOSE.getCode());
+			memory.remove("PutThrough",   FloorCode.HNX.getCode());
 
 			memory.remove("MARKET", FloorCode.HNX.getCode());
 			memory.remove("MARKET_COMPRESSION", FloorCode.HNX.getCode());
@@ -112,6 +114,6 @@ public class ClearDataHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-		clearIfNeed();
+		if (isClearData) clearIfNeed();
 	}
 }

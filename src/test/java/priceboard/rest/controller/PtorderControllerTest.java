@@ -33,23 +33,29 @@ public class PtorderControllerTest {
 	public void testGetGDTTWithDataInMemory() {
 		PutThroughTransaction tran1= new PutThroughTransaction();
 		tran1.setFloorCode("02");
+		tran1.setSymbol("VND");
 		tran1.setTime("20141225");
 		
 		
 		PutThroughTransaction tran2= new PutThroughTransaction();
 		tran2.setFloorCode("02");
+		tran2.setSymbol("SHB");
 		tran2.setTime("20141225");
 		
 		PutThroughTransaction tran3= new PutThroughTransaction();
-		tran3.setFloorCode("03");
+		tran3.setFloorCode("10");
+		tran3.setSymbol("VNM");
 		tran3.setTime("20141225");
 		
-		List<PutThroughTransaction> transactions = new ArrayList<>();
-		transactions.add(tran1);	
-		transactions.add(tran2);
-		transactions.add(tran3);
+		List<PutThroughTransaction> transactions_hnx = new ArrayList<>();
+		transactions_hnx.add(tran1);	
+		transactions_hnx.add(tran2);
 		
-		memory.put("PutThroughTransaction","", transactions);
+		List<PutThroughTransaction> transactions_hose = new ArrayList<>();
+		transactions_hnx.add(tran3);
+		
+		memory.put("PutThroughTransaction","02", transactions_hnx);
+		memory.put("PutThroughTransaction","10", transactions_hose);
 		
 		Map<String, List<Map<String, Object>>>  ptOrderList = ptOrdercontroller.getPtOrder();		
 		Assert.assertEquals(2, ptOrderList.size());
@@ -64,7 +70,7 @@ public class PtorderControllerTest {
 		List<PutThroughTransaction> transactions = new ArrayList<>();
 		transactions.add(tran1);		
 		
-		memory.put("PutThroughTransaction","", transactions);
+		memory.put("PutThroughTransaction","02", transactions);
 		
 		Map<String, List<Map<String, Object>>>  ptOrderList = ptOrdercontroller.getPtOrder();		
 		Assert.assertEquals(1, ptOrderList.size());

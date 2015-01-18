@@ -6,19 +6,17 @@ import org.springframework.stereotype.Component;
 import priceboard.event.EventHandler;
 import priceboard.util.InstanceChecker;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
-
 @Component
-@EventHandlerApplyFor(priority = 2, values = {"COMMON"})
-public class MemoryHandler implements EventHandler {
+@EventHandlerApplyFor(priority = 2, values = {"STOCK"})
+public class StockMemoryHandler implements EventHandler {
 
 	
 	private InMemory memory;
 	
 	@Autowired
-	public MemoryHandler(InMemory memory) {
+	public StockMemoryHandler(InMemory memory) {
 		this.memory = memory;
 	}
 
@@ -27,9 +25,7 @@ public class MemoryHandler implements EventHandler {
 
 		if (InstanceChecker.isStock(source)) {
 			memory.put("STOCK", ((SecInfo) source).getCode(), source);
-		} else if (InstanceChecker.isMarket(source)) {
-			memory.put("MARKET", ((Market) source).getFloorCode(), source);
-		}
+		} 
 	}
 
 }

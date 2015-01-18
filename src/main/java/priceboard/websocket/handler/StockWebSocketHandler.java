@@ -52,6 +52,8 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		clientEventTypeMapping.put("registConsumer", handlersOfRegistConsumer);
 		List<EventHandler> handlersOfDisconnect = eventHandlerFilter.filter(handlers, Arrays.asList("DISCONNECT"));
 		clientEventTypeMapping.put("DISCONNECT", handlersOfDisconnect);
+		List<EventHandler> handlersOfPost = eventHandlerFilter.filter(handlers, Arrays.asList("post"));
+		clientEventTypeMapping.put("post", handlersOfPost);
 	}
 	
 	@Override
@@ -61,7 +63,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		String type = parser.parseType(node);
 		List<EventHandler> handlers = clientEventTypeMapping.get(type);
 		if (handlers == null) {
-			logger.info("No handler for type: "+  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
+			//logger.info("No handler for type: "+  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
 			return;
 		}
 		handleMessage(handlers, session.getId(), node);
@@ -70,6 +72,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 	private void handleMessage(List<EventHandler> handlers, String sessionId, JsonNode node) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		ClientConnection clientConnection = getClientConnectionBySessionId(sessionId);
+		//System.out.println("sessionId" + sessionId);
 		map.put("CLIENT", clientConnection);
 		map.put("data", node);
 		handlers.forEach((handler) -> {
@@ -99,6 +102,4 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		return (ClientConnection) memory.get("CLIENT_CONNECTION", sessionId);
 	}
 	
-	
-
 }

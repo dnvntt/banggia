@@ -10,7 +10,7 @@ import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
-public class ClearDataTest {
+public class ClearDataHandlerTest {
 	
 	private InMemory memory;
 	private ClearDataHandler clearData;
@@ -105,7 +105,6 @@ public class ClearDataTest {
 		
 		 
 		clearData.load();
-		//Assert.assertEquals(clearData.isClearData(), true);
 		memory.put("MARKET", market1.getFloorCode(),market1);
 		memory.put("MARKET", market2.getFloorCode(),market2);
 		clearData.clearIfNeed();

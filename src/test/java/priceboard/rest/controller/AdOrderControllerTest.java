@@ -33,28 +33,35 @@ public class AdOrderControllerTest {
 	public void testGetGDTTWithDataInMemory() {
 		PutThrough tran1= new PutThrough();
 		tran1.setFloorCode("02");
+		tran1.setStockSymbol("VND");
 		tran1.setTime("20141225");
 		
 		
 		PutThrough tran2= new PutThrough();
 		tran2.setFloorCode("02");
+		tran2.setStockSymbol("SHB");
 		tran2.setTime("20141225");
 		
 		PutThrough tran3= new PutThrough();
-		tran3.setFloorCode("03");
+		tran3.setFloorCode("10");
+		tran3.setStockSymbol("HAG");
 		tran3.setTime("20141225");
 		
-		List<PutThrough> transactions = new ArrayList<>();
-		transactions.add(tran1);	
-		transactions.add(tran2);
-		transactions.add(tran3);
+		List<PutThrough> t_hnxransactions = new ArrayList<>();
+		t_hnxransactions.add(tran1);	
+		t_hnxransactions.add(tran2);
 		
-		memory.put("PutThrough","", transactions);
+		List<PutThrough> transactions_hose = new ArrayList<>();
+		transactions_hose.add(tran3);
+		
+		memory.put("PutThrough","02", t_hnxransactions);
+		memory.put("PutThrough","10", transactions_hose);
 		
 		Map<String, List<Map<String, Object>>>  adOrderList = adOrdercontroller.getPtOrder();		
 		Assert.assertEquals(2, adOrderList.size());
 		Assert.assertTrue(adOrderList.containsKey("02"));
 	}
+	
 	@Test
 	public void testGetGDTTByFloorCodeWithDataInMemory() {
 		PutThrough tran1= new PutThrough();
@@ -64,7 +71,7 @@ public class AdOrderControllerTest {
 		List<PutThrough> transactions = new ArrayList<>();
 		transactions.add(tran1);		
 		
-		memory.put("PutThrough","", transactions);
+		memory.put("PutThrough","02", transactions);
 		
 		Map<String, List<Map<String, Object>>>  adOrderList = adOrdercontroller.getPtOrder();		
 		Assert.assertEquals(1, adOrderList.size());

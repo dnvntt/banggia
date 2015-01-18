@@ -49,8 +49,7 @@ public class StockLoader {
 
 	private void initHandler() {
 		System.out.println("Loading order: getStockHandler");
-		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "COMMON"));
-		//System.out.println(handlersOfStock);
+		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "COMPRESS"));
 	}
 	
 	public void load() throws Exception {
@@ -61,7 +60,6 @@ public class StockLoader {
 			map.put("tradingDate", (String) businessDate);
 		}
 		List<SecInfo> secInfoList = elasticSearchClient.getDataByIndex("secinfo", "snapshot", SecInfo.class, map);
-		//System.out.println("Loading secInfoList : " + secInfoList.size());
 		secInfoList.forEach((object) -> {
 			handlersOfStock.forEach((handler) -> {handler.handle(object);});
 		});

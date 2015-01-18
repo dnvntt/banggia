@@ -36,7 +36,7 @@ public class MarketHandlerTest {
 				}
 			});
 		}
-		MarketPushHandler marketHandler = new MarketPushHandler(broadCastPusher);
+		BroadcastPushHandler marketHandler = new BroadcastPushHandler(broadCastPusher);
 		marketHandler.handle(new Market());
 		Assert.assertEquals(10, sentData.size());
 	}

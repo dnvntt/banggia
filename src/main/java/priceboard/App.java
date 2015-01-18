@@ -5,17 +5,14 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-
-/**
- * Hello world!
- *
- */
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableScheduling
 public class App {
 
 	public static void main(String[] args) {
