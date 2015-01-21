@@ -24,7 +24,6 @@ public class JsonParser {
 	private static final String DATA_NAME_PATH = "/data/params/name";
 	
 	private static final String DATA_CODES_PATH = "/data/params/codes";
-	private static final String DATA_SYMBOL_PATH = "/data/params/symbol";
 	
 	private static final String STOCK = "STOCK";
 	
@@ -66,19 +65,6 @@ public class JsonParser {
 		}
 		return codes;
 	}
-	
-	public String parseDataSymbol(JsonNode node) {
-		ArrayNode nodes = (ArrayNode) node.at(DATA_SYMBOL_PATH);
-		Iterator<JsonNode> iterator = nodes.iterator();
-		String symbol = new String();
-		while(iterator.hasNext()) {
-			String code = iterator.next().asText();
-			if (code != null && code.trim().length() > 0)
-				symbol =code;
-		}
-		return symbol;
-	}
-	
 
 	public String parseData(JsonNode node) {
 		return node.at(DATA_PATH).toString();

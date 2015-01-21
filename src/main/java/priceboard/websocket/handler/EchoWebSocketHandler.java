@@ -27,7 +27,6 @@ public class EchoWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session)
 			throws Exception {
-		// TODO Auto-generated method stub
 		super.afterConnectionEstablished(session);
 	}
 

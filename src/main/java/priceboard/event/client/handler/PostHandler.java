@@ -23,18 +23,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 @EventHandlerApplyFor(values = { "post" })
 public class PostHandler implements EventHandler {
 
-	private ClientRoomManager clientRoomManager;
 	private JsonParser parser;
 	private InMemory memory;
-	private TransactionPusher transactionPusher;
-
+ 
 	@Autowired
 	public PostHandler(ClientRoomManager roomManager, JsonParser parser,
-			InMemory memory, TransactionPusher transactionPusher) {
-		this.clientRoomManager = roomManager;
+			InMemory memory, TransactionPusher transactionPusher) { 
 		this.parser = parser;
 		this.memory = memory;
-		this.transactionPusher = transactionPusher;
 	}
 
 	@Override
@@ -52,16 +48,12 @@ public class PostHandler implements EventHandler {
 
 		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();
 
-		transactionHistoryByCode = (List<Transaction>) memory.get(
-				"TRANSACTION", symbol);
+		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);
 		DataTransaction data = new DataTransaction();
 		data.setName("TRANSACTION");
 		data.setData(transactionHistoryByCode);
 			
-		
-		String msg_return = parser.buildReturnJsonStockAsString("returnData",
-				data);
-		System.out.println("Inside postHandler with data : " + msg_return);
+		String msg_return = parser.buildReturnJsonStockAsString("returnData",data);
 		client.send(msg_return);
 	}
 

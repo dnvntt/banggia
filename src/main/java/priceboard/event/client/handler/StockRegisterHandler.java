@@ -50,8 +50,8 @@ public class StockRegisterHandler implements EventHandler {
 	}
 	
 	private void pushDataToClient(List<String> codes, ClientConnection client) {
-		codes.forEach((room) -> {
-			pusher.push(client, new SecInfo(){{setCode(room);}});
+		codes.forEach((code) -> {
+			pusher.push(client, new SecInfo(){{setCode(code);}});
 		});
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -27,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class StockWebSocketHandler extends TextWebSocketHandler {
 
-	private static final Logger logger = Logger.getLogger(StockWebSocketHandler.class);	
+	//private static final Logger logger = Logger.getLogger(StockWebSocketHandler.class);	
 	private JsonParser parser;
 	
 	private final InMemory memory;
@@ -72,7 +71,6 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 	private void handleMessage(List<EventHandler> handlers, String sessionId, JsonNode node) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		ClientConnection clientConnection = getClientConnectionBySessionId(sessionId);
-		//System.out.println("sessionId" + sessionId);
 		map.put("CLIENT", clientConnection);
 		map.put("data", node);
 		handlers.forEach((handler) -> {

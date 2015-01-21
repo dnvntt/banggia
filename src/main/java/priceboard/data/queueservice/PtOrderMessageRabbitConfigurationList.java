@@ -33,7 +33,7 @@ public class PtOrderMessageRabbitConfigurationList extends
 	}
 	
 	@Bean
-	public SimpleMessageListenerContainer stockListenerContainer() {
+	public SimpleMessageListenerContainer PtOrderListenerContainer() {
 		return super.createListenerContainer();
 	}
 

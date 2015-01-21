@@ -40,6 +40,7 @@ public class StockPusher implements Pusher {
 	public void push(Object source) {
 		String data = getCompressionData((SecInfo) source);
 		String code = ((SecInfo) source).getCode();
+		logger.info("Push data to client with data from queue : " + data);
 		pushToAllClientInThisStockRoom(code, data);
 		pushToAllClientInAllRoomsOfStock(code, data);
 	}
@@ -71,6 +72,7 @@ public class StockPusher implements Pusher {
 	@Override
 	public void push(ClientConnection client, Object source) {
 		String data = getCompressionData((SecInfo) source);
+		logger.info("Push data to client: " + data);
 		client.send(data);
 	}
 

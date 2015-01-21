@@ -33,7 +33,7 @@ public class TransactionMessageRabbitConfigurationList extends
 	}
 	
 	@Bean
-	public SimpleMessageListenerContainer stockListenerContainer() {
+	public SimpleMessageListenerContainer TransactionListenerContainer() {
 		return super.createListenerContainer();
 	}
 

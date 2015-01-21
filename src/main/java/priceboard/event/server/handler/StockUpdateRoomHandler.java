@@ -8,7 +8,7 @@ import priceboard.room.StockRoomManager;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
-@EventHandlerApplyFor(priority = 9, values = {"STOCK"})
+@EventHandlerApplyFor(priority = 7, values = {"STOCK"})
 public class StockUpdateRoomHandler implements EventHandler {
 
 	private StockRoomManager roomManager;

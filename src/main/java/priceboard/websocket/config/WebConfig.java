@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -24,11 +23,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import priceboard.event.EventHandler;
 import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.event.server.handler.EventHandlerFilter;
-import priceboard.json.JsonParser;
 import priceboard.websocket.handler.DefaultEchoService;
 import priceboard.websocket.handler.EchoWebSocketHandler;
 import priceboard.websocket.handler.StockWebSocketHandler;
-import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
 @Configuration
 @EnableWebMvc

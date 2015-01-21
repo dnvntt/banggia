@@ -33,7 +33,7 @@ public class PutThroughMessageRabbitConfigurationList extends
 	}
 	
 	@Bean
-	public SimpleMessageListenerContainer stockListenerContainer() {
+	public SimpleMessageListenerContainer PutThroughListenerContainer() {
 		return super.createListenerContainer();
 	}
 
