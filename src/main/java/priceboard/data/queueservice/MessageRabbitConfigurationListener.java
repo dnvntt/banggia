@@ -23,7 +23,8 @@ import com.eaio.uuid.UUID;
 
 public class MessageRabbitConfigurationListener {
 
-	private static final Logger logger = Logger.getLogger(MessageRabbitConfigurationListener.class);	
+	private static final Logger logger = Logger
+			.getLogger(MessageRabbitConfigurationListener.class);
 	protected String nameQueue;
 	protected String nameFanoutExchange;
 	@Autowired
@@ -48,15 +49,16 @@ public class MessageRabbitConfigurationListener {
 	protected List<EventHandler> handlers;
 
 	protected List<EventHandler> handlersOfMessage;
-	
+
 	private Queue queue;
 
-	public MessageRabbitConfigurationListener(String queueName, String exchageName) {
+	public MessageRabbitConfigurationListener(String queueName,
+			String exchageName) {
 		this.nameQueue = queueName;
 		this.nameFanoutExchange = exchageName;
 	}
 
-	public void init() {	
+	public void init() {
 		queue = declareNameQueue();
 		FanoutExchange exchange = createFanoutExchange();
 		bindingQueueToExchange(queue, exchange);
@@ -75,13 +77,15 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	private FanoutExchange createFanoutExchange() {
-		FanoutExchange exchange = new FanoutExchange(nameFanoutExchange, false, false);
+		FanoutExchange exchange = new FanoutExchange(nameFanoutExchange, false,
+				false);
 		amqpAdmin.declareExchange(exchange);
 		return exchange;
 	}
 
 	public SimpleMessageListenerContainer createListenerContainer() {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(amqpConnectionFactory);
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
+				amqpConnectionFactory);
 		container.setQueues(queue);
 		container.setMessageListener(createListenerAdapter());
 		container.setAcknowledgeMode(AcknowledgeMode.AUTO);
@@ -93,13 +97,14 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	public void handleMessage(Object object) {
-		try{
 		handlersOfMessage.forEach((handler) -> {
-			handler.handle(object);
-		});}
-		catch(Exception ex){
-			logger.info("Error handle message", ex);
-		}
+			try {
+				logger.info("Handle object: " + object);
+				handler.handle(object);
+			} catch (Exception ex) {
+				logger.error("Error handle message", ex);
+			}
+		});
 
 	}
 }
