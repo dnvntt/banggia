@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import priceboard.client.ClientConnection;
 import priceboard.event.EventHandler;
-import priceboard.event.client.model.DataTransaction;
+import priceboard.event.client.model.DataReturn;
 import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.json.JsonParser;
 import priceboard.pusher.TransactionPusher;
@@ -25,10 +25,10 @@ public class PostHandler implements EventHandler {
 
 	private JsonParser parser;
 	private InMemory memory;
- 
+
 	@Autowired
 	public PostHandler(ClientRoomManager roomManager, JsonParser parser,
-			InMemory memory, TransactionPusher transactionPusher) { 
+			InMemory memory, TransactionPusher transactionPusher) {
 		this.parser = parser;
 		this.memory = memory;
 	}
@@ -45,15 +45,21 @@ public class PostHandler implements EventHandler {
 			return;
 		}
 		String symbol = jsonSymbolNode.asText();
-
+		if (symbol == "")		return;
 		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();
 
-		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);
-		DataTransaction data = new DataTransaction();
+		transactionHistoryByCode = (List<Transaction>) memory.get(
+				"TRANSACTION", symbol);
+		if (transactionHistoryByCode == null
+				|| transactionHistoryByCode.isEmpty())
+			return;
+		
+		DataReturn data = new DataReturn();
 		data.setName("TRANSACTION");
 		data.setData(transactionHistoryByCode);
-			
-		String msg_return = parser.buildReturnJsonStockAsString("returnData",data);
+
+		String msg_return = parser.buildReturnJsonStockAsString("returnData",
+				data);
 		client.send(msg_return);
 	}
 

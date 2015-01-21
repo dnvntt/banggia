@@ -1,6 +1,6 @@
 package priceboard.event.client.model;
 
-public class DataTransaction {
+public class DataReturn {
 	private String name;
 	public String getName() {
 		return name;

@@ -53,6 +53,15 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		clientEventTypeMapping.put("DISCONNECT", handlersOfDisconnect);
 		List<EventHandler> handlersOfPost = eventHandlerFilter.filter(handlers, Arrays.asList("post"));
 		clientEventTypeMapping.put("post", handlersOfPost);
+		
+		List<EventHandler> handlersOfResumne = eventHandlerFilter.filter(handlers, Arrays.asList("resumne"));
+		clientEventTypeMapping.put("resumne", handlersOfResumne);
+		
+		List<EventHandler> handlersOfRequestFullData = eventHandlerFilter.filter(handlers, Arrays.asList("requestFullData"));
+		clientEventTypeMapping.put("requestFullData", handlersOfRequestFullData);
+		
+		List<EventHandler> handlersOfStopConsume = eventHandlerFilter.filter(handlers, Arrays.asList("stopConsume"));
+		clientEventTypeMapping.put("stopConsume", handlersOfStopConsume);
 	}
 	
 	@Override

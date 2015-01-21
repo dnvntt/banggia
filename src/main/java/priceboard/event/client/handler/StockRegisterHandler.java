@@ -10,6 +10,7 @@ import priceboard.client.ClientConnection;
 import priceboard.event.EventHandler;
 import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.json.JsonParser;
+import priceboard.pusher.CeilingFloorPusher;
 import priceboard.pusher.StockPusher;
 import priceboard.room.ClientRoomManager;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
@@ -23,7 +24,7 @@ public class StockRegisterHandler implements EventHandler {
 	private ClientRoomManager clientRoomManager;
 	
 	private StockPusher pusher;
-	
+	private CeilingFloorPusher ceilingFloorPusher;
 	private JsonParser parser;
 	
 	@Autowired
@@ -39,8 +40,25 @@ public class StockRegisterHandler implements EventHandler {
 		ClientConnection client = (ClientConnection) map.get("CLIENT");
 		JsonNode dataNode = (JsonNode) map.get("data");
 		List<String> codes = parser.parseDataCodes(dataNode);
+		if (codes == null || codes.isEmpty()) return;
 		addClientToRoom(codes, client);
-		pushDataToClient(codes, client);
+		
+		JsonNode jsonNameNode = dataNode.at("/data/params/name");
+
+		if (jsonNameNode == null) {
+			return;
+		}
+		String nameMessage = jsonNameNode.asText();
+
+		if (!intervalRegister(dataNode)) {
+			if(nameMessage=="STOCK")  pushStockToClient(codes, client);
+			//TODO add function to process ceiling floor count
+			if(nameMessage=="CEILING_FLOOR_COUNT") pushStatisticToClient(client) ;
+		}
+	}
+
+	private boolean intervalRegister(JsonNode dataNode) {
+		return parser.parseDataRegistInterval(dataNode);
 	}
 
 	private void addClientToRoom(List<String> codes, ClientConnection client) {
@@ -49,9 +67,13 @@ public class StockRegisterHandler implements EventHandler {
 		});
 	}
 	
-	private void pushDataToClient(List<String> codes, ClientConnection client) {
-		codes.forEach((code) -> {
-			pusher.push(client, new SecInfo(){{setCode(code);}});
+	private void pushStockToClient(List<String> codes, ClientConnection client) {
+		codes.forEach((code) -> {		
+			pusher.push(client, new SecInfo(){{setCode(code);}});   
 		});
+	}
+	
+	private void pushStatisticToClient(ClientConnection client) {
+		ceilingFloorPusher.push(client); 
 	}
 }

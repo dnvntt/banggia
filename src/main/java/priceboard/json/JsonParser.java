@@ -23,6 +23,8 @@ public class JsonParser {
 	
 	private static final String DATA_NAME_PATH = "/data/params/name";
 	
+	private static final String DATA_REGIST_PATH = "/data/isIntervalRegist";
+	
 	private static final String DATA_CODES_PATH = "/data/params/codes";
 	
 	private static final String STOCK = "STOCK";
@@ -52,6 +54,14 @@ public class JsonParser {
 
 	public String parseDataName(JsonNode node) {
 		return node.at(DATA_NAME_PATH).asText();
+	}
+	
+	public Boolean parseDataRegistInterval(JsonNode node) {
+		JsonNode registNode = node.at(DATA_REGIST_PATH);
+		if (registNode != null) {
+			return registNode.asBoolean();
+		}
+		return false;
 	}
 
 	public List<String> parseDataCodes(JsonNode node) {
