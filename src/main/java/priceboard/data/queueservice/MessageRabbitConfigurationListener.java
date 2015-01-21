@@ -2,6 +2,7 @@ package priceboard.data.queueservice;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -22,9 +23,9 @@ import com.eaio.uuid.UUID;
 
 public class MessageRabbitConfigurationListener {
 
+	private static final Logger logger = Logger.getLogger(MessageRabbitConfigurationListener.class);	
 	protected String nameQueue;
 	protected String nameFanoutExchange;
-
 	@Autowired
 	protected MessageConverter messageConverter;
 
@@ -92,9 +93,13 @@ public class MessageRabbitConfigurationListener {
 	}
 
 	public void handleMessage(Object object) {
+		try{
 		handlersOfMessage.forEach((handler) -> {
 			handler.handle(object);
-		});
+		});}
+		catch(Exception ex){
+			logger.info("Error handle message", ex);
+		}
 
 	}
 }
