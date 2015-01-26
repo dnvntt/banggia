@@ -27,6 +27,7 @@ public class StockUpdateRoomHandler implements EventHandler {
 	}
 
 	private void updateRoom(Object source) {
+		//System.out.println(source);
 		SecInfo secInfo = (SecInfo) source;
 		if (marketSessionChecker.isClosedSession(secInfo.getFloorCode())) {
 			roomManager.addStockToRoom(secInfo.getFloorCode(), secInfo.getCode());

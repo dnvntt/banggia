@@ -31,7 +31,7 @@ public class StockRegisterHandlerTest {
 		clientRoomManager = new ClientRoomManager();
 		
 		StockPusher pusher = Mockito.mock(StockPusher.class);
-		stockRegister = new StockRegisterHandler(clientRoomManager, pusher, parser);
+		stockRegister = new StockRegisterHandler(clientRoomManager, pusher, null, parser);
 	}
 	
 	@Test

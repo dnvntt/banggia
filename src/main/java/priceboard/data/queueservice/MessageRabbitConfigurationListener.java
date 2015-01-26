@@ -103,6 +103,7 @@ public class MessageRabbitConfigurationListener {
 				handler.handle(object);
 			} catch (Exception ex) {
 				logger.error("Error handle message", ex);
+				logger.info("for object:"+ object);
 			}
 		});
 

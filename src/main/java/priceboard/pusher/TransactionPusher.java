@@ -66,6 +66,7 @@ public class TransactionPusher implements Pusher {
 	@Override
 	public void push(ClientConnection client, Object source) {
 		String data = getCompressionData((Transaction) source);
+		logger.info("Push to 1 client: " + client + " with data: " + data);
 		client.send(data);
 	}
 

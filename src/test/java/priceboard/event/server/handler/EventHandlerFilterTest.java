@@ -31,7 +31,7 @@ public class EventHandlerFilterTest {
 			add(new StockUpdateRoomHandler(null, null));
 			add(new StockMemoryHandler(null));
 			add(new CompressionHandler(null, null));
-			add(new StockRegisterHandler(null, null, null));
+			add(new StockRegisterHandler(null, null, null,null));
 		}};
 		
 		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMPRESS"));

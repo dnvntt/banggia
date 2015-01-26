@@ -41,15 +41,14 @@ public class PostHandler implements EventHandler {
 
 		JsonNode jsonSymbolNode = dataNode.at("/data/params/symbol");
 
-		if (jsonSymbolNode == null) {
-			return;
-		}
+//		if (jsonSymbolNode == null) {
+//			return;
+//		}
 		String symbol = jsonSymbolNode.asText();
-		if (symbol == "")		return;
+		if (symbol.equals(""))		return;
 		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();
 
-		transactionHistoryByCode = (List<Transaction>) memory.get(
-				"TRANSACTION", symbol);
+		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);
 		if (transactionHistoryByCode == null
 				|| transactionHistoryByCode.isEmpty())
 			return;
@@ -58,8 +57,7 @@ public class PostHandler implements EventHandler {
 		data.setName("TRANSACTION");
 		data.setData(transactionHistoryByCode);
 
-		String msg_return = parser.buildReturnJsonStockAsString("returnData",
-				data);
+		String msg_return = parser.buildReturnJsonStockAsString("returnData",data);
 		client.send(msg_return);
 	}
 

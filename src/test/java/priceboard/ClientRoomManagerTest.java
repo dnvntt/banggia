@@ -122,7 +122,6 @@ public class ClientRoomManagerTest {
 	public void testRemoveClientInRoomButKeepItInOtherRoom() {
 		ClientConnection client = Mockito.mock(ClientConnection.class);
 		checkAddAndRemoveRoom(client);
-		
 	}
 	
 	private void checkAddAndRemoveRoom(ClientConnection client) {

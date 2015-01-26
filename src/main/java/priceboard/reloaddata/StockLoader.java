@@ -41,19 +41,16 @@ public class StockLoader {
 
 	@PostConstruct
 	public void init() throws Exception {
-		System.out.println("Loading order: create StockLoader instance");
 		initHandler();
 		load();
 		
 	}
 
 	private void initHandler() {
-		System.out.println("Loading order: getStockHandler");
 		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "COMPRESS"));
 	}
 	
 	public void load() throws Exception {
-		System.out.println("Loading order: load Stock from elastic");
 		Object businessDate = memory.get("businessdate", "businessdate");
 		Map<String, String> map = new HashMap<String, String>();
 		if (businessDate != null) {

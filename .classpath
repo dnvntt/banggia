@@ -84,7 +84,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-grouping/4.5.1/lucene-grouping-4.5.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/lucene/lucene-spatial/4.5.1/lucene-spatial-4.5.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/spatial4j/spatial4j/0.3/spatial4j-0.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/vn/com/vndirect/priceservice/datamodel/1.0.6/datamodel-1.0.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/vn/com/vndirect/priceservice/datamodel/1.0.6/datamodel-1.0.6.jar" sourcepath="M2_REPO/vn/com/vndirect/priceservice/datamodel/1.0.6/datamodel-1.0.6-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/quickfixj/quickfixj-all/1.5.1.2/quickfixj-all-1.5.1.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>

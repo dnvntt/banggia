@@ -18,7 +18,9 @@ public class WebSocketClientConnection extends ClientConnection {
 	@Override
 	public void send(String data) {
 		try {
-			session.sendMessage(new TextMessage(data));
+			if (session.isOpen()) {
+				session.sendMessage(new TextMessage(data));
+			}
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
