@@ -15,8 +15,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@SpringApplicationConfiguration(classes = App.class)
 @WebAppConfiguration
 public class SendMessageTest {
 	@Autowired
@@ -38,9 +38,9 @@ public class SendMessageTest {
 		return new RabbitAdmin(connectionFactory());
 	}
 
-	//@Test
+	@Test
 	public void send() {
-		SecInfo sec = new SecInfo();
-		template.convertAndSend("", sec);
+		//SecInfo sec = new SecInfo();
+		//template.convertAndSend("", sec);
 	}
 }
