@@ -11,7 +11,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
 
 @Component
-@EventHandlerApplyFor(priority = 4, values = { "PTORDER" })
+@EventHandlerApplyFor(priority = 3, values = { "PTORDER" })
 public class PtOrderMemoryHandler implements EventHandler {
 
 	private InMemory memory;

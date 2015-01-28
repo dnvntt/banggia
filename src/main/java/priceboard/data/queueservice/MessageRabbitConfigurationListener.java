@@ -23,8 +23,7 @@ import com.eaio.uuid.UUID;
 
 public class MessageRabbitConfigurationListener {
 
-	private static final Logger logger = Logger
-			.getLogger(MessageRabbitConfigurationListener.class);
+	private static final Logger logger = Logger.getLogger(MessageRabbitConfigurationListener.class);
 	protected String nameQueue;
 	protected String nameFanoutExchange;
 	@Autowired
@@ -99,11 +98,9 @@ public class MessageRabbitConfigurationListener {
 	public void handleMessage(Object object) {
 		handlersOfMessage.forEach((handler) -> {
 			try {
-				logger.info("Handle object: " + object);
 				handler.handle(object);
 			} catch (Exception ex) {
 				logger.error("Error handle message", ex);
-				logger.info("for object:"+ object);
 			}
 		});
 

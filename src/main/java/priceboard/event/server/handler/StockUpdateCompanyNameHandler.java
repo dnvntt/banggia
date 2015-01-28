@@ -13,7 +13,7 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 
 @Component
-@EventHandlerApplyFor(values = {"STOCK"})
+@EventHandlerApplyFor(priority = 3,values = {"STOCK"})
 public class StockUpdateCompanyNameHandler implements EventHandler {
 
 	private InMemory memory; 

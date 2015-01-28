@@ -7,7 +7,7 @@ import priceboard.event.EventHandler;
 import priceboard.pusher.BroadcastPusher;
 
 @Component
-@EventHandlerApplyFor(values = {"MARKET_PUSH","PTORDER_PUSH","PutThrough_PUSH"})
+@EventHandlerApplyFor(priority = 7,values = {"MARKET_PUSH","PTORDER_PUSH","PutThrough_PUSH"})
 public class BroadcastPushHandler implements EventHandler {
 
 	private BroadcastPusher broadCastPusher;

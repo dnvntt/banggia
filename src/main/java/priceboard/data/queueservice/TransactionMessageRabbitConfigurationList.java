@@ -29,7 +29,7 @@ public class TransactionMessageRabbitConfigurationList extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("TRANSACTION","CLEAR_DATA", "TRANSACTION_PUSH"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("TRANSACTION", "TRANSACTION_PUSH"));
 	}
 	
 	@Bean

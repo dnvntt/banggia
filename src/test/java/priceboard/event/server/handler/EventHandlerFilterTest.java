@@ -35,6 +35,9 @@ public class EventHandlerFilterTest {
 		}};
 		
 		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "COMPRESS"));
+		System.out.println(returnHandlers.get(0).getClass());
+		System.out.println(returnHandlers.get(1).getClass());
+		System.out.println(returnHandlers.get(2).getClass());
 		
 		Assert.assertEquals(3, returnHandlers.size());
 		

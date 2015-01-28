@@ -20,7 +20,7 @@ import vn.com.vndirect.priceservice.datamodel.Transaction;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
-@EventHandlerApplyFor(values = { "post" })
+@EventHandlerApplyFor(priority = 5,values = { "post" })
 public class PostHandler implements EventHandler {
 
 	private JsonParser parser;
@@ -41,9 +41,9 @@ public class PostHandler implements EventHandler {
 
 		JsonNode jsonSymbolNode = dataNode.at("/data/params/symbol");
 
-//		if (jsonSymbolNode == null) {
-//			return;
-//		}
+		if (jsonSymbolNode == null) {
+			return;
+		}
 		String symbol = jsonSymbolNode.asText();
 		if (symbol.equals(""))		return;
 		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();

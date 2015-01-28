@@ -29,7 +29,7 @@ public class PtOrderMessageRabbitConfigurationList extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PTORDER","CLEAR_DATA", "PTORDER_PUSH"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PTORDER", "PTORDER_PUSH"));
 	}
 	
 	@Bean

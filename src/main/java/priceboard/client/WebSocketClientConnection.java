@@ -1,7 +1,5 @@
 package priceboard.client;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,13 +14,13 @@ public class WebSocketClientConnection extends ClientConnection {
 	}
 	
 	@Override
-	public void send(String data) {
+	public synchronized void send(String data) {
 		try {
-			if (session.isOpen()) {
+			//if (session.isOpen()) {
 				session.sendMessage(new TextMessage(data));
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			//}
+		} catch (Exception e) {
+			logger.error("Error in websocket send: " +e.getMessage());
 		}
 	}
 

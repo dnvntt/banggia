@@ -12,7 +12,7 @@ import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.room.ClientRoomManager;
 
 @Component
-@EventHandlerApplyFor(values = {"stopConsume"})
+@EventHandlerApplyFor(priority = 2,values = {"stopConsume"})
 public class StopConsumeHandler implements EventHandler {
 
 	private static final Logger logger = Logger.getLogger(StopConsumeHandler.class);
@@ -27,14 +27,9 @@ public class StopConsumeHandler implements EventHandler {
 	@Override
 	public void handle(Object source) {
 		logger.info("stopConsume from  client: " + source);
-		//stockRoomManager.removeClientFromAllRoom((ClientConnection) source);
-		//clientRoomManager.removeClientFromAllRoom((ClientConnection) source);
+
 		Map<String, Object> map = (Map<String, Object>) source;
 		ClientConnection client = (ClientConnection) map.get("CLIENT");
-		//JsonNode dataNode = (JsonNode) map.get("data");
-		//List<String> codes = parser.parseDataCodes(dataNode);
-		//if (codes == null || codes.isEmpty()) return;
-		//clientRoomManager.removeClientFromRoom(String room, ClientConnection client) 
 		clientRoomManager.removeClientFromAllRoom(client);
 	}
 

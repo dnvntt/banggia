@@ -11,7 +11,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Transaction;
 
 @Component
-@EventHandlerApplyFor(priority = 6, values = {"TRANSACTION"})
+@EventHandlerApplyFor(priority = 3, values = {"TRANSACTION"})
 public class TransactionMemoryHandler implements EventHandler {
 
 	

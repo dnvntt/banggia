@@ -2,7 +2,6 @@ package priceboard.pusher;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +14,8 @@ import vn.com.vndirect.priceservice.datamodel.Transaction;
 @Component
 public class TransactionPusher implements Pusher {
 
-	private static final Logger logger = Logger
-			.getLogger(TransactionPusher.class);
+//	private static final Logger logger = Logger
+//			.getLogger(TransactionPusher.class);
 
 	private ClientRoomManager clientRoomManager;
 
@@ -56,9 +55,7 @@ public class TransactionPusher implements Pusher {
 	private void pushAllClientInRoom(String room, String data) {
 		List<ClientConnection> clients = clientRoomManager
 				.getClientInRoom(room);
-		logger.info("Push to all client: " + clients);
 		clients.parallelStream().forEach((client) -> {
-			logger.info("Push to client: " + client + " with data: " + data);
 			client.send(data);
 		});
 	}
@@ -66,7 +63,6 @@ public class TransactionPusher implements Pusher {
 	@Override
 	public void push(ClientConnection client, Object source) {
 		String data = getCompressionData((Transaction) source);
-		logger.info("Push to 1 client: " + client + " with data: " + data);
 		client.send(data);
 	}
 

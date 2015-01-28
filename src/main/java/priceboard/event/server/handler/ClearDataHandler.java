@@ -19,7 +19,7 @@ import vn.com.vndirect.priceservice.datamodel.FloorCode;
 
 @Component
 @DependsOn("bussinessDateLoader")
-@EventHandlerApplyFor(values = { "CLEAR_DATA" })
+@EventHandlerApplyFor(priority = 1,values = { "CLEAR_DATA" })
 public class ClearDataHandler implements EventHandler {
 	private boolean isClearData;
 	private InMemory memory;

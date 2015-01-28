@@ -9,7 +9,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
-@EventHandlerApplyFor(priority = 2, values = {"STOCK"})
+@EventHandlerApplyFor(priority = 3, values = {"STOCK"})
 public class StockMemoryHandler implements EventHandler {
 	private InMemory memory;
 	@Autowired

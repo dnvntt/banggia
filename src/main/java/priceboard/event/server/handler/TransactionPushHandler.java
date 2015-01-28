@@ -8,7 +8,7 @@ import priceboard.pusher.TransactionPusher;
 
 
 @Component
-@EventHandlerApplyFor(values = {"TRANSACTION_PUSH"})
+@EventHandlerApplyFor(priority = 7,values = {"TRANSACTION_PUSH"})
 public class TransactionPushHandler implements EventHandler {
 
 	private TransactionPusher transactionPusher;

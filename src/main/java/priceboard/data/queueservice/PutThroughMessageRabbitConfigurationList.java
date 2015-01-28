@@ -29,7 +29,7 @@ public class PutThroughMessageRabbitConfigurationList extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PutThrough","CLEAR_DATA", "PutThrough_PUSH"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PutThrough", "PutThrough_PUSH"));
 	}
 	
 	@Bean

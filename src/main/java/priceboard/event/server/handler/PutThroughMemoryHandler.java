@@ -12,7 +12,7 @@ import vn.com.vndirect.priceservice.datamodel.PutThrough;
 
 
 @Component
-@EventHandlerApplyFor(priority = 5, values = {"PutThrough"})
+@EventHandlerApplyFor(priority =3, values = {"PutThrough"})
 public class PutThroughMemoryHandler implements EventHandler {
 
 	

@@ -19,7 +19,7 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
-@EventHandlerApplyFor(values = {"registConsumer"})
+@EventHandlerApplyFor(priority = 3,values = {"registConsumer"})
 public class StockRegisterHandler implements EventHandler {
 
 	private ClientRoomManager clientRoomManager;
@@ -45,30 +45,23 @@ public class StockRegisterHandler implements EventHandler {
 		logger.info("check codes:" +codes) ;
 		if (codes == null || codes.isEmpty()) 
 			{
-				logger.info("check codes ==null inside  handle of  registConsumer ");
+				logger.info("check codes == null inside  handle of  registConsumer ");
 				return;
 			}
-		
-		addClientToRoom(codes, client);
-		
-		JsonNode jsonNameNode = dataNode.at("/data/params/name");
 
-//		if (jsonNameNode == null) {
-//			return;
-//		}
-		
+		JsonNode jsonNameNode = dataNode.at("/data/params/name");
 		String nameMessage = (jsonNameNode.asText()).trim();
-		logger.info("nameMessage of registConsumer:" +nameMessage+":");
+		
 		if (!intervalRegister(dataNode)) {
-			logger.info("inside handle of registConsumer  ");
 			if(nameMessage.equals("STOCK")) {
 				logger.info("inside handle of registConsumer STOCK ");
-				pushStockToClient(codes, client);
+				addClientToRoom(codes, client);
+				//pushStockToClient(codes, client);
 			}
-			//TODO add function to process ceiling floor count
+			
 			if(nameMessage.equals("CEILING_FLOOR_COUNT")) 
 			{
-				logger.info("inside handle of registConsumer CEILING_FLOOR_COUNT  ");
+				logger.info("inside handle of registConsumer CEILING_FLOOR_COUNT");
 				//pushStatisticToClient(client) ;
 			}
 		}

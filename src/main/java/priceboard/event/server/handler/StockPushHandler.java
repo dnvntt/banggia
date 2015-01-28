@@ -7,7 +7,7 @@ import priceboard.event.EventHandler;
 import priceboard.pusher.StockPusher;
 
 @Component
-@EventHandlerApplyFor(values = {"STOCK_PUSH"})
+@EventHandlerApplyFor(priority = 7,values = {"STOCK_PUSH"})
 public class StockPushHandler implements EventHandler {
 
 	private StockPusher stockPusher;

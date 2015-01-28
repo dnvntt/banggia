@@ -10,7 +10,7 @@ import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.room.ClientRoomManager;
 
 @Component
-@EventHandlerApplyFor(values = {"DISCONNECT"})
+@EventHandlerApplyFor(priority = 1,values = {"DISCONNECT"})
 public class ClientDisconnectHandler implements EventHandler {
 
 	private static final Logger logger = Logger.getLogger(ClientDisconnectHandler.class);
