@@ -38,7 +38,7 @@ public class SendMessageTest {
 		return new RabbitAdmin(connectionFactory());
 	}
 
-	@Test
+	//@Test
 	public void send() {
 		SecInfo sec = new SecInfo();
 		template.convertAndSend("", sec);
