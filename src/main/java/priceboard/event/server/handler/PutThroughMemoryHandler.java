@@ -29,10 +29,9 @@ public class PutThroughMemoryHandler implements EventHandler {
 		List<PutThrough> putThroughs = (List<PutThrough>) memory.get("PutThrough", putThrough.getFloorCode());
 		if (putThroughs == null) {
 			putThroughs = new ArrayList<PutThrough>();
+			memory.put("PutThrough", putThrough.getFloorCode(), putThroughs);
 		}
 		putThroughs.add(putThrough);
-		memory.put("PutThrough", putThrough.getFloorCode(), putThroughs);
-				
 	}
 
 }

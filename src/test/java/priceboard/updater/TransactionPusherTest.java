@@ -11,15 +11,13 @@ import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
 import priceboard.pusher.TransactionPusher;
 import priceboard.room.ClientRoomManager;
-import priceboard.room.StockRoomManager;
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
+import priceboard.stock.compress.Mashaller;
 import vn.com.vndirect.priceservice.datamodel.Transaction;
 
 public class TransactionPusherTest {
 
 	private ClientRoomManager clientRoomManager;
-	private StockRoomManager stockRoomManager;
-
+	
 	private JsonParser parser;
 
 	private TransactionPusher transactionPusher;
@@ -30,9 +28,8 @@ public class TransactionPusherTest {
 	public void setUp() {
 		sentData.clear();
 		clientRoomManager = new ClientRoomManager();
-		stockRoomManager = new StockRoomManager();
 		parser = new JsonParser();
-		transactionPusher = new TransactionPusher(clientRoomManager,stockRoomManager, parser);
+		transactionPusher = new TransactionPusher(clientRoomManager, parser, new Mashaller());
 	}
 
 	@Test
@@ -49,9 +46,9 @@ public class TransactionPusherTest {
 			};
 		};
 		
-		stockRoomManager.addStockToRoom("10", "HAG");
-		clientRoomManager.addClientToRoom("10", client1);
-		clientRoomManager.addClientToRoom("HAG", client2);
+		
+		clientRoomManager.addClientToTransaction("10", client1);
+		clientRoomManager.addClientToTransaction("HAG", client2);
 		
 		Transaction transactionInfo = new Transaction();
 		transactionInfo.setSymbol("HAG");
@@ -65,10 +62,11 @@ public class TransactionPusherTest {
 			
 		transactionPusher.push(transactionInfo);
 		System.out.println("Gt real: "+sentData.get(0));
-		String expected = "{\"type\":\"TRANSACTION\",\"data\":{\"highest\":24.0,\"last\":23.3,\"lastVol\":0.0,\"lowest\":0.0,\"matchType\":null,\"symbol\":\"HAG\",\"openPrice\":0.0,\"time\":null,\"floorCode\":\"02\",\"stockId\":0.0,\"accumulatedVal\":3.2432123E7,\"accumulatedVol\":3423.0,\"tradingDate\":\"2015019\"}}";
-		Assert.assertEquals(2, sentData.size());
+		//String expected = "{\"type\":\"TRANSACTION\",\"data\":{\"highest\":24.0,\"last\":23.3,\"lastVol\":0.0,\"lowest\":0.0,\"matchType\":null,\"symbol\":\"HAG\",\"openPrice\":0.0,\"time\":null,\"floorCode\":\"02\",\"stockId\":0.0,\"accumulatedVal\":3.2432123E7,\"accumulatedVol\":3423.0,\"tradingDate\":\"2015019\"}}";
+		String expected = "{\"type\":\"TRANSACTION\",\"data\":\"02|HAG|24.0|23.3|0.0|0.0||0.0||||\"}";
+		Assert.assertEquals(1, sentData.size());
 		Assert.assertEquals(expected, sentData.get(0));
-		Assert.assertEquals(expected, sentData.get(1));
+		
 	}
 
 }

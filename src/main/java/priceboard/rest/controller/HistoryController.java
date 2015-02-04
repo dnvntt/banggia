@@ -49,7 +49,6 @@ public class HistoryController {
 				continue;
 			}
 			Collections.sort(marketList, new Comparator<Market>() {
-
 				@Override
 				public int compare(Market o1, Market o2) {
 					return o1.getTradingTime().compareTo(o2.getTradingTime());
@@ -62,8 +61,7 @@ public class HistoryController {
 		return marketHistoryByFloorCode;
 	}
 
-	private HashMap<String, List<String>> createMarketInfo(
-			List<Market> marketList) {
+	private HashMap<String, List<String>> createMarketInfo(List<Market> marketList) {
 		HashMap<String, List<String>> marketInfo = new HashMap<String, List<String>>();
 		List<String> tradingTimes = new ArrayList<String>();
 		List<String> sequences = new ArrayList<String>();
@@ -73,8 +71,8 @@ public class HistoryController {
 		for (Market market : marketList) {
 			tradingTimes.add(market.getTradingTime());
 			sequences.add(Integer.toString(market.getSequence()));
-			totalShareTradeds
-					.add(Double.toString(market.getTotalShareTraded()));
+			totalShareTradeds.add(Double.toString(market.getTotalShareTraded()));
+			priorMarketIndexs.add(Double.toString(market.getPriorMarketIndex()));
 			marketIndexs.add(Double.toString(market.getMarketIndex()));
 		}
 

@@ -1,6 +1,7 @@
 package priceboard.util;
 
 import priceboard.reloaddata.Company;
+import vn.com.vndirect.datafeed.util.MarketStatisMessage;
 import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
@@ -21,7 +22,10 @@ public class InstanceChecker {
 	public static boolean isMarket(Object source) {
 		return Market.class.isInstance(source);
 	}
-	public static boolean isPutThroughTransaction  (Object source) {
+	public static boolean isMarketStatisMessage(Object source) {
+		return MarketStatisMessage.class.isInstance(source);
+	}
+	public static boolean isPutThroughTransaction(Object source) {
 		return PutThroughTransaction  .class.isInstance(source);
 	}
 	public static boolean isPutThrough(Object source) {

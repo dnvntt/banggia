@@ -28,7 +28,7 @@ public class MarketMessageRabbitConfigurationListener extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("MARKET","MARKET_PUSH", "CLEAR_DATA", "COMPRESS"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("MARKET","MARKET_PUSH", "CLEAR_DATA"));
 	}
 
 	

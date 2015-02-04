@@ -25,12 +25,12 @@ public class PostHandler implements EventHandler {
 
 	private JsonParser parser;
 	private InMemory memory;
-
+	private ClientRoomManager clientRoomManager;
 	@Autowired
-	public PostHandler(ClientRoomManager roomManager, JsonParser parser,
-			InMemory memory, TransactionPusher transactionPusher) {
+	public PostHandler(ClientRoomManager roomManager, JsonParser parser,InMemory memory) {
 		this.parser = parser;
 		this.memory = memory;
+		this.clientRoomManager = roomManager;
 	}
 
 	@Override
@@ -46,6 +46,9 @@ public class PostHandler implements EventHandler {
 		}
 		String symbol = jsonSymbolNode.asText();
 		if (symbol.equals(""))		return;
+		
+		clientRoomManager.addClientToTransaction(symbol,client);
+		
 		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();
 
 		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);

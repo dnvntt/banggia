@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import priceboard.json.JsonParser;
+import vn.com.vndirect.datafeed.util.MarketStatisMessage;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.MarketStatisMessage;
 
 @Controller
 @RequestMapping("/priceservice/ceilingfloorcount")
@@ -34,7 +34,7 @@ public class CeilingFloorCountController {
 	public @ResponseBody Map<String, Map<String, String>> getCeilingFloor() {
 		Map<String, Map<String, String>> marketCeilingFloor = new HashMap<String, Map<String, String>>();
 		List<MarketStatisMessage> marketList = (List<MarketStatisMessage>) memory
-				.get("CeilingFloor", "");
+				.get("CeilingFloor", "ALL");
 
 		Map<String, String> marketCeilingInfos = new HashMap<String, String>();
 		Map<String, String> marketfloorInfos = new HashMap<String, String>();

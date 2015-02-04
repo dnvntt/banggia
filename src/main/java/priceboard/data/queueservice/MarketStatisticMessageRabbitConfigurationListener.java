@@ -11,14 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StockMessageRabbitConfigurationListener extends
+public class MarketStatisticMessageRabbitConfigurationListener extends
 		MessageRabbitConfigurationListener {
-	
-	
+
 	@Autowired
-	public StockMessageRabbitConfigurationListener(
-			@Value("${secinfo_external_queue}") String queueName,
-			@Value("${secinfo_fanout_exchange}") String exchageName) {
+	public MarketStatisticMessageRabbitConfigurationListener(
+			@Value("${market_static_queue}") String queueName, 
+			@Value("${market_statistic_exchange}") String exchageName) {
 		super(queueName, exchageName);
 	}
 
@@ -29,11 +28,14 @@ public class StockMessageRabbitConfigurationListener extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH", "CLEAR_DATA"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("MARKET_STATISTIC","MARKET_STATISTIC_PUSH"));
 	}
+
 	
 	@Bean
-	public SimpleMessageListenerContainer stockListenerContainer() {
+	public SimpleMessageListenerContainer marketStatisticListenerContainer() {
 		return super.createListenerContainer();
 	}
+
+
 }

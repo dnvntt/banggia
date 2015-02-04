@@ -3,7 +3,6 @@ package priceboard.event.client.handler;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,6 @@ import priceboard.json.JsonParser;
 import priceboard.pusher.CeilingFloorPusher;
 import priceboard.pusher.StockPusher;
 import priceboard.room.ClientRoomManager;
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -23,7 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class StockRegisterHandler implements EventHandler {
 
 	private ClientRoomManager clientRoomManager;
-	private static final Logger logger = Logger.getLogger(StockRegisterHandler.class);
+	//private static final Logger logger = Logger.getLogger(StockRegisterHandler.class);
 	private StockPusher pusher;
 	private CeilingFloorPusher ceilingFloorPusher;
 	private JsonParser parser;
@@ -42,10 +40,8 @@ public class StockRegisterHandler implements EventHandler {
 		ClientConnection client = (ClientConnection) map.get("CLIENT");
 		JsonNode dataNode = (JsonNode) map.get("data");
 		List<String> codes = parser.parseDataCodes(dataNode);
-		logger.info("check codes:" +codes) ;
 		if (codes == null || codes.isEmpty()) 
 			{
-				logger.info("check codes == null inside  handle of  registConsumer ");
 				return;
 			}
 
@@ -54,15 +50,7 @@ public class StockRegisterHandler implements EventHandler {
 		
 		if (!intervalRegister(dataNode)) {
 			if(nameMessage.equals("STOCK")) {
-				logger.info("inside handle of registConsumer STOCK ");
 				addClientToRoom(codes, client);
-				//pushStockToClient(codes, client);
-			}
-			
-			if(nameMessage.equals("CEILING_FLOOR_COUNT")) 
-			{
-				logger.info("inside handle of registConsumer CEILING_FLOOR_COUNT");
-				//pushStatisticToClient(client) ;
 			}
 		}
 	}
@@ -77,15 +65,5 @@ public class StockRegisterHandler implements EventHandler {
 		});
 	}
 	
-	private void pushStockToClient(List<String> codes, ClientConnection client) {
-		codes.forEach((code) -> {	
-			logger.info("Inside send pushStockToClient" + code);
-			pusher.push(client, new SecInfo(){{setCode(code);}});   
-		});
-	}
-	
-	private void pushStatisticToClient(ClientConnection client) {
-		logger.info("Inside send pushStatisticToClient");
-		ceilingFloorPusher.push(client); 
-	}
+
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
 import priceboard.room.ClientRoomManager;
+import priceboard.stock.compress.Mashaller;
 import priceboard.util.InstanceChecker;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
@@ -18,13 +19,13 @@ public class BroadcastPusher implements Pusher {
 	private ClientRoomManager roomManager;
 	private JsonParser parser;
 	private InMemory memory;
-
+	private Mashaller mashaller;
 	@Autowired
-	public BroadcastPusher(ClientRoomManager roomManager, JsonParser parser,
-			InMemory memory) {
+	public BroadcastPusher(ClientRoomManager roomManager, JsonParser parser,InMemory memory,Mashaller mashaller) {
 		this.roomManager = roomManager;
 		this.parser = parser;
 		this.memory = memory;
+		this.mashaller = mashaller;
 	}
 
 	@Override
@@ -42,11 +43,13 @@ public class BroadcastPusher implements Pusher {
 		}
 		
 		if (InstanceChecker.isPutThroughTransaction(source)) {
-			return parser.buildReturnJsonStockAsString("PT_ORDER", source);
+			String compression = mashaller.compress(source);
+			return parser.buildReturnJsonStockAsString("PT_ORDER", compression);
 		} 
 		
 		if (InstanceChecker.isPutThrough(source)) {
-			return parser.buildReturnJsonStockAsString("AD_ORDER", source);
+			String compression = mashaller.compress(source);
+			return parser.buildReturnJsonStockAsString("AD_ORDER", compression);
 		}
 
 		return "";

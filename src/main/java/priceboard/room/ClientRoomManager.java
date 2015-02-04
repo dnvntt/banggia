@@ -18,7 +18,8 @@ public class ClientRoomManager {
 
 	private Map<String, CopyOnWriteArrayList<ClientConnection>> roomStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
 	private Map<ClientConnection, CopyOnWriteArrayList<String>> currentRoomsOfClient = new HashMap<ClientConnection, CopyOnWriteArrayList<String>>();
-
+	private Map<ClientConnection, String> currentTransactionOfClient = new HashMap<ClientConnection, String>();
+	private Map<String, CopyOnWriteArrayList<ClientConnection> >transactionStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
 	private Lock lock = new ReentrantLock();
 
 	public ClientRoomManager() {
@@ -34,13 +35,23 @@ public class ClientRoomManager {
 			lock.unlock();
 		}
 	}
+	
+	public void addClientToTransaction(String room, ClientConnection client) {
+		lock.lock();
+		try {
+			updateTransactionStorage(room, client);
+		} finally {
+			lock.unlock();
+		}
+	}
 
 	private void updateRoomStorage(String room, ClientConnection client) {
 		CopyOnWriteArrayList<ClientConnection> clients = roomStorage.get(room);
 		if (clients == null) {
 			clients = new CopyOnWriteArrayList<ClientConnection>();
 		}
-		clients.add(client);
+		if(!clients.contains(client))
+			clients.add(client);
 		roomStorage.put(room, clients);		
 	}
 	
@@ -49,8 +60,38 @@ public class ClientRoomManager {
 		if (currentRooms == null) {
 			currentRooms = new CopyOnWriteArrayList<String>();
 		}
-		currentRooms.add(room);
+		if(!currentRooms.contains(room))
+			  currentRooms.add(room);
+		
 		currentRoomsOfClient.put(client, currentRooms);
+	}
+	
+	
+	private void updateTransactionStorage(String room,ClientConnection client) {
+		String currentTransaction =currentTransactionOfClient.get(client);
+		if (currentTransaction != null) {
+		//remove client out of this stock code
+			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage.get(currentTransaction);
+		    clients0.remove(client);
+		}
+		currentTransactionOfClient.put(client, room);
+		
+		//add client into new stock code transaction
+		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage.get(room);
+		if (clients == null) {
+			clients = new CopyOnWriteArrayList<ClientConnection>();
+			transactionStorage.put(room,clients);
+		}
+		if(!clients.contains(client))
+			clients.add(client);
+	}
+	
+	public List<ClientConnection> getClientInTransaction(String room) {
+		List<ClientConnection> clients = transactionStorage.get(room);
+		if (clients == null) {
+			return new ArrayList<ClientConnection>();
+		}
+		return transactionStorage.get(room);
 	}
 
 

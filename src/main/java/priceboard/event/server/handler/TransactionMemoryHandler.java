@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import priceboard.event.EventHandler;
+import priceboard.stock.compress.Mashaller;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Transaction;
 
@@ -20,18 +21,19 @@ public class TransactionMemoryHandler implements EventHandler {
 	@Autowired
 	public TransactionMemoryHandler(InMemory memory) {
 		this.memory = memory;
+		
 	}
 
 	@Override
 	public void handle(Object source) {
 		Transaction transaction = (Transaction) source;
+		
 		List<Transaction> transactions = (List<Transaction>) memory.get("TRANSACTION", transaction.getSymbol());
 		if (transactions == null) {
 			transactions = new ArrayList<Transaction>();
+			memory.put("TRANSACTION", transaction.getSymbol(), transactions);
 		}
 		transactions.add(transaction);
-		memory.put("TRANSACTION", transaction.getSymbol(), transactions);
-		
 	}
 
 }

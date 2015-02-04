@@ -11,8 +11,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
+import vn.com.vndirect.datafeed.util.MarketStatisMessage;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.MarketStatisMessage;
 
 @Component
 @DependsOn("bussinessDateLoader")
@@ -43,8 +43,7 @@ public class CeilingFloorLoader {
 	
 	private void loadSnapshotCeilingfloorToMemory(Map<String, String> searchCondition) throws Exception {
 		List<MarketStatisMessage> marketList = (List<MarketStatisMessage>) elasticSearchClient.getDataByIndex("marketstatismessage", "snapshot", MarketStatisMessage.class, searchCondition);
-
-		memory.put("CeilingFloor","", marketList);
+		memory.put("CeilingFloor","ALL", marketList);
 	}
 	 
 	

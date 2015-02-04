@@ -27,7 +27,6 @@ public class ClearDataHandler implements EventHandler {
 
 	@Autowired
 	public ClearDataHandler(InMemory memory, StockRoomManager stockRoomManager) {
-		System.out.println("Loading order: create ClearLoader instance");
 		this.stockRoomManager = stockRoomManager;
 		this.memory = memory;
 		isClearData=false;
@@ -57,10 +56,8 @@ public class ClearDataHandler implements EventHandler {
 
 	public void clearIfNeed() {	
 		if (isClearData){
-			System.out.println("Calling clear memory data...");
 			List<String> stocks = stockRoomManager
 					.getStocksByRoom(FloorCode.HNX.getCode());
-			System.out.println("No stock of HNX:" + stocks.size());
 			
 			stocks.forEach((stock) -> {
 				memory.remove("STOCK", stock);
@@ -80,6 +77,8 @@ public class ClearDataHandler implements EventHandler {
 				memory.remove("STOCK_COMPRESSION", stock);
 				memory.remove("TRANSACTION", stock);
 			});
+			
+			memory.remove("CeilingFloor", "ALL");
 
 			memory.remove("PutThroughTransaction",  FloorCode.HOSE.getCode());
 			memory.remove("PutThroughTransaction",  FloorCode.HNX.getCode());

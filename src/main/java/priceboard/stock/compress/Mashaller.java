@@ -1,11 +1,16 @@
 package priceboard.stock.compress;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import priceboard.util.InstanceChecker;
 import vn.com.vndirect.priceservice.datamodel.Market;
+import vn.com.vndirect.priceservice.datamodel.PutThrough;
+import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
+import vn.com.vndirect.priceservice.datamodel.Transaction;
 import vn.com.web.commons.utility.DateUtils;
 
 @Component
@@ -16,9 +21,22 @@ public class Mashaller {
 	public String compress(Object source) {
 		if (InstanceChecker.isStock(source)) {
 			return compressStock((SecInfo) source);
-		} else if (InstanceChecker.isMarket(source)) {
+		}
+		if (InstanceChecker.isMarket(source)) {
 			return compressMarket((Market) source);
 		}
+		if (InstanceChecker.isTransaction(source)) {
+			return compressTransaction((Transaction) source);
+		}
+
+		if (InstanceChecker.isPutThrough(source)) {
+			return compressPutThrough((PutThrough) source);
+		}
+
+		if (InstanceChecker.isPutThroughTransaction(source)) {
+			return compressPtOrder((PutThroughTransaction) source);
+		}
+
 		return StringUtils.EMPTY;
 	}
 	
@@ -80,7 +98,7 @@ public class Mashaller {
 		append(builder, "");
 		append(builder, market.getChangedIndex());
 		append(builder, market.getTradingTime());
-		append(builder, market.getTradingDate());
+		append(builder, convertToUnixtime(market.getTradingDate()));
 		append(builder, market.getFloorCode());
 		append(builder, market.getMarketIndex());
 		append(builder, market.getPriorMarketIndex());
@@ -92,12 +110,73 @@ public class Mashaller {
 		return builder.toString();
 	}
 	
+	public String compressTransaction(Transaction transaction) {
+		StringBuilder builder = new StringBuilder();		
+		append(builder, transaction.getFloorCode());
+		append(builder, transaction.getSymbol());
+		append(builder, transaction.getHighest());
+		append(builder, transaction.getLast());
+		append(builder, transaction.getLastVol());
+		append(builder, transaction.getLowest());
+		append(builder, transaction.getMatchType());
+		
+		append(builder, transaction.getOpenPrice());
+		append(builder, transaction.getTime());
+		append(builder,"");
+		append(builder, "");
+		
+		return builder.toString();
+	}
+	
+	public String compressPutThrough(PutThrough putThrough)
+	{
+		StringBuilder builder = new StringBuilder();
+		append(builder, putThrough.getFloorCode());
+		append(builder, putThrough.getStockSymbol());
+		append(builder, putThrough.getPrice());
+		append(builder, putThrough.getVol());
+		append(builder, putThrough.getType());
+		append(builder, putThrough.getStatus());
+		append(builder, putThrough.getTime());
+		
+		append(builder, "");
+		append(builder, "");
+		append(builder, "");
+		append(builder, "");
+		
+		return builder.toString();
+	}
+	
+	public String compressPtOrder(PutThroughTransaction putThroughTransaction)
+	{
+		StringBuilder builder = new StringBuilder();
+		append(builder, putThroughTransaction.getFloorCode());
+		append(builder, putThroughTransaction.getSymbol());
+		append(builder, putThroughTransaction.getPrice());
+		append(builder, putThroughTransaction.getVolume());
+		append(builder, putThroughTransaction.getTime());
+		
+		append(builder, "");
+		append(builder, "");
+		append(builder, "");
+		append(builder, "");
+		
+		return builder.toString();
+	}
+	
+	
 	private void append(StringBuilder builder, Object value) {
 		if (value == null) {
 			builder.append(SEPARATOR);
 		} else {
 			builder.append(value).append(SEPARATOR);
 		}
+	}
+	private static String convertToUnixtime(Date date)
+	{
+		if (date ==null) return "";
+		long unixTime = date.getTime() / 1000;
+		return    String.valueOf(unixTime *1000);
 	}
 
 }

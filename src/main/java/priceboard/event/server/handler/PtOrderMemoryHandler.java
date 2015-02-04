@@ -28,10 +28,9 @@ public class PtOrderMemoryHandler implements EventHandler {
 			List<PutThroughTransaction> putThroughTransactions = (List<PutThroughTransaction>) memory.get("PutThroughTransaction", putThroughTransaction.getFloorCode());
 			if (putThroughTransactions == null) {
 				putThroughTransactions = new ArrayList<PutThroughTransaction>();
+				memory.put("PutThroughTransaction", putThroughTransaction.getFloorCode(), putThroughTransactions);
 			}
 			putThroughTransactions.add(putThroughTransaction);
-			memory.put("PutThroughTransaction", putThroughTransaction.getFloorCode(), putThroughTransactions);
-
 	}
 
 }
