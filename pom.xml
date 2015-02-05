@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>vn.com.vndirect.priceservice</groupId>
 			<artifactId>datamodel</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.9</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-simple</artifactId>
