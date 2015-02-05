@@ -15,21 +15,21 @@ import priceboard.stock.compress.Mashaller;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
 
-public class MarketHandlerTest {
+public class MarketPushHandlerTest {
 
-	private ClientRoomManager roomManager;
+	private ClientRoomManager clientRoomManager;
 	
 	@Before
 	public void setUp() {
-		roomManager = new ClientRoomManager();
+		clientRoomManager = new ClientRoomManager();
 	}
 	
 	@Test
 	public void testMarketHandlerPushData() {
 		List<String> sentData = new ArrayList<String>();
-		BroadcastPusher broadCastPusher = new BroadcastPusher(roomManager, new JsonParser(), new InMemory(), new Mashaller());
+		BroadcastPusher broadCastPusher = new BroadcastPusher(clientRoomManager, new JsonParser(), new InMemory(), new Mashaller());
 		for(int i = 0; i < 10; i++) {
-			roomManager.addClientToRoom("VND" + i, new ClientConnection() {
+			clientRoomManager.addClientToRoom("VND" + i, new ClientConnection() {
 				
 				@Override
 				public void send(String data) {

@@ -19,8 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @EventHandlerApplyFor(priority = 2, values = { "stopConsume" })
 public class StopConsumeHandler implements EventHandler {
 
-	private static final Logger logger = Logger
-			.getLogger(StopConsumeHandler.class);
+	private static final Logger logger = Logger.getLogger(StopConsumeHandler.class);
 	private JsonParser parser;
 	private ClientRoomManager clientRoomManager;
 
