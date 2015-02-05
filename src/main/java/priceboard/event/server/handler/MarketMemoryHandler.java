@@ -37,9 +37,9 @@ public class MarketMemoryHandler implements EventHandler {
 			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", key);
 			if (marketList == null) {
 				marketList = new ArrayList<Market>();
-				memory.put("ALL_MARKET", key,marketList);
 			}
 			marketList.add((Market) source);
+			memory.put("ALL_MARKET", key,marketList);
 		} 
 	}
 }
