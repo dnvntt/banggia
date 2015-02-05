@@ -19,7 +19,7 @@ public class ClientRoomManager {
 	private Map<String, CopyOnWriteArrayList<ClientConnection>> roomStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
 	private Map<ClientConnection, CopyOnWriteArrayList<String>> currentRoomsOfClient = new HashMap<ClientConnection, CopyOnWriteArrayList<String>>();
 	private Map<ClientConnection, String> currentTransactionOfClient = new HashMap<ClientConnection, String>();
-	private Map<String, CopyOnWriteArrayList<ClientConnection> >transactionStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
+	private Map<String, CopyOnWriteArrayList<ClientConnection>> transactionStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
 	private Lock lock = new ReentrantLock();
 
 	public ClientRoomManager() {
@@ -35,7 +35,7 @@ public class ClientRoomManager {
 			lock.unlock();
 		}
 	}
-	
+
 	public void addClientToTransaction(String room, ClientConnection client) {
 		lock.lock();
 		try {
@@ -50,42 +50,44 @@ public class ClientRoomManager {
 		if (clients == null) {
 			clients = new CopyOnWriteArrayList<ClientConnection>();
 		}
-		if(!clients.contains(client))
+		if (!clients.contains(client))
 			clients.add(client);
-		roomStorage.put(room, clients);		
+		roomStorage.put(room, clients);
 	}
-	
+
 	private void updateCurrentRoomOfClient(String room, ClientConnection client) {
-		CopyOnWriteArrayList<String> currentRooms = currentRoomsOfClient.get(client);
+		CopyOnWriteArrayList<String> currentRooms = currentRoomsOfClient
+				.get(client);
 		if (currentRooms == null) {
 			currentRooms = new CopyOnWriteArrayList<String>();
 		}
-		if(!currentRooms.contains(room))
-			  currentRooms.add(room);
-		
+		if (!currentRooms.contains(room))
+			currentRooms.add(room);
+
 		currentRoomsOfClient.put(client, currentRooms);
 	}
-	
-	
-	private void updateTransactionStorage(String room,ClientConnection client) {
-		String currentTransaction =currentTransactionOfClient.get(client);
+
+	private void updateTransactionStorage(String room, ClientConnection client) {
+		String currentTransaction = currentTransactionOfClient.get(client);
 		if (currentTransaction != null) {
-		//remove client out of this stock code
-			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage.get(currentTransaction);
-		    clients0.remove(client);
+			// remove client out of this stock code
+			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage
+					.get(currentTransaction);
+			clients0.remove(client);
 		}
 		currentTransactionOfClient.put(client, room);
-		
-		//add client into new stock code transaction
-		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage.get(room);
+
+		// add client into new stock code transaction
+		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage
+				.get(room);
 		if (clients == null) {
 			clients = new CopyOnWriteArrayList<ClientConnection>();
-			transactionStorage.put(room,clients);
+			transactionStorage.put(room, clients);
 		}
-		if(!clients.contains(client))
+		if (!clients.contains(client))
 			clients.add(client);
 	}
-	
+
 	public List<ClientConnection> getClientInTransaction(String room) {
 		List<ClientConnection> clients = transactionStorage.get(room);
 		if (clients == null) {
@@ -94,6 +96,15 @@ public class ClientRoomManager {
 		return transactionStorage.get(room);
 	}
 
+	public void removeClientFromTransaction(ClientConnection client) {
+		String currentTransaction = currentTransactionOfClient.get(client);
+		if (currentTransaction != null) {
+			currentRoomsOfClient.remove(client);
+			List<ClientConnection> clients = roomStorage.get(currentTransaction);
+			clients.remove(client);
+		}
+
+	}
 
 	public List<ClientConnection> getClientInRoom(String room) {
 		List<ClientConnection> clients = roomStorage.get(room);
@@ -107,19 +118,22 @@ public class ClientRoomManager {
 		List<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms != null) {
 			Iterator<String> rooms = currentRooms.iterator();
-			while(rooms.hasNext()) {
+			while (rooms.hasNext()) {
 				String room = rooms.next();
 				removeClientFromStorage(room, client);
 			}
 		}
 		currentRoomsOfClient.remove(client);
+		
+		removeClientFromTransaction(client);
+
 	}
-	
+
 	public void removeClientFromRoom(String room, ClientConnection client) {
 		removeClientFromStorage(room, client);
 		removeRoomOfClientFromCurrentRooms(room, client);
 	}
-	
+
 	private void removeClientFromStorage(String room, ClientConnection client) {
 		List<ClientConnection> clients = roomStorage.get(room);
 		if (clients != null) {
@@ -127,13 +141,13 @@ public class ClientRoomManager {
 		}
 	}
 
-	private void removeRoomOfClientFromCurrentRooms(String room, ClientConnection client) {
+	private void removeRoomOfClientFromCurrentRooms(String room,
+			ClientConnection client) {
 		List<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms != null) {
 			currentRooms.remove(room);
-		}		
+		}
 	}
-	
 
 	public List<String> getCurrentRoomsOfClient(ClientConnection client) {
 		List<String> rooms = currentRoomsOfClient.get(client);

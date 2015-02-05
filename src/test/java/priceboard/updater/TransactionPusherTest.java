@@ -62,7 +62,6 @@ public class TransactionPusherTest {
 			
 		transactionPusher.push(transactionInfo);
 		System.out.println("Gt real: "+sentData.get(0));
-		//String expected = "{\"type\":\"TRANSACTION\",\"data\":{\"highest\":24.0,\"last\":23.3,\"lastVol\":0.0,\"lowest\":0.0,\"matchType\":null,\"symbol\":\"HAG\",\"openPrice\":0.0,\"time\":null,\"floorCode\":\"02\",\"stockId\":0.0,\"accumulatedVal\":3.2432123E7,\"accumulatedVol\":3423.0,\"tradingDate\":\"2015019\"}}";
 		String expected = "{\"type\":\"TRANSACTION\",\"data\":\"02|HAG|24.0|23.3|0.0|0.0||0.0||||\"}";
 		Assert.assertEquals(1, sentData.size());
 		Assert.assertEquals(expected, sentData.get(0));

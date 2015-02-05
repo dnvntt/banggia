@@ -2,6 +2,7 @@ package priceboard.event.client.model;
 
 public class DataReturn {
 	private String name;
+	private Object data;
 	public String getName() {
 		return name;
 	}
@@ -14,5 +15,4 @@ public class DataReturn {
 	public void setData(Object data) {
 		this.data = data;
 	}
-	private Object data;
 }

@@ -35,6 +35,8 @@ public class CeilingFloorCountController {
 		Map<String, Map<String, String>> marketCeilingFloor = new HashMap<String, Map<String, String>>();
 		List<MarketStatisMessage> marketList = (List<MarketStatisMessage>) memory
 				.get("CeilingFloor", "ALL");
+		
+		if (marketList==null) return null;
 
 		Map<String, String> marketCeilingInfos = new HashMap<String, String>();
 		Map<String, String> marketfloorInfos = new HashMap<String, String>();
@@ -50,10 +52,6 @@ public class CeilingFloorCountController {
 		marketCeilingFloor.put("floor", marketfloorInfos);
 
 		return marketCeilingFloor;
-	}
-
-	private boolean isEmpty(String codes) {
-		return codes == null || codes.trim().length() == 0;
 	}
 
 }

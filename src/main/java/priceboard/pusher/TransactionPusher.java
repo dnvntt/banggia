@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
 import priceboard.room.ClientRoomManager;
-import priceboard.room.StockRoomManager;
 import priceboard.stock.compress.Mashaller;
 import vn.com.vndirect.priceservice.datamodel.Transaction;
 

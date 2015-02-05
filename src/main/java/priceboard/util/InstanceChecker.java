@@ -26,7 +26,7 @@ public class InstanceChecker {
 		return MarketStatisMessage.class.isInstance(source);
 	}
 	public static boolean isPutThroughTransaction(Object source) {
-		return PutThroughTransaction  .class.isInstance(source);
+		return PutThroughTransaction.class.isInstance(source);
 	}
 	public static boolean isPutThrough(Object source) {
 		return PutThrough.class.isInstance(source);

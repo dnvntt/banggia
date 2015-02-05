@@ -12,7 +12,6 @@ import priceboard.event.EventHandler;
 import priceboard.event.client.model.DataReturn;
 import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.json.JsonParser;
-import priceboard.pusher.TransactionPusher;
 import priceboard.room.ClientRoomManager;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Transaction;
@@ -27,10 +26,10 @@ public class PostHandler implements EventHandler {
 	private InMemory memory;
 	private ClientRoomManager clientRoomManager;
 	@Autowired
-	public PostHandler(ClientRoomManager roomManager, JsonParser parser,InMemory memory) {
+	public PostHandler(ClientRoomManager clientRoomManager, JsonParser parser,InMemory memory) {
 		this.parser = parser;
 		this.memory = memory;
-		this.clientRoomManager = roomManager;
+		this.clientRoomManager = clientRoomManager;
 	}
 
 	@Override

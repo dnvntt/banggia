@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
 import priceboard.room.ClientRoomManager;
-import vn.com.vndirect.lib.commonlib.memory.InMemory;
 
 @Component
 public class CeilingFloorPusher  implements Pusher{
 	private JsonParser parser;
 	private ClientRoomManager roomManager;
 	@Autowired
-	public CeilingFloorPusher(ClientRoomManager roomManager, JsonParser parser,InMemory memory) {
+	public CeilingFloorPusher(ClientRoomManager roomManager, JsonParser parser) {
 		this.parser = parser;
 		this.roomManager = roomManager;
 	}
