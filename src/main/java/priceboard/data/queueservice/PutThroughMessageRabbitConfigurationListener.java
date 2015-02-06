@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PtOrderMessageRabbitConfigurationList extends
+public class PutThroughMessageRabbitConfigurationListener extends
 		MessageRabbitConfigurationListener {
 	
 	
 	@Autowired
-	public PtOrderMessageRabbitConfigurationList(
-			@Value("${putThrough_transaction_external_queue}") String queueName,
-			@Value("${putThrough_transaction_fanout_exchange}") String exchageName) {    
+	public PutThroughMessageRabbitConfigurationListener(
+			@Value("${putThrough_external_queue}") String queueName,
+			@Value("${putThrough_fanout_exchange}") String exchageName) {    
 		super(queueName, exchageName);
 	}
 
@@ -29,11 +29,11 @@ public class PtOrderMessageRabbitConfigurationList extends
 	}
 
 	private void setMessageHandler() {
-		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PTORDER", "PTORDER_PUSH"));
+		this.handlersOfMessage = this.eventHandlerFilter.filter(handlers, Arrays.asList("PutThrough", "PutThrough_PUSH"));
 	}
 	
 	@Bean
-	public SimpleMessageListenerContainer PtOrderListenerContainer() {
+	public SimpleMessageListenerContainer PutThroughListenerContainer() {
 		return super.createListenerContainer();
 	}
 

@@ -3,6 +3,7 @@ package priceboard.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import priceboard.reloaddata.Company;
 import vn.com.vndirect.datafeed.util.MarketStatisMessage;
 import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
@@ -22,5 +23,6 @@ public class InstanceCheckerTest {
 		Assert.assertTrue(InstanceChecker.isPutThroughTransaction(new PutThroughTransaction()));
 		Assert.assertTrue(InstanceChecker.isTransaction(new Transaction()));
 		Assert.assertTrue(InstanceChecker.isPutThrough(new PutThrough()));
+		Assert.assertTrue(InstanceChecker.isCompany(new Company()));
 	}
 }

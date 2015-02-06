@@ -94,6 +94,19 @@ public class MessageRabbitConfigurationListener {
 	public MessageListenerAdapter createListenerAdapter() {
 		return new MessageListenerAdapter(this, messageConverter);
 	}
+	
+	
+	public void setAmqpAdmin(AmqpAdmin amqpAdmin) {
+		this.amqpAdmin = amqpAdmin;
+	}
+	
+	public EventHandlerFilter getEventHandlerFilter() {
+		return eventHandlerFilter;
+	}
+
+	public void setEventHandlerFilter(EventHandlerFilter eventHandlerFilter) {
+		this.eventHandlerFilter = eventHandlerFilter;
+	}
 
 	public void handleMessage(Object object) {
 		handlersOfMessage.forEach((handler) -> {
