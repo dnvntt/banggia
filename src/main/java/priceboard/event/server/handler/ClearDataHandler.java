@@ -51,7 +51,7 @@ public class ClearDataHandler implements EventHandler {
 
 	@Scheduled(cron = "0 1 0 * * MON-FRI")
 	public void reset() {
-		isClearData = true; // reset at 12am of new day
+		isClearData = true; 
 	}
 
 	public void clearIfNeed() {	

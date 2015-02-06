@@ -30,7 +30,7 @@ public class EventHandlerFilterTest {
 		List<EventHandler> handlers = new ArrayList<EventHandler>() {{
 			add(new StockUpdateRoomHandler(null, null));
 			add(new StockMemoryHandler(null,null));
-			add(new StockRegisterHandler(null, null, null,null));
+			add(new StockRegisterHandler(null,null));
 		}};
 		
 		List<EventHandler> returnHandlers = new EventHandlerFilter().filter(handlers, Arrays.asList("STOCK", "STOCK_PUSH"));

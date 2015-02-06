@@ -10,8 +10,6 @@ import priceboard.client.ClientConnection;
 import priceboard.event.EventHandler;
 import priceboard.event.server.handler.EventHandlerApplyFor;
 import priceboard.json.JsonParser;
-import priceboard.pusher.CeilingFloorPusher;
-import priceboard.pusher.StockPusher;
 import priceboard.room.ClientRoomManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,17 +19,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class StockRegisterHandler implements EventHandler {
 
 	private ClientRoomManager clientRoomManager;
-	//private static final Logger logger = Logger.getLogger(StockRegisterHandler.class);
-	private StockPusher pusher;
-	private CeilingFloorPusher ceilingFloorPusher;
 	private JsonParser parser;
 	
 	@Autowired
-	public StockRegisterHandler(ClientRoomManager clientRoomManager, StockPusher pusher, CeilingFloorPusher ceilingFloorPusher, JsonParser parser) {
+	public StockRegisterHandler(ClientRoomManager clientRoomManager, JsonParser parser) {
 		this.clientRoomManager = clientRoomManager;
 		this.parser = parser;
-		this.pusher = pusher;
-		this.ceilingFloorPusher =ceilingFloorPusher;
 	}
 
 	@Override

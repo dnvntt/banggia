@@ -2,13 +2,10 @@ package priceboard.websocket.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-/**
- * Echo messages by implementing a Spring {@link WebSocketHandler} abstraction.
- */
+ 
 public class EchoWebSocketHandler extends TextWebSocketHandler {
 
 	private final EchoService echoService;

@@ -15,7 +15,6 @@ import vn.com.vndirect.priceservice.datamodel.SecInfo;
 @Component
 public class StockPusher implements Pusher {
 	
-	//private static final Logger logger = Logger.getLogger(StockPusher.class);
 
 	private ClientRoomManager clientRoomManager;
 
@@ -39,7 +38,6 @@ public class StockPusher implements Pusher {
 	public void push(Object source) {
 		String data = getCompressionData((SecInfo) source);
 		String code = ((SecInfo) source).getCode();
-		//logger.info("Push data to client with data from queue : " + data);
 		pushToAllClientInThisStockRoom(code, data);
 		pushToAllClientInAllRoomsOfStock(code, data);
 	}
@@ -51,7 +49,6 @@ public class StockPusher implements Pusher {
 	}
 
 	private void pushToAllClientInThisStockRoom(String code, String data) {
-		//logger.info("Inside  pushToAllClientInThisStockRoom "+ code + " with data:" + data);
 		pushAllClientInRoom(code, data);
 	}
 
@@ -62,9 +59,7 @@ public class StockPusher implements Pusher {
 
 	private void pushAllClientInRoom(String room, String data) {
 		List<ClientConnection> clients = clientRoomManager.getClientInRoom(room);
-		//logger.info("Push to all client: " + clients + " in room: " +room);
 		clients.parallelStream().forEach((client) -> {
-			//logger.info("Push to client in loop: " + client + " with data: " + data);	
 			client.send(data);	
 		});
 	}
@@ -72,7 +67,6 @@ public class StockPusher implements Pusher {
 	@Override
 	public void push(ClientConnection client, Object source) {
 		String data = getCompressionData((SecInfo) source);
-		//logger.info("Push data to 1 client: " + data);
 		client.send(data);
 	}
 

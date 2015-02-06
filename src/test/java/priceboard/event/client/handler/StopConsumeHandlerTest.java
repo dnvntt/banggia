@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 
 import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
-import priceboard.pusher.StockPusher;
 import priceboard.room.ClientRoomManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,7 +26,7 @@ public class StopConsumeHandlerTest {
 	public void setUp() {
 		parser = new JsonParser();
 		clientRoomManager = new ClientRoomManager();
-		stockRegister = new StockRegisterHandler(clientRoomManager, Mockito.mock(StockPusher.class), null, parser);
+		stockRegister = new StockRegisterHandler(clientRoomManager, parser);
 		stopConsume = new StopConsumeHandler(clientRoomManager, parser);
 	}
 	

@@ -14,7 +14,6 @@ import vn.com.vndirect.priceservice.datamodel.Transaction;
 @Component
 public class TransactionPusher implements Pusher {
 
-//	private static final Logger logger = Logger.getLogger(TransactionPusher.class);
 
 	private ClientRoomManager clientRoomManager;
 	private Mashaller mashaller;

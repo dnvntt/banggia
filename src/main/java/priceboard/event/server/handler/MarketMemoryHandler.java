@@ -11,7 +11,6 @@ import priceboard.stock.compress.Mashaller;
 import priceboard.util.InstanceChecker;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
-import vn.com.vndirect.priceservice.datamodel.Transaction;
 
 @Component
 @EventHandlerApplyFor(priority = 3, values = { "MARKET" })
@@ -33,7 +32,6 @@ public class MarketMemoryHandler implements EventHandler {
 			String compression = mashaller.compress(source);
 			memory.put("MARKET_COMPRESSION", key, compression);
 			
-			//update market History Information to memory
 			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", key);
 			if (marketList == null) {
 				marketList = new ArrayList<Market>();

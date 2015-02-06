@@ -11,7 +11,7 @@ import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
 
 public class PtOrderMemoryHandlerTest {
-private PtOrderMemoryHandler memoryHandler;
+	private PtOrderMemoryHandler memoryHandler;
 	
 	private InMemory memory;
 	

@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 
 import priceboard.client.ClientConnection;
 import priceboard.json.JsonParser;
-import priceboard.pusher.StockPusher;
 import priceboard.room.ClientRoomManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,8 +29,7 @@ public class StockRegisterHandlerTest {
 		
 		clientRoomManager = new ClientRoomManager();
 		
-		StockPusher pusher = Mockito.mock(StockPusher.class);
-		stockRegister = new StockRegisterHandler(clientRoomManager, pusher, null, parser);
+		stockRegister = new StockRegisterHandler(clientRoomManager, parser);
 	}
 	
 	@Test

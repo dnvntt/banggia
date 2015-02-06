@@ -1,7 +1,6 @@
 package priceboard.reloaddata.elasticsearch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,7 +11,6 @@ import org.elasticsearch.action.count.CountRequestBuilder;
 import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.support.broadcast.BroadcastOperationRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -26,11 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import priceboard.json.JsonParser;
-import priceboard.reloaddata.BusinessDate;
-import priceboard.reloaddata.Category;
-import priceboard.reloaddata.Company;
-import vn.com.vndirect.priceservice.datamodel.Market;
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 public class ElasticSearchClient {

@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class StockWebSocketHandler extends TextWebSocketHandler {
 
-	//private static final Logger logger = Logger.getLogger(StockWebSocketHandler.class);	
 	private JsonParser parser;
 	
 	private final InMemory memory;
@@ -73,7 +72,6 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 			String type = parser.parseType(node);
 			List<EventHandler> handlers = clientEventTypeMapping.get(type);
 			if (handlers == null) {
-				//logger.info("No handler for type: "+  type + " - Origin message: " + message + " from client: " + session.getRemoteAddress());
 				return;
 			}
 			handleMessage(handlers, session.getId(), node);

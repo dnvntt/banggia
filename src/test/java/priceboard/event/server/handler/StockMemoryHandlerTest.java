@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import priceboard.stock.compress.Mashaller;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
-import vn.com.vndirect.priceservice.datamodel.Market;
 import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 public class StockMemoryHandlerTest {
