@@ -3,13 +3,11 @@ package priceboard.event.server.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import priceboard.event.EventHandler;
 import priceboard.stock.compress.Mashaller;
-import priceboard.util.InstanceChecker;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.Market;
 
@@ -19,7 +17,6 @@ public class MarketMemoryHandler implements EventHandler {
 
 	private InMemory memory;
 	private Mashaller mashaller;
-	private static final Logger logger = Logger.getLogger(MarketMemoryHandler.class);
 	
 	@Autowired
 	public MarketMemoryHandler(InMemory memory, Mashaller mashaller) {
@@ -29,13 +26,11 @@ public class MarketMemoryHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-		//if (InstanceChecker.isMarket(source)) {
 			String key = ((Market) source).getFloorCode();
 			memory.put("MARKET", key, source);
 			String compression = mashaller.compress(source);
 			memory.put("MARKET_COMPRESSION", key, compression);
 			
-			logger.info("Check floor code of market :" + key);
 			
 			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", key);
 			if (marketList == null) {
@@ -43,6 +38,5 @@ public class MarketMemoryHandler implements EventHandler {
 			}
 			marketList.add((Market) source);
 			memory.put("ALL_MARKET", key,marketList);
-		//} 
 	}
 }
