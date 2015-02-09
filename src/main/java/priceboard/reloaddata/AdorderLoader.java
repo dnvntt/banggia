@@ -16,7 +16,7 @@ import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
 
 @Component
-@DependsOn("bussinessDateLoader")
+@DependsOn({"stockLoader","bussinessDateLoader"})
 public class AdorderLoader {
 	private ElasticSearchClient elasticSearchClient;
 	

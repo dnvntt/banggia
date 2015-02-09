@@ -47,7 +47,7 @@ public class StockLoader {
 	}
 
 	private void initHandler() {
-		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK"));//, "COMPRESS"
+		handlersOfStock = eventHandlerFilter.filter(handlers, Arrays.asList("STOCK"));
 	}
 	
 	public void load() throws Exception {

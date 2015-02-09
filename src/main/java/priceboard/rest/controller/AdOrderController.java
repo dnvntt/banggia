@@ -15,6 +15,7 @@ import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Controller
 @RequestMapping("/priceservice/adorder")
@@ -73,7 +74,8 @@ public class AdOrderController {
 	private Map<String, Object> createAdOrderInfo(PutThrough adorder) {
 		Map<String, Object> adOrderInfos = new HashMap<String, Object>();
 		adOrderInfos.put("floorCode", adorder.getFloorCode());
-		adOrderInfos.put("stockSymbol", adorder.getStockSymbol());
+		String symbol = adorder.getStockSymbol();
+		adOrderInfos.put("stockSymbol", symbol );
 		adOrderInfos.put("price", adorder.getPrice());
 		adOrderInfos.put("vol", adorder.getVol());
 		adOrderInfos.put("type", adorder.getType());
@@ -82,9 +84,12 @@ public class AdOrderController {
 		adOrderInfos.put("tradeId", adorder.getTradeId());
 		adOrderInfos.put("stockId", adorder.getStockId());
 		adOrderInfos.put("tradingDate", adorder.getTradingDate());
-		adOrderInfos.put("basicPrice", "");
-		adOrderInfos.put("ceilingPrice", "");
-		adOrderInfos.put("floorPrice", "");
+		 
+		SecInfo stock = (SecInfo) memory.get("STOCK", symbol);
+		adOrderInfos.put("basicPrice", stock.getBasicPrice());
+		adOrderInfos.put("ceilingPrice", stock.getCeilingPrice());
+		adOrderInfos.put("floorPrice", stock.getFloorPrice());
+		
 		return adOrderInfos;
 	}
 

@@ -62,7 +62,7 @@ private ClientRoomManager clientRoomManager;
 		
 			
 		broadcastPusher.push(pushThroughInfo);
-		String expected = "{\"type\":\"AD_ORDER\",\"data\":\"02|HAG|24000.0|3120.0||0||||||\"}";
+		String expected = "{\"type\":\"AD_ORDER\",\"data\":\"02|HAG|24000.0|3120.0||0|||0.0|0.0|0.0|\"}";
 		Assert.assertEquals(2, sentData.size());
 		Assert.assertEquals(expected, sentData.get(0));
 		
@@ -96,7 +96,7 @@ private ClientRoomManager clientRoomManager;
 		pushThroughTransactionInfo.setTradingDate("2015019");
 		broadcastPusher.push(pushThroughTransactionInfo);
 		System.out.println("Gt real: "+sentData.get(0));
-		String expected = "{\"type\":\"PT_ORDER\",\"data\":\"10|SAM|14000.0|4120.0||||||\"}";
+		String expected = "{\"type\":\"PT_ORDER\",\"data\":\"10|SAM|14000.0|4120.0|||0.0|0.0|0.0|\"}";
 		Assert.assertEquals(2, sentData.size());
 		Assert.assertEquals(expected, sentData.get(0));
 	}

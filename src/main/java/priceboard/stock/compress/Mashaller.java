@@ -140,9 +140,9 @@ public class Mashaller {
 		append(builder, putThrough.getTime());
 		
 		append(builder, "");
-		append(builder, "");
-		append(builder, "");
-		append(builder, "");
+		append(builder, putThrough.getBasicPrice());
+		append(builder, putThrough.getCeilingPrice());
+		append(builder, putThrough.getFloorPrice());
 		
 		return builder.toString();
 	}
@@ -157,9 +157,9 @@ public class Mashaller {
 		append(builder, putThroughTransaction.getTime());
 		
 		append(builder, "");
-		append(builder, "");
-		append(builder, "");
-		append(builder, "");
+		append(builder, putThroughTransaction.getBasicPrice());
+		append(builder, putThroughTransaction.getCeilingPrice());
+		append(builder, putThroughTransaction.getFloorPrice());
 		
 		return builder.toString();
 	}

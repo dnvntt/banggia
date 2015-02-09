@@ -3,7 +3,6 @@ package priceboard.event.client.handler;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +18,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 @EventHandlerApplyFor(priority = 2, values = { "stopConsume" })
 public class StopConsumeHandler implements EventHandler {
 
-	private static final Logger logger = Logger.getLogger(StopConsumeHandler.class);
 	private JsonParser parser;
 	private ClientRoomManager clientRoomManager;
 
@@ -31,7 +29,6 @@ public class StopConsumeHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-		logger.info("stopConsume from  client: " + source);
 		Map<String, Object> map = (Map<String, Object>) source;
 		ClientConnection client = (ClientConnection) map.get("CLIENT");
 

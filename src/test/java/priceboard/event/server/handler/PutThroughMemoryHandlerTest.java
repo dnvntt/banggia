@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 public class PutThroughMemoryHandlerTest {
 	private InMemory memory;
@@ -41,11 +42,25 @@ public class PutThroughMemoryHandlerTest {
 		listOfPutThrough.add(pushThroughTransactionInfo);
 		listOfPutThrough.add(pushThroughTransactionInfo1);
 
+		SecInfo stock1 = new SecInfo();
+		stock1.setCode("SAM");
+		stock1.setBasicPrice(8.0);
+		stock1.setCeilingPrice(8.8);
+		stock1.setFloorPrice(7.5);
+		 
+		SecInfo stock2 = new SecInfo();
+		stock2.setCode("SSI");
+		stock2.setBasicPrice(21.0);
+		stock2.setCeilingPrice(21.9);
+		stock2.setFloorPrice(19.5);
+		
+		memory.put("STOCK", "SAM", stock1);
+		memory.put("STOCK", "SSI", stock2);
+		
 		memoryHandler.handle(pushThroughTransactionInfo);
 		memoryHandler.handle(pushThroughTransactionInfo1);
 
-		List<PutThrough> putThrough = (List<PutThrough>) memory
-				.get("PutThrough", "10");
+		List<PutThrough> putThrough = (List<PutThrough>) memory.get("PutThrough", "10");
 		Assert.assertEquals(listOfPutThrough, putThrough);
 	}
 }

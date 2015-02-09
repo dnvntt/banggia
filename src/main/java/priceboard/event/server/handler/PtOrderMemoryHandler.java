@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import priceboard.event.EventHandler;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 @EventHandlerApplyFor(priority = 3, values = { "PTORDER" })
@@ -30,6 +31,12 @@ public class PtOrderMemoryHandler implements EventHandler {
 				putThroughTransactions = new ArrayList<PutThroughTransaction>();
 				memory.put("PutThroughTransaction", putThroughTransaction.getFloorCode(), putThroughTransactions);
 			}
+			
+			SecInfo stock = (SecInfo) memory.get("STOCK", putThroughTransaction.getSymbol());
+			putThroughTransaction.setBasicPrice(stock.getBasicPrice());
+			putThroughTransaction.setCeilingPrice(stock.getCeilingPrice());
+			putThroughTransaction.setFloorPrice(stock.getFloorPrice());
+			
 			putThroughTransactions.add(putThroughTransaction);
 	}
 

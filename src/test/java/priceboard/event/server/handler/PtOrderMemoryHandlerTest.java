@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 public class PtOrderMemoryHandlerTest {
 	private PtOrderMemoryHandler memoryHandler;
@@ -43,6 +44,21 @@ public class PtOrderMemoryHandlerTest {
 		
 		listOfPt.add(pushThroughTransactionInfo);
 		listOfPt.add(pushThroughTransactionInfo1);
+		
+		SecInfo stock2 = new SecInfo();
+		stock2.setCode("SAM");
+		stock2.setBasicPrice(21.0);
+		stock2.setCeilingPrice(21.9);
+		stock2.setFloorPrice(19.5);
+		
+		SecInfo stock1 = new SecInfo();
+		stock1.setCode("SSI");
+		stock1.setBasicPrice(8.0);
+		stock1.setCeilingPrice(8.8);
+		stock1.setFloorPrice(7.5);
+		 
+		memory.put("STOCK", "SSI", stock1);
+		memory.put("STOCK", "SAM", stock2);
 		
 		
 		memoryHandler.handle(pushThroughTransactionInfo);

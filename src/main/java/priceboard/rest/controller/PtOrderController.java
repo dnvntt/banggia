@@ -15,6 +15,7 @@ import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Controller
 @RequestMapping("/priceservice/ptorder")
@@ -75,15 +76,17 @@ public class PtOrderController {
 	private Map<String, Object> createPtOrderInfo(PutThroughTransaction ptorder) {
 		Map<String, Object> ptOrderInfos = new HashMap<String, Object>();
 		ptOrderInfos.put("floorCode", ptorder.getFloorCode());
-		ptOrderInfos.put("symbol", ptorder.getSymbol());
+		String symbol= ptorder.getSymbol();
+		ptOrderInfos.put("symbol",symbol);
 		ptOrderInfos.put("price", ptorder.getPrice());
 		ptOrderInfos.put("volume", ptorder.getVolume());
 		ptOrderInfos.put("time", ptorder.getTime());
 		ptOrderInfos.put("stockNo", ptorder.getStockNo());
 		ptOrderInfos.put("tradingDate", ptorder.getTradingDate());
-		ptOrderInfos.put("basicPrice", "");
-		ptOrderInfos.put("ceilingPrice", "");
-		ptOrderInfos.put("floorPrice", "");
+		SecInfo stock = (SecInfo) memory.get("STOCK", symbol);
+		ptOrderInfos.put("basicPrice", stock.getBasicPrice());
+		ptOrderInfos.put("ceilingPrice", stock.getCeilingPrice());
+		ptOrderInfos.put("floorPrice", stock.getFloorPrice());
 		return ptOrderInfos;
 	}
 
