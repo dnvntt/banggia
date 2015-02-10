@@ -14,6 +14,7 @@ import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThroughTransaction;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 @DependsOn({"stockLoader","bussinessDateLoader"})
@@ -54,6 +55,13 @@ public class PtorderLoader {
 						"putthroughtransaction", PutThroughTransaction.class,
 						searchCondition);
 
+		PtorderList.forEach((ptOrder)->{
+			SecInfo stock = (SecInfo) memory.get("STOCK", ptOrder.getSymbol());
+			ptOrder.setBasicPrice( stock.getBasicPrice());
+			ptOrder.setCeilingPrice(stock.getCeilingPrice());
+			ptOrder.setFloorPrice(stock.getFloorPrice());
+		});
+		
 		memory.put("PutThroughTransaction", floorCode, PtorderList);
 	}
 

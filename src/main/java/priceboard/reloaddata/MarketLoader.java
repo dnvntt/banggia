@@ -60,6 +60,9 @@ public class MarketLoader {
 	private void loadMarketToMemory(Map<String, String> searchCondition, String floorCode) throws Exception {
 		searchCondition.put("floorCode", floorCode);
 		List<Market> marketList = (List<Market>) elasticSearchClient.getDataByIndex("market", "market", Market.class, searchCondition);
+		marketList.forEach((market)->{
+			if(market.getTradingTime()==null) marketList.remove(market);
+		});
 		memory.put("ALL_MARKET", floorCode, marketList);
 	}
 

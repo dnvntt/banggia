@@ -56,6 +56,7 @@ public class ClearDataHandler implements EventHandler {
 
 	public void clearIfNeed() {	
 		if (isClearData){
+			System.out.println("Inside clear data");
 			List<String> stocks = stockRoomManager
 					.getStocksByRoom(FloorCode.HNX.getCode());
 			

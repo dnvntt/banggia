@@ -15,7 +15,6 @@ import priceboard.json.JsonParser;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
-import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Controller
 @RequestMapping("/priceservice/adorder")
@@ -85,10 +84,9 @@ public class AdOrderController {
 		adOrderInfos.put("stockId", adorder.getStockId());
 		adOrderInfos.put("tradingDate", adorder.getTradingDate());
 		 
-		SecInfo stock = (SecInfo) memory.get("STOCK", symbol);
-		adOrderInfos.put("basicPrice", stock.getBasicPrice());
-		adOrderInfos.put("ceilingPrice", stock.getCeilingPrice());
-		adOrderInfos.put("floorPrice", stock.getFloorPrice());
+		adOrderInfos.put("basicPrice", adorder.getBasicPrice());
+		adOrderInfos.put("ceilingPrice", adorder.getCeilingPrice());
+		adOrderInfos.put("floorPrice", adorder.getFloorPrice());
 		
 		return adOrderInfos;
 	}

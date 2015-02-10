@@ -25,12 +25,10 @@ public class MarketController {
 	@Autowired
 	private JsonParser jsonParser;
 
-	
 	@Autowired
 	public MarketController(InMemory memory, JsonParser jsonParser) {
 		this.memory = memory;
 		this.jsonParser = jsonParser;
-		
 	}
 	
 	@RequestMapping(value = "/snapshot/q=codes:{codes}", method = RequestMethod.GET)
@@ -56,6 +54,5 @@ public class MarketController {
 			put("data", market);
 		}});
 	}
-	
 	
 }

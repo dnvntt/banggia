@@ -14,6 +14,7 @@ import priceboard.reloaddata.elasticsearch.ElasticSearchClient;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
 import vn.com.vndirect.priceservice.datamodel.PutThrough;
+import vn.com.vndirect.priceservice.datamodel.SecInfo;
 
 @Component
 @DependsOn({"stockLoader","bussinessDateLoader"})
@@ -46,6 +47,12 @@ public class AdorderLoader {
 	private void loadSnapshotAdorderToMemory(Map<String, String> searchCondition, String floorCode) throws Exception {
 		searchCondition.put("floorCode", floorCode);
 		List<PutThrough> AdorderList = (List<PutThrough>) elasticSearchClient.getDataByIndex("putthrough", "putthrough", PutThrough.class, searchCondition);
+		AdorderList.forEach((adOrder)->{
+			SecInfo stock = (SecInfo) memory.get("STOCK", adOrder.getStockSymbol());
+			adOrder.setBasicPrice( stock.getBasicPrice());
+			adOrder.setCeilingPrice(stock.getCeilingPrice());
+			adOrder.setFloorPrice(stock.getFloorPrice());
+		});
 		memory.put("PutThrough",floorCode, AdorderList);
 	}
 	 

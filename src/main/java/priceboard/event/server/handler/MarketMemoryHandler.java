@@ -31,12 +31,13 @@ public class MarketMemoryHandler implements EventHandler {
 			String compression = mashaller.compress(source);
 			memory.put("MARKET_COMPRESSION", key, compression);
 			
-			
 			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", key);
 			if (marketList == null) {
 				marketList = new ArrayList<Market>();
 			}
-			marketList.add((Market) source);
+			if(((Market)source).getTradingTime()!=null)
+				marketList.add((Market) source);
+			
 			memory.put("ALL_MARKET", key,marketList);
 	}
 }

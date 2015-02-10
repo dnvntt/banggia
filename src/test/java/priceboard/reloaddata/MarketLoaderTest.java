@@ -29,11 +29,13 @@ public class MarketLoaderTest {
 		
 		Market market = new Market();
 		market.setFloorCode("02");
+		market.setTradingTime("091909");
 		
 		expectedMarketList.add(market);
 		
 		market = new Market();
 		market.setFloorCode("02");
+		market.setTradingTime("090909");
 		expectedMarketList.add(market);
 		
 		Mockito.when(elasticSearchClient.getDataByIndex(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.any())).thenReturn(expectedMarketList);
@@ -54,6 +56,7 @@ public class MarketLoaderTest {
 		
 		Market expectedMarket = new Market();
 		expectedMarket.setFloorCode("02");
+		expectedMarket.setTradingTime("090909");
 		
 		expectedMarketList.add(expectedMarket);
 		
