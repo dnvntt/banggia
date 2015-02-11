@@ -17,7 +17,7 @@ public class MarketMemoryHandler implements EventHandler {
 
 	private InMemory memory;
 	private Mashaller mashaller;
-	
+
 	@Autowired
 	public MarketMemoryHandler(InMemory memory, Mashaller mashaller) {
 		this.memory = memory;
@@ -26,18 +26,32 @@ public class MarketMemoryHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-			String key = ((Market) source).getFloorCode();
-			memory.put("MARKET", key, source);
-			String compression = mashaller.compress(source);
-			memory.put("MARKET_COMPRESSION", key, compression);
-			
-			List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET", key);
-			if (marketList == null) {
-				marketList = new ArrayList<Market>();
-			}
-			if(((Market)source).getTradingTime()!=null)
+		String key = ((Market) source).getFloorCode();
+		memory.put("MARKET", key, source);
+		String compression = mashaller.compress(source);
+		memory.put("MARKET_COMPRESSION", key, compression);
+
+		List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET",key);
+		if (marketList == null) {
+			marketList = new ArrayList<Market>();
+			memory.put("ALL_MARKET", key, marketList);
+			if (((Market) source).getTradingTime() != null)
 				marketList.add((Market) source);
-			
-			memory.put("ALL_MARKET", key,marketList);
+		} else {
+			Market lastRecord =  marketList.get(marketList.size()-1);
+			String time_current = ((Market) source).getTradingTime();
+			if (time_current != null
+					&& time_diff(lastRecord.getTradingTime(), time_current) >= 1)
+				marketList.add((Market) source);
+		}
+
 	}
+
+	public int time_diff(String time1, String time2) {
+		if (time1.substring(0, 2).equals(time2.substring(0, 2)))
+			return (Integer.parseInt(time2.substring(3, 5)) - Integer.parseInt(time1.substring(3, 5)));
+		else
+			return 1;
+	}
+
 }

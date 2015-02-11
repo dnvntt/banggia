@@ -73,19 +73,19 @@ public class MarketMemoryHandlerTest {
 		market2.setFloorCode("12");
 		market2.setPriorMarketIndex(524.6);
 		market2.setBidVol(34321.7);
-		market2.setTradingTime("093005");
+		market2.setTradingTime("093105");
 		
 		Market market3 = new Market();
 		market3.setFloorCode("12");
 		market3.setPriorMarketIndex(524.6);
 		market3.setBidVol(34321.7);
-		market3.setTradingTime("093005");
+		market3.setTradingTime("093205");
 		
 		Market market4 = new Market();
 		market4.setFloorCode("12");
 		market4.setPriorMarketIndex(524.6);
 		market4.setBidVol(34321.7);
-		market4.setTradingTime("093005");
+		market4.setTradingTime("093305");
 		
 		memoryHandler.handle(market);
 		memoryHandler.handle(market2);
@@ -97,13 +97,13 @@ public class MarketMemoryHandlerTest {
 		if (marketList == null || code.trim().length() == 0) {
 			return;
 		}
-		Collections.sort(marketList, new Comparator<Market>() {
+		/*Collections.sort(marketList, new Comparator<Market>() {
 			@Override
 			public int compare(Market o1, Market o2) {
 				return o1.getTradingTime().compareTo(o2.getTradingTime());
 			}
-		});
+		});*/
 		
-		Assert.assertEquals(market, marketList.get(1));
+		Assert.assertEquals(market, marketList.get(0));
 	}
 }

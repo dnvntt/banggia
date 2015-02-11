@@ -48,12 +48,13 @@ public class HistoryController {
 			if (marketList == null || code.trim().length() == 0) {
 				continue;
 			}
-			Collections.sort(marketList, new Comparator<Market>() {
+			
+			/*Collections.sort(marketList, new Comparator<Market>() {
 				@Override
 				public int compare(Market o1, Market o2) {
 					return o1.getTradingTime().compareTo(o2.getTradingTime());
 				}
-			});
+			});*/
 
 			HashMap<String, List<String>> marketInfo = createMarketInfo(marketList);
 			marketHistoryByFloorCode.put(code, marketInfo);

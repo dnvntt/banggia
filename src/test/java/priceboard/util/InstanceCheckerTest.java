@@ -25,4 +25,19 @@ public class InstanceCheckerTest {
 		Assert.assertTrue(InstanceChecker.isPutThrough(new PutThrough()));
 		Assert.assertTrue(InstanceChecker.isCompany(new Company()));
 	}
+	@Test
+	public void testTimeDiff() {
+		String time1="09:23:13" ;
+		String time2="09:24:33" ;
+		int result= time_diff(time1, time2);
+		Assert.assertEquals(1, result);
+		       
+	}
+	
+	public int time_diff(String time1, String time2) {
+		if (time1.substring(0, 2).equals(time2.substring(0, 2)))
+			return (Integer.parseInt(time2.substring(3, 5)) - Integer.parseInt(time1.substring(3, 5)));
+		else
+			return 1;
+	}
 }
