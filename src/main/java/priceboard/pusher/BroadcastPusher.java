@@ -20,8 +20,10 @@ public class BroadcastPusher implements Pusher {
 	private JsonParser parser;
 	private InMemory memory;
 	private Mashaller mashaller;
+
 	@Autowired
-	public BroadcastPusher(ClientRoomManager roomManager, JsonParser parser,InMemory memory,Mashaller mashaller) {
+	public BroadcastPusher(ClientRoomManager roomManager, JsonParser parser,
+			InMemory memory, Mashaller mashaller) {
 		this.roomManager = roomManager;
 		this.parser = parser;
 		this.memory = memory;
@@ -30,8 +32,10 @@ public class BroadcastPusher implements Pusher {
 
 	@Override
 	public void push(Object source) {
+		String data = getCompressionData(source);
+		if (data.equals(""))
+			return;
 		List<ClientConnection> clients = roomManager.getAllClient();
-		String data = getCompressionData(source);  
 		clients.forEach((client) -> client.send(data));
 	}
 
@@ -41,12 +45,12 @@ public class BroadcastPusher implements Pusher {
 			String data = (String) memory.get("MARKET_COMPRESSION", floorCode);
 			return parser.buildReturnJsonStockAsString("MARKETINFO", data);
 		}
-		
+
 		if (InstanceChecker.isPutThroughTransaction(source)) {
 			String compression = mashaller.compress(source);
 			return parser.buildReturnJsonStockAsString("PT_ORDER", compression);
-		} 
-		
+		}
+
 		if (InstanceChecker.isPutThrough(source)) {
 			String compression = mashaller.compress(source);
 			return parser.buildReturnJsonStockAsString("AD_ORDER", compression);

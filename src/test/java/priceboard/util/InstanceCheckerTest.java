@@ -1,5 +1,8 @@
 package priceboard.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,7 +34,12 @@ public class InstanceCheckerTest {
 		String time2="09:24:33" ;
 		int result= time_diff(time1, time2);
 		Assert.assertEquals(1, result);
-		       
+		
+		Calendar cal = Calendar.getInstance();
+    	cal.getTime();
+    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	System.out.println( "Time now:"+ sdf.format(cal.getTime()));
+    	
 	}
 	
 	public int time_diff(String time1, String time2) {

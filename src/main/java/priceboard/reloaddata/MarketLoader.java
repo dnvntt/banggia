@@ -66,10 +66,6 @@ public class MarketLoader {
 			String floorCode) throws Exception {
 		searchCondition.put("floorCode", floorCode);
 		List<Market> marketList = (List<Market>) elasticSearchClient.getDataByIndex("market", "market", Market.class,searchCondition);
-		/*marketList.forEach((market) -> {
-			if (market.getTradingTime() == null)
-				marketList.remove(market);
-		});*/
 
 		Collections.sort(marketList, new Comparator<Market>() {
 			@Override
