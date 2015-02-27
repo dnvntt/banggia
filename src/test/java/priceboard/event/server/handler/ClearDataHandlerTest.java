@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import priceboard.json.JsonParser;
+import priceboard.room.ClientRoomManager;
 import priceboard.room.StockRoomManager;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
@@ -15,13 +17,16 @@ public class ClearDataHandlerTest {
 	private InMemory memory;
 	private ClearDataHandler clearData;
 	private StockRoomManager stockManager;
-	
+	private ClientRoomManager clientRoomManager;
+	private JsonParser parser;
 	
 	@Before
 	public void setup() {
 		memory = new InMemory();
 		stockManager = new StockRoomManager();
-		clearData = new ClearDataHandler(memory, stockManager);
+		clientRoomManager =new ClientRoomManager();
+		parser =new JsonParser();
+		clearData = new ClearDataHandler(memory, stockManager,clientRoomManager,parser);
 	}
 	
 	@Test

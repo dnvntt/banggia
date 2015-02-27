@@ -12,7 +12,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import priceboard.client.ClientConnection;
 import priceboard.event.EventHandler;
+import priceboard.json.JsonParser;
+import priceboard.room.ClientRoomManager;
 import priceboard.room.StockRoomManager;
 import vn.com.vndirect.lib.commonlib.memory.InMemory;
 import vn.com.vndirect.priceservice.datamodel.FloorCode;
@@ -24,11 +27,15 @@ public class ClearDataHandler implements EventHandler {
 	private boolean isClearData;
 	private InMemory memory;
 	private StockRoomManager stockRoomManager;
-
+	private ClientRoomManager clientRoomManager;
+	private JsonParser parser;
+	
 	@Autowired
-	public ClearDataHandler(InMemory memory, StockRoomManager stockRoomManager) {
+	public ClearDataHandler(InMemory memory, StockRoomManager stockRoomManager,ClientRoomManager clientRoomManager,JsonParser parser) {
 		this.stockRoomManager = stockRoomManager;
 		this.memory = memory;
+		this.clientRoomManager= clientRoomManager;
+		this.parser = parser;
 		isClearData=false;
 	}
 
@@ -108,6 +115,10 @@ public class ClearDataHandler implements EventHandler {
 			memory.remove("ALL_MARKET", FloorCode.VN30.getCode());
 
 			isClearData = false;
+			
+			String data= parser.buildReturnJsonStockAsString("RESET", "true");
+			List<ClientConnection> clients = clientRoomManager.getAllClient();
+			clients.forEach((client) -> client.send(data));
 		}
 
 	}
