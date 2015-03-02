@@ -63,10 +63,10 @@ public class ClearDataHandler implements EventHandler {
 	    Runtime runtime = Runtime.getRuntime();
 	    runtime.gc();
 		
-		/*double usedMemory = ((double)(runtime.totalMemory()- runtime.freeMemory()))/1024/1024;
+		double usedMemory = ((double)(runtime.totalMemory()- runtime.freeMemory()))/1024/1024;
 		List<ClientConnection> allClient = clientRoomManager.getAllClient() ;
 		logger.info("Number of  client: " + allClient.size());
-		logger.info("Memory usage in Mbyte: " + usedMemory);*/
+		logger.info("Memory usage in Mbyte: " + usedMemory);
 	}
 
 	@Scheduled(cron = "0 1 0 * * MON-FRI")
