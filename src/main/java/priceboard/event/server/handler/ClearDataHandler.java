@@ -76,28 +76,9 @@ public class ClearDataHandler implements EventHandler {
 
 	public void clearIfNeed() {	
 		if (isClearData){
-			System.out.println("Inside clear data");
-			List<String> stocks = stockRoomManager
-					.getStocksByRoom(FloorCode.HNX.getCode());
-			
-			stocks.forEach((stock) -> {
-				memory.remove("STOCK", stock);
-				memory.remove("STOCK_COMPRESSION", stock);
-				memory.remove("TRANSACTION", stock);
-			});
-			stocks = stockRoomManager.getStocksByRoom(FloorCode.HOSE.getCode());
-			stocks.forEach((stock) -> {
-				memory.remove("STOCK", stock);
-				memory.remove("STOCK_COMPRESSION", stock);
-				memory.remove("TRANSACTION", stock);
-			});
-			stocks = stockRoomManager
-					.getStocksByRoom(FloorCode.UPCOM.getCode());
-			stocks.forEach((stock) -> {
-				memory.remove("STOCK", stock);
-				memory.remove("STOCK_COMPRESSION", stock);
-				memory.remove("TRANSACTION", stock);
-			});
+			removeStockInFloorCode(FloorCode.HNX.getCode());
+			removeStockInFloorCode(FloorCode.HOSE.getCode());
+			removeStockInFloorCode(FloorCode.UPCOM.getCode());
 			
 			memory.remove("CeilingFloor", "ALL");
 
@@ -107,25 +88,11 @@ public class ClearDataHandler implements EventHandler {
 			memory.remove("PutThrough",   FloorCode.HOSE.getCode());
 			memory.remove("PutThrough",   FloorCode.HNX.getCode());
 
-			memory.remove("MARKET", FloorCode.HNX.getCode());
-			memory.remove("MARKET_COMPRESSION", FloorCode.HNX.getCode());
-			memory.remove("ALL_MARKET", FloorCode.HNX.getCode());
-
-			memory.remove("MARKET", FloorCode.HOSE.getCode());
-			memory.remove("MARKET_COMPRESSION", FloorCode.HOSE.getCode());
-			memory.remove("ALL_MARKET", FloorCode.HOSE.getCode());
-
-			memory.remove("MARKET", FloorCode.UPCOM.getCode());
-			memory.remove("MARKET_COMPRESSION", FloorCode.UPCOM.getCode());
-			memory.remove("ALL_MARKET", FloorCode.UPCOM.getCode());
-			
-			memory.remove("MARKET", FloorCode.HNX30.getCode());
-			memory.remove("MARKET_COMPRESSION", FloorCode.HNX30.getCode());
-			memory.remove("ALL_MARKET", FloorCode.HNX30.getCode());
-			
-			memory.remove("MARKET", FloorCode.VN30.getCode());
-			memory.remove("MARKET_COMPRESSION", FloorCode.VN30.getCode());
-			memory.remove("ALL_MARKET", FloorCode.VN30.getCode());
+			removeMarket(FloorCode.HNX.getCode());
+			removeMarket(FloorCode.HOSE.getCode());
+			removeMarket(FloorCode.UPCOM.getCode());
+			removeMarket(FloorCode.HNX30.getCode());
+			removeMarket(FloorCode.VN30.getCode());
 
 			isClearData = false;
 			
@@ -134,6 +101,20 @@ public class ClearDataHandler implements EventHandler {
 			clients.forEach((client) -> client.send(data));
 		}
 
+	}
+	
+	private void removeStockInFloorCode(String floorCode) {
+		List<String> stocks = stockRoomManager.getStocksByRoom(floorCode);
+		stocks.forEach((stock) -> {
+			memory.remove("STOCK", stock);
+			memory.remove("STOCK_COMPRESSION", stock);
+			memory.remove("TRANSACTION", stock);
+		});
+	}
+	private void removeMarket(String floorCode) {
+		memory.remove("MARKET", floorCode);
+		memory.remove("MARKET_COMPRESSION", floorCode);
+		memory.remove("ALL_MARKET", floorCode);
 	}
 
 	@Override
