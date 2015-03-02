@@ -27,13 +27,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class StockWebSocketHandler extends TextWebSocketHandler {
 
 	private JsonParser parser;
-	
+	private static final String CLIENT_CONNECTION = "CLIENT_CONNECTION";
 	private final InMemory memory;
-
 	private EventHandlerFilter eventHandlerFilter;
-
 	private List<EventHandler> handlers;
-	
 	private Map<String, List<EventHandler>> clientEventTypeMapping = new HashMap<String, List<EventHandler>>();
 	
 	@Autowired
@@ -95,15 +92,16 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		super.afterConnectionEstablished(session);
 	}
 	
-	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		ClientConnection clientConnection = getClientConnectionBySessionId(session.getId());
+		String sessionId = session.getId();
+		ClientConnection clientConnection = getClientConnectionBySessionId(sessionId);
 		List<EventHandler> handlers = clientEventTypeMapping.get("DISCONNECT");
 		handlers.forEach((handler) -> {
 			handler.handle(clientConnection);
 		});
 		super.afterConnectionClosed(session, status);
+		memory.remove(CLIENT_CONNECTION, sessionId);
 	}
 	
 	private ClientConnection getClientConnectionBySessionId(String sessionId) {
