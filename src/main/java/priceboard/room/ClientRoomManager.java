@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,14 +18,11 @@ import priceboard.client.ClientConnection;
 public class ClientRoomManager {
 
 	private Map<String, CopyOnWriteArrayList<ClientConnection>> roomStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
-	private Map<ClientConnection, CopyOnWriteArrayList<String>> currentRoomsOfClient = new HashMap<ClientConnection, CopyOnWriteArrayList<String>>();
-	private Map<ClientConnection, String> currentTransactionOfClient = new HashMap<ClientConnection, String>();
 	private Map<String, CopyOnWriteArrayList<ClientConnection>> transactionStorage = new HashMap<String, CopyOnWriteArrayList<ClientConnection>>();
+	private Map<ClientConnection, CopyOnWriteArrayList<String>> currentRoomsOfClient = new ConcurrentHashMap<ClientConnection, CopyOnWriteArrayList<String>>();
+	private Map<ClientConnection, String> currentTransactionOfClient = new HashMap<ClientConnection, String>();
+	
 	private Lock lock = new ReentrantLock();
-
-	public ClientRoomManager() {
-
-	}
 
 	public void addClientToRoom(String room, ClientConnection client) {
 		lock.lock();
@@ -56,8 +54,7 @@ public class ClientRoomManager {
 	}
 
 	private void updateCurrentRoomOfClient(String room, ClientConnection client) {
-		CopyOnWriteArrayList<String> currentRooms = currentRoomsOfClient
-				.get(client);
+		CopyOnWriteArrayList<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms == null) {
 			currentRooms = new CopyOnWriteArrayList<String>();
 		}
@@ -70,16 +67,12 @@ public class ClientRoomManager {
 	private void updateTransactionStorage(String room, ClientConnection client) {
 		String currentTransaction = currentTransactionOfClient.get(client);
 		if (currentTransaction != null) {
-			// remove client out of this stock code
-			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage
-					.get(currentTransaction);
+			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage.get(currentTransaction);
 			clients0.remove(client);
 		}
 		currentTransactionOfClient.put(client, room);
 
-		// add client into new stock code transaction
-		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage
-				.get(room);
+		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage.get(room);
 		if (clients == null) {
 			clients = new CopyOnWriteArrayList<ClientConnection>();
 			transactionStorage.put(room, clients);
@@ -96,15 +89,6 @@ public class ClientRoomManager {
 		return transactionStorage.get(room);
 	}
 
-	public void removeClientFromTransaction(ClientConnection client) {
-		String currentTransaction = currentTransactionOfClient.get(client);
-		if (currentTransaction != null) {
-			currentRoomsOfClient.remove(client);
-			List<ClientConnection> clients = roomStorage.get(currentTransaction);
-			clients.remove(client);
-		}
-
-	}
 
 	public List<ClientConnection> getClientInRoom(String room) {
 		List<ClientConnection> clients = roomStorage.get(room);
@@ -114,7 +98,22 @@ public class ClientRoomManager {
 		return roomStorage.get(room);
 	}
 
-	public void removeClientFromAllRoom(ClientConnection client) {
+	public void removeClient(ClientConnection client) {
+		removeClientFromStockRoomCompletely(client);
+		removeClientFromTransactionCompletely(client);
+	}
+
+	public void removeClientFromTransactionCompletely(ClientConnection client) {
+		String currentTransaction = currentTransactionOfClient.get(client);
+		if (currentTransaction != null) {
+			currentTransactionOfClient.remove(client);
+			List<ClientConnection> clients = transactionStorage.get(currentTransaction);
+			clients.remove(client);
+		}
+		
+	}
+
+	private void removeClientFromStockRoomCompletely(ClientConnection client) {
 		List<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms != null) {
 			Iterator<String> rooms = currentRooms.iterator();
@@ -124,9 +123,6 @@ public class ClientRoomManager {
 			}
 		}
 		currentRoomsOfClient.remove(client);
-		
-		removeClientFromTransaction(client);
-
 	}
 
 	public void removeClientFromRoom(String room, ClientConnection client) {
@@ -141,8 +137,7 @@ public class ClientRoomManager {
 		}
 	}
 
-	private void removeRoomOfClientFromCurrentRooms(String room,
-			ClientConnection client) {
+	private void removeRoomOfClientFromCurrentRooms(String room, ClientConnection client) {
 		List<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms != null) {
 			currentRooms.remove(room);

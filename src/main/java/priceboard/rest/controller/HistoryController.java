@@ -36,8 +36,7 @@ public class HistoryController {
 	}
 
 	@RequestMapping(value = "/history/q=codes:{codes}", method = RequestMethod.GET)
-	public @ResponseBody Map<String, Map<String, List<String>>> getMarketHistory(
-			@PathVariable String codes, ModelMap modelMap) {
+	public @ResponseBody Map<String, Map<String, List<String>>> getMarketHistory(@PathVariable String codes, ModelMap modelMap) {
 		Map<String, Map<String, List<String>>> marketHistoryByFloorCode = new HashMap<String, Map<String, List<String>>>();
 		if (isEmpty(codes))
 			return marketHistoryByFloorCode;
