@@ -49,8 +49,6 @@ public class MarketMemoryHandler implements EventHandler {
 		} else {
 			Market lastRecord = marketList.get(marketList.size() - 1);
 			String time_current = ((Market) source).getTradingTime();
-			int diff=  time_diff(lastRecord.getTradingTime(), time_current);
-			
 			if (time_current != null
 					&& time_diff(lastRecord.getTradingTime(), time_current) >= 1)
 				marketList.add((Market) source);

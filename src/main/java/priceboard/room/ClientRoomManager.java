@@ -70,14 +70,12 @@ public class ClientRoomManager {
 	private void updateTransactionStorage(String room, ClientConnection client) {
 		String currentTransaction = currentTransactionOfClient.get(client);
 		if (currentTransaction != null) {
-			// remove client out of this stock code
 			CopyOnWriteArrayList<ClientConnection> clients0 = transactionStorage
 					.get(currentTransaction);
 			clients0.remove(client);
 		}
 		currentTransactionOfClient.put(client, room);
 
-		// add client into new stock code transaction
 		CopyOnWriteArrayList<ClientConnection> clients = transactionStorage
 				.get(room);
 		if (clients == null) {
@@ -99,11 +97,10 @@ public class ClientRoomManager {
 	public void removeClientFromTransaction(ClientConnection client) {
 		String currentTransaction = currentTransactionOfClient.get(client);
 		if (currentTransaction != null) {
-			currentRoomsOfClient.remove(client);
-			List<ClientConnection> clients = roomStorage.get(currentTransaction);
+			currentTransactionOfClient.remove(client);
+			List<ClientConnection> clients = transactionStorage.get(currentTransaction);
 			clients.remove(client);
 		}
-
 	}
 
 	public List<ClientConnection> getClientInRoom(String room) {

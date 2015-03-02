@@ -109,29 +109,5 @@ public class ElasticSearchClient {
 	private <T> T convertJsonToObject(Class<T> clazz, String sourceAsString) {
 		return (T) parser.stringToObject(sourceAsString, clazz);
 	}
-
 	
-	/*public static void main(String[] args) throws Exception {
-		ElasticSearchClient client = new ElasticSearchClient(new JsonParser());
-		client.initClient();
-		client.getDataByIndex("secinfo", "snapshot", SecInfo.class, new HashMap<String, String>() {{put("tradingDate", "20141223");}});
-		List<BusinessDate> dateList = client.getDataByIndex("businessdate", "businessdate", BusinessDate.class, null);
-		
-		
-		List<Company> secInfoList = client.getDataByIndex("company", "company", Company.class, null);
-		secInfoList.forEach(company -> {
-			System.out.println(company.getCode() + " " + company.getCompanyName());
-		});
-		
-		List<Category> categoryList = client.getDataByIndex("category", "category", Category.class, null);
-		
-		System.out.println("BusinessDate: " + dateList.get(0).getBusinessDate());
-		System.out.println(categoryList.get(0).getCategoryName());
-		System.out.println(categoryList.get(0).getCodeList());
-		
-		List<Market> marketList = client.getDataByIndex("market", "market", Market.class, new HashMap<String, String>() {{put("tradingDate", "20141223"); put("floorCode", "02");}});
-		System.out.println(marketList.get(0).getFloorCode());
-		System.out.println(marketList.get(0).getTradingDate());
-		System.out.println(marketList.get(0).getTradingTime());
-	}*/
 }

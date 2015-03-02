@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,6 +30,7 @@ public class ClearDataHandler implements EventHandler {
 	private StockRoomManager stockRoomManager;
 	private ClientRoomManager clientRoomManager;
 	private JsonParser parser;
+	private static final Logger logger = Logger.getLogger(ClearDataHandler.class);
 	
 	@Autowired
 	public ClearDataHandler(InMemory memory, StockRoomManager stockRoomManager,ClientRoomManager clientRoomManager,JsonParser parser) {
@@ -54,6 +56,17 @@ public class ClearDataHandler implements EventHandler {
 
 	public boolean isClearData() {
 		return isClearData;
+	}
+	
+	@Scheduled(fixedDelay=300000)
+	public void checkNumberClient() {
+	    Runtime runtime = Runtime.getRuntime();
+	    runtime.gc();
+		
+		/*double usedMemory = ((double)(runtime.totalMemory()- runtime.freeMemory()))/1024/1024;
+		List<ClientConnection> allClient = clientRoomManager.getAllClient() ;
+		logger.info("Number of  client: " + allClient.size());
+		logger.info("Memory usage in Mbyte: " + usedMemory);*/
 	}
 
 	@Scheduled(cron = "0 1 0 * * MON-FRI")

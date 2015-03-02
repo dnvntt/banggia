@@ -30,5 +30,7 @@ public class StockMemoryHandler implements EventHandler {
 			memory.put("STOCK_COMPRESSION", key, compression);
 		} 
 	}
+	
+	
 
 }
