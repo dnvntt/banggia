@@ -48,9 +48,8 @@ public class PostHandler implements EventHandler {
 		
 		clientRoomManager.addClientToTransaction(symbol,client);
 		
-		List<Transaction> transactionHistoryByCode = new ArrayList<Transaction>();
+		List<Transaction> transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);
 
-		transactionHistoryByCode = (List<Transaction>) memory.get("TRANSACTION", symbol);
 		if (transactionHistoryByCode == null
 				|| transactionHistoryByCode.isEmpty())
 			return;

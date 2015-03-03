@@ -61,7 +61,7 @@ public class ClearDataHandler implements EventHandler {
 	@Scheduled(fixedDelay=300000)
 	public void checkNumberClient() {
 	    Runtime runtime = Runtime.getRuntime();
-	    runtime.gc();
+	    //runtime.gc();
 		
 		double usedMemory = ((double)(runtime.totalMemory()- runtime.freeMemory()))/1024/1024;
 		List<ClientConnection> allClient = clientRoomManager.getAllClient() ;
