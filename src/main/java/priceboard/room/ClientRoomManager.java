@@ -88,15 +88,7 @@ public class ClientRoomManager {
 		return transactionStorage.get(room);
 	}
 
-	public void removeClientFromTransaction(ClientConnection client) {
-		String currentTransaction = currentTransactionOfClient.get(client);
-		if (currentTransaction != null) {
-			currentTransactionOfClient.remove(client);
-			List<ClientConnection> clients = transactionStorage.get(currentTransaction);
-			clients.remove(client);
-		}
-	}
-
+ 
 	public List<ClientConnection> getClientInRoom(String room) {
 		List<ClientConnection> clients = roomStorage.get(room);
 		if (clients == null) {
@@ -105,7 +97,21 @@ public class ClientRoomManager {
 		return roomStorage.get(room);
 	}
 
-	public void removeClientFromAllRoom(ClientConnection client) {
+	public void removeClient(ClientConnection client) {
+		removeClientFromStockRoomCompletely(client);
+		removeClientFromTransactionCompletely(client);
+	}
+	
+	public void removeClientFromTransactionCompletely(ClientConnection client) {
+		String currentTransaction = currentTransactionOfClient.get(client);
+		if (currentTransaction != null) {
+			currentTransactionOfClient.remove(client);
+			List<ClientConnection> clients = transactionStorage.get(currentTransaction);
+			clients.remove(client);
+		}
+	}
+
+	private void removeClientFromStockRoomCompletely(ClientConnection client) {
 		List<String> currentRooms = currentRoomsOfClient.get(client);
 		if (currentRooms != null) {
 			Iterator<String> rooms = currentRooms.iterator();
@@ -115,9 +121,6 @@ public class ClientRoomManager {
 			}
 		}
 		currentRoomsOfClient.remove(client);
-		
-		removeClientFromTransaction(client);
-
 	}
 
 	public void removeClientFromRoom(String room, ClientConnection client) {

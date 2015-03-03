@@ -174,7 +174,7 @@ public class ClientRoomManagerTest {
 		roomManager.addClientToRoom("VND", client);
 		roomManager.addClientToRoom("SSI", client);
 		roomManager.addClientToRoom("02", client);
-		roomManager.removeClientFromAllRoom(client);
+		roomManager.removeClient(client);
 		Assert.assertEquals(0, roomManager.getClientInRoom("VND").size());
 		Assert.assertEquals(0, roomManager.getClientInRoom("SSI").size());
 		Assert.assertEquals(0, roomManager.getClientInRoom("02").size());
@@ -197,7 +197,7 @@ public class ClientRoomManagerTest {
 		ClientConnection client = Mockito.mock(ClientConnection.class);
 		roomManager.addClientToRoom("VND", client);
 		roomManager.addClientToTransaction("VND", client);
-		roomManager.removeClientFromTransaction(client);
+		roomManager.removeClientFromTransactionCompletely(client);
 		List<ClientConnection> clientsInVND = roomManager.getClientInTransaction("VND");
 		Assert.assertEquals(0, clientsInVND.size());
 	}
@@ -257,9 +257,9 @@ public class ClientRoomManagerTest {
 		
 		Thread removeThread1 = new Thread() {
 			public void run() {
-				roomManager.removeClientFromAllRoom(client1);
-				roomManager.removeClientFromAllRoom(client2);
-				roomManager.removeClientFromAllRoom(client3);
+				roomManager.removeClient(client1);
+				roomManager.removeClient(client2);
+				roomManager.removeClient(client3);
 			}
 		};
 		
