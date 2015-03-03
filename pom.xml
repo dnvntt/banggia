@@ -4,7 +4,7 @@
 
 	<groupId>vn.com.vndirect</groupId>
 	<artifactId>priceboard</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 
 	<name>priceboard</name>
 	<url>http://maven.apache.org</url>

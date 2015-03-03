@@ -56,6 +56,9 @@ public class MarketMemoryHandler implements EventHandler {
 	}
 
 	public int time_diff(String time1, String time2) {
+		if (Integer.parseInt(time1.substring(0, 2)) > Integer.parseInt(time2.substring(0, 2)))
+			return -1;
+				
 		if (time1.substring(0, 2).equals(time2.substring(0, 2)))
 			return (Integer.parseInt(time2.substring(3, 5)) - Integer
 					.parseInt(time1.substring(3, 5)));
