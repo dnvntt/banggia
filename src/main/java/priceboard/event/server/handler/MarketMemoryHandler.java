@@ -34,7 +34,7 @@ public class MarketMemoryHandler implements EventHandler {
 		memory.put("MARKET_COMPRESSION", key, compression);
 
 		List<Market> marketList = (ArrayList<Market>) memory.get("ALL_MARKET",key);
-		if (marketList == null) {
+		if (marketList == null || marketList.size()<1) {
 			marketList = new ArrayList<Market>();
 			memory.put("ALL_MARKET", key, marketList);
 			Market market = (Market) source;
