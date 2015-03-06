@@ -1,5 +1,6 @@
 package priceboard.event.client.handler;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import priceboard.room.ClientRoomManager;
 @EventHandlerApplyFor(priority = 1,values = {"DISCONNECT"})
 public class ClientDisconnectHandler implements EventHandler {
 
-	
+	private static final Logger logger = Logger.getLogger(ClientDisconnectHandler.class);
 	private ClientRoomManager clientRoomManager;
 	
 	@Autowired

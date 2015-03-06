@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class StockWebSocketHandler extends TextWebSocketHandler {
 	
-	private static final String CLIENT_CONNECTION = "CLIENT_CONNECTION";
 
 	private JsonParser parser;
 	private static final String CLIENT_CONNECTION = "CLIENT_CONNECTION";
@@ -95,7 +94,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		removeConnection(session);
+		removeConnection(session, status);
 		super.afterConnectionClosed(session, status);
 	}
 
@@ -104,7 +103,7 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		return (ClientConnection) memory.get(CLIENT_CONNECTION, sessionId);
 	}
 
-	private void removeConnection(WebSocketSession session) {
+	private void removeConnection(WebSocketSession session, CloseStatus status) throws Exception {
 		String sessionId = session.getId();
 		ClientConnection clientConnection = getClientConnectionBySessionId(sessionId);
 		List<EventHandler> handlers = clientEventTypeMapping.get("DISCONNECT");

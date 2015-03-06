@@ -60,7 +60,6 @@ public class ClearDataHandler implements EventHandler {
 	@Scheduled(fixedDelay=300000)
 	public void checkNumberClient() {
 	    Runtime runtime = Runtime.getRuntime();
-	    //runtime.gc();
 		
 		double usedMemory = ((double)(runtime.totalMemory()- runtime.freeMemory()))/1024/1024;
 		List<ClientConnection> allClient = clientRoomManager.getAllClient() ;
@@ -116,20 +115,7 @@ public class ClearDataHandler implements EventHandler {
 		memory.remove("ALL_MARKET", floorCode);
 	}
 
-	private void removeStockInFloorCode(String floorCode) {
-		List<String> stocks = stockRoomManager.getStocksByRoom(floorCode);
-		stocks.forEach((stock) -> {
-			memory.remove("STOCK", stock);
-			memory.remove("STOCK_COMPRESSION", stock);
-			memory.remove("TRANSACTION", stock);
-		});
-	}
-
-	private void removeMarket(String floorCode) {
-		memory.remove("MARKET", floorCode);
-		memory.remove("MARKET_COMPRESSION", floorCode);
-		memory.remove("ALL_MARKET", floorCode);
-	}
+	
 
 	@Override
 	public void handle(Object source) {
