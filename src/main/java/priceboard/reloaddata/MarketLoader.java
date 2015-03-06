@@ -1,5 +1,6 @@
 package priceboard.reloaddata;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -66,7 +67,16 @@ public class MarketLoader {
 			String floorCode) throws Exception {
 		searchCondition.put("floorCode", floorCode);
 		List<Market> marketList = (List<Market>) elasticSearchClient.getDataByIndex("market", "market", Market.class,searchCondition);
-
+		
+		List<Market> incorrectMarketList = new ArrayList<Market>();
+		
+		for (Market market : marketList) {
+			if ( market.getTradingTime().substring(0, 2).equals("15")) 
+				incorrectMarketList.add(market);
+		}
+		
+		marketList.removeAll(incorrectMarketList);
+		
 		Collections.sort(marketList, new Comparator<Market>() {
 			@Override
 			public int compare(Market o1, Market o2) {
