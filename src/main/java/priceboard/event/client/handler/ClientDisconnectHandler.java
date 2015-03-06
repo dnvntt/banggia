@@ -22,6 +22,7 @@ public class ClientDisconnectHandler implements EventHandler {
 	
 	@Override
 	public void handle(Object source) {
+		logger.info("Disconnect client: " + source);
 		clientRoomManager.removeClient((ClientConnection) source);
 	}
 

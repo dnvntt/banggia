@@ -43,8 +43,7 @@ public class ClearDataHandler implements EventHandler {
 
 	@PostConstruct
 	public void load() {
-		String businessDate = (String) memory.get("businessdate",
-				"businessdate");
+		String businessDate = (String) memory.get("businessdate", "businessdate");
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
 		
@@ -111,6 +110,21 @@ public class ClearDataHandler implements EventHandler {
 			memory.remove("TRANSACTION", stock);
 		});
 	}
+	private void removeMarket(String floorCode) {
+		memory.remove("MARKET", floorCode);
+		memory.remove("MARKET_COMPRESSION", floorCode);
+		memory.remove("ALL_MARKET", floorCode);
+	}
+
+	private void removeStockInFloorCode(String floorCode) {
+		List<String> stocks = stockRoomManager.getStocksByRoom(floorCode);
+		stocks.forEach((stock) -> {
+			memory.remove("STOCK", stock);
+			memory.remove("STOCK_COMPRESSION", stock);
+			memory.remove("TRANSACTION", stock);
+		});
+	}
+
 	private void removeMarket(String floorCode) {
 		memory.remove("MARKET", floorCode);
 		memory.remove("MARKET_COMPRESSION", floorCode);

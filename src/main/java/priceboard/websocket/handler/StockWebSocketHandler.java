@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class StockWebSocketHandler extends TextWebSocketHandler {
+	
+	private static final String CLIENT_CONNECTION = "CLIENT_CONNECTION";
 
 	private JsonParser parser;
 	private static final String CLIENT_CONNECTION = "CLIENT_CONNECTION";
@@ -87,13 +89,22 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		String id = session.getId();
-		memory.put("CLIENT_CONNECTION", id, new WebSocketClientConnection(session));
+		keepConnection(session);
 		super.afterConnectionEstablished(session);
 	}
-	
+
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		removeConnection(session);
+		super.afterConnectionClosed(session, status);
+	}
+
+	
+	private ClientConnection getClientConnectionBySessionId(String sessionId) {
+		return (ClientConnection) memory.get(CLIENT_CONNECTION, sessionId);
+	}
+
+	private void removeConnection(WebSocketSession session) {
 		String sessionId = session.getId();
 		ClientConnection clientConnection = getClientConnectionBySessionId(sessionId);
 		List<EventHandler> handlers = clientEventTypeMapping.get("DISCONNECT");
@@ -104,8 +115,9 @@ public class StockWebSocketHandler extends TextWebSocketHandler {
 		memory.remove(CLIENT_CONNECTION, sessionId);
 	}
 	
-	private ClientConnection getClientConnectionBySessionId(String sessionId) {
-		return (ClientConnection) memory.get("CLIENT_CONNECTION", sessionId);
+	private void keepConnection(WebSocketSession session) {
+		String id = session.getId();
+		memory.put(CLIENT_CONNECTION, id, new WebSocketClientConnection(session));
 	}
 	
 }

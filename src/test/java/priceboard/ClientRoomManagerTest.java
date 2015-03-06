@@ -46,7 +46,9 @@ public class ClientRoomManagerTest {
 		for(int i = 0; i < numberOfClient; i++) {
 			roomManager.addClientToRoom("VND" + i, Mockito.mock(ClientConnection.class));
 		}
+		
 		List<ClientConnection> actualClients = roomManager.getAllClient();
+
 		Assert.assertEquals(numberOfClient, actualClients.size());
 	}
 	
@@ -70,7 +72,6 @@ public class ClientRoomManagerTest {
 		Assert.assertEquals(numberOfClient, actualClients.size());
 		Assert.assertEquals(numberOfClient, actualClientsAfterRemoveFroomRoom.size());
 	}
-	
 	
 	@Test
 	public void testAddRoomWithPublicRoom() {
@@ -178,6 +179,7 @@ public class ClientRoomManagerTest {
 		Assert.assertEquals(0, roomManager.getClientInRoom("VND").size());
 		Assert.assertEquals(0, roomManager.getClientInRoom("SSI").size());
 		Assert.assertEquals(0, roomManager.getClientInRoom("02").size());
+		Assert.assertEquals(0, roomManager.getAllClient().size());
 	}
 	
 	@Test
@@ -323,8 +325,57 @@ public class ClientRoomManagerTest {
 		getThread1.join();
 		getThread2.join();
 		getThread3.join();
-		System.out.println(exceptions);
 		Assert.assertEquals("Exception: ", 0, exceptions.size());
+	}
+	
+	@Test
+	public void testAddTransaction() {
+		ClientConnection client = Mockito.mock(ClientConnection.class);
+		roomManager.addClientToTransaction("VND", client);
+		ClientConnection clientInVND = roomManager.getClientInTransaction("VND").get(0);
+		roomManager.addClientToTransaction("SSI", client);
+		ClientConnection clientInSSI = roomManager.getClientInTransaction("SSI").get(0);
+		List<ClientConnection> clientsInVNDAfterRegisterSSI = roomManager.getClientInTransaction("VND");
+		Assert.assertEquals(client, clientInVND);
+		Assert.assertEquals(client, clientInSSI);
+		Assert.assertEquals(0, clientsInVNDAfterRegisterSSI.size());
+	}
+
+	@Test
+	public void testRemoveTransaction() {
+		ClientConnection client = Mockito.mock(ClientConnection.class);
+		roomManager.addClientToRoom("VND", client);
+		roomManager.addClientToTransaction("VND", client);
+		roomManager.removeClientFromTransactionCompletely(client);
+		List<ClientConnection> clientsInVND = roomManager.getClientInTransaction("VND");
+		Assert.assertEquals(0, clientsInVND.size());
+	}
+	
+	
+	@Test
+	public void testGetAllClientWhenAddClientConcurrentlyWithoutException() {
+		List<ClientConnection> clients = new ArrayList<ClientConnection>();
+		for(int i = 0; i < 1000; i++) {
+			clients.add(Mockito.mock(ClientConnection.class));
+		}
+		new Thread() {
+			@Override
+			public void run() {
+				for(int i = 0; i< 1000; i++) {
+					roomManager.addClientToRoom("room" + i, clients.get(i));
+				}
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				for(int i = 0; i< 1000; i++) {
+					roomManager.removeClientFromRoom("room" + i, clients.get(i));
+				}
+			}
+		}.start();
+		roomManager.getAllClient();
+		Assert.assertTrue("ConcurrentModifycationException", true);
 	}
 
 }
