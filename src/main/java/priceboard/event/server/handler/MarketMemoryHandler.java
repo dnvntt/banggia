@@ -28,7 +28,8 @@ public class MarketMemoryHandler implements EventHandler {
 
 	@Override
 	public void handle(Object source) {
-		String key = ((Market) source).getFloorCode();
+		Market market = (Market) source;
+		String key = market.getFloorCode();
 		memory.put("MARKET", key, source);
 		String compression = mashaller.compress(source);
 		memory.put("MARKET_COMPRESSION", key, compression);
@@ -37,9 +38,11 @@ public class MarketMemoryHandler implements EventHandler {
 		if (marketList == null || marketList.size()<1) {
 			marketList = new ArrayList<Market>();
 			memory.put("ALL_MARKET", key, marketList);
-			Market market = (Market) source;
 			
-			if (market.getTradingTime() == null) {
+			double curent_index =market.getMarketIndex();
+			String time_current = market.getTradingTime();
+			
+			if (time_current == null || curent_index <1 || (time_current.substring(0, 2)).equals("15") ) {
 				Calendar cal = Calendar.getInstance();
 		    	cal.getTime();
 		    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -48,11 +51,11 @@ public class MarketMemoryHandler implements EventHandler {
 			marketList.add(market);
 		} else {
 			Market lastRecord = marketList.get(marketList.size() - 1);
-			String time_current = ((Market) source).getTradingTime();
-			double curent_index = ((Market) source).getMarketIndex();
+			String time_current = market.getTradingTime();
+			double curent_index = market.getMarketIndex();
 			if (time_current != null && curent_index> 1
 					&& time_diff(lastRecord.getTradingTime(), time_current) >= 1)
-				marketList.add((Market) source);
+				marketList.add(market);
 		}
 	}
 
